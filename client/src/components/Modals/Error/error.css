@@ -1,0 +1,6 @@
+.popup-title-error {
+    color: var(--toastify-color-error);
+    font-size: 55px;
+    font-weight: 700;
+    font-family: 'poppins', sans-serif;
+}

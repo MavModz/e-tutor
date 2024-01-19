@@ -1,0 +1,71 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 512px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    box-shadow: var(--box-shadow);
+}
+
+.popup-img {
+    width: 180px;
+    height: 180px;
+}
+
+.popup-title-success {
+    color: var(--background-variant);
+    font-size: 55px;
+    font-weight: 700;
+    font-family: 'poppins', sans-serif;
+}
+
+.popup-message {
+    color: var(--secondary-text);
+    font-weight: 300;
+    font-size: 25px;
+    font-family: 'poppins', sans-serif;
+}
+
+.popup__button {
+    background-color: var(--primary-new);
+    color: var(--background);
+    white-space: nowrap;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 16px 0px;
+    line-height: 50px;
+    outline: none;
+    font-size: 18px;
+    letter-spacing: .025em;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 800;
+    min-height: 50px;
+    width: 50%;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .15);
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+}
+
+.popup__button:hover {
+    background-color: var(--primary-hover);
+}
