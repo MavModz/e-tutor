@@ -19,8 +19,11 @@ function Header() {
 
   useEffect(() => {
     setActivePath(location.pathname);
-    console.log(location.pathname)
-  }, [location.pathname]);
+  }, []);
+
+const routepath = () => {
+  setActivePath(location.pathname);
+}
 
   const handleItemClick = (path) => {
     setActivePath(path);

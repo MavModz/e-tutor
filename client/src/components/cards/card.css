@@ -22,7 +22,7 @@
 }
 
 .card-course-title>h4 {
-    font-family: 'Inter';
+    font-family: var(--secondary-font);
     font-size: 16px;
     font-weight: 500;
     line-height: 22px;
@@ -30,14 +30,14 @@
 }
 
 .card-course-title>p {
-    font-family: 'Inter';
+    font-family: var(--secondary-font);
     font-size: 14px;
     line-height: 20px;
     font-weight: 500;
 }
 
 .card-course-instructor > span {
-    font-family: 'Inter';
+    font-family: var(--secondary-font);
     color: var(--secondary-text);
     font-size: 14px;
     font-weight: 400;
@@ -46,7 +46,7 @@
 }
 
 .card-course-detail > .card-course-instructor {
-    font-family: 'Inter';
+    font-family: var(--secondary-font);
     font-size: 17px;
     font-weight: 500;
     line-height: 22px;
@@ -54,7 +54,7 @@
 }
 
 .card-course-price {
-    font-family: 'Inter';
+    font-family: var(--secondary-font);
     font-size: 18px;
     font-weight: 600;
     line-height: 24px;
@@ -68,7 +68,7 @@
 }
 
 .course-card-info > span {
-font-family: 'Inter';
+font-family: var(--secondary-font);
 font-size: 14px;
 font-weight: 500;
 line-height: 20px;
