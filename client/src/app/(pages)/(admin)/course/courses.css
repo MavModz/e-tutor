@@ -7,12 +7,24 @@
     gap: 40px;
 }
 
-.course-card-container > h4 {
-    margin-top: 2rem;
-    padding: 24px 0;
+.course-top-header>h4 {
     font-size: 20px;
     font-weight: 600;
     line-height: 26px;
+}
+
+.course-action-btn {
+    font-size: 18px;
+    padding: 0 32px;
+    font-weight: 600;
+    line-height: 56px;
+    letter-spacing: -0.18px;
+    background-color: var(--primary-new);
+    color: var(--background-white);
+}
+
+.course-action-btn img {
+    filter: brightness(0) invert(1);
 }
 
 .course-list-card-wrapper {

@@ -8,7 +8,7 @@ import './header.css';
 const navItems = [
   { text: 'Dashboard', icon: <Image src='/Dashboard.svg' alt="Dashboard svg icon" width={100} height={24} className='image-state' />, path: '/dashboard' },
   { text: 'Billing', icon: <Image src='/Billing.svg' alt="Billing svg icon" width={100} height={24} className='image-state' />, path: '/billing' },
-  { text: 'Courses', icon: <Image src='/Calendar.svg' alt="Calendar svg icon" width={100} height={24} className='image-state' />, path: '/course' },
+  { text: 'Courses', icon: <Image src='/Course.svg' alt="Course svg icon" width={100} height={24} className='image-state' />, path: '/course' },
   { text: 'Management', icon: <Image src='/Message.svg' alt="Management svg icon" width={100} height={24} className='image-state' />, path: '/management' },
   { text: 'Profile', icon: <Image src='/Profile.svg' alt="Profile svg icon" width={100} height={24} className='image-state' />, path: '/profile' }
 ];
@@ -20,10 +20,6 @@ function Header() {
   useEffect(() => {
     setActivePath(location.pathname);
   }, []);
-
-const routepath = () => {
-  setActivePath(location.pathname);
-}
 
   const handleItemClick = (path) => {
     setActivePath(path);
