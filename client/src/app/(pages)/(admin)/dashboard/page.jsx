@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import Auth from '../(auth)/middleware/auth';
+import Auth from '../../(auth)/middleware/auth';
 import Header from '@/components/admin/header/header';
 import Loader from '@/components/loader/Loader';
 import Graph from '@/components/admin/graph/Graph';

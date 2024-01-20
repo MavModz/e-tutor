@@ -1,6 +1,7 @@
 'use client'
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { allcoursesfunction } from '@/app/lib/Services/api';
 import Header from '@/components/admin/header/header';
 import Card from '@/components/cards/Card';
@@ -25,7 +26,15 @@ function Course() {
         <div className='bg-[#f4f7fe] w-full min-h-full'>
             <Header />
             <div className="course-card-container">
-                <h4>My Courses</h4>
+                <div className="course-top-header flex justify-between mt-8 items-center">
+                    <h4>My Courses</h4>
+                    <Link href= "/add-course">
+                        <button className='course-action-btn flex items-center gap-2'>
+                            <img src="/Create-course.svg" alt="add course svg icon" width={20} height={20} />
+                            Create Course
+                        </button>
+                    </Link>
+                </div>
                 <div className="course-list-card-wrapper">
                     <div className="course-list-cards">
                         {courses.map(course => (
