@@ -7,7 +7,6 @@ import { Phone, Fingerprint } from 'lucide-react';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./login.css";
-import Loader from "@/components/loader/Loader";
 
 const Login = () => {
   const [email, setEmail] = useState("");
