@@ -1,9 +1,19 @@
 'use client'
 
-import React from 'react';
+import React, {useState} from 'react';
 import './add-course.css';
 
 function AddCourse() {
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('Select Category');
+
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  const selectCategory = (category) => {
+    setSelectedCategory(category);
+    setDropdownOpen(false);
+  };
+
   return (
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
@@ -31,23 +41,20 @@ function AddCourse() {
                 name='courseSubtitle'
                 placeholder='Your Course Subtitle'
                 autoComplete='off'
-              /> 
+              />
             </div>
             <div className='course-text-field flex gap-6'>
-              <div className="sub-text-field-left">
-                <label htmlFor="courseCategory">Course Category</label>
-                <select name="courseCategory" id="courseCategory">
-                  <option>test</option>
-                  <option>test2</option>
-                </select>
-              </div>
-
-              <div className="sub-text-field-right">
-                <label htmlFor="courseSubcategory">Course Sub Category</label>
-                <select name="courseSubcategory" id="courseSubcategory">
-                  <option>sub cat1</option>
-                  <option>sub cat2</option>
-                </select>
+              <div className="custom-dropdown">
+                <button className="dropdown-button" onClick={toggleDropdown}>
+                  {selectedCategory}
+                </button>
+                <div className={`dropdown-content ${dropdownOpen ? 'show' : ''}`}>
+                  <a onClick={() => selectCategory('Video')}>Video</a>
+                  <a onClick={() => selectCategory('Attach File')}>Attach File</a>
+                  <a onClick={() => selectCategory('Captions')}>Captions</a>
+                  <a onClick={() => selectCategory('Description')}>Description</a>
+                  <a onClick={() => selectCategory('Lecture Notes')}>Lecture Notes</a>
+                </div>
               </div>
             </div>
           </form>
@@ -62,3 +69,34 @@ function AddCourse() {
 
 export default AddCourse
 // 8591185985 ashwani kumar (happy)
+
+
+{/* <div className="sub-text-field-left">
+                <label htmlFor="courseCategory">Course Category</label>
+                <div className="dropdown" name="courseCategory">
+                  <div className="select">
+                    <span>Select...</span>
+                    <div className="caret"></div>
+                  </div>
+                  <ul className="courseCategory-list">
+                    <li>test1</li>
+                    <li className='active'>test2</li>
+                    <li>test3</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="sub-text-field-right">
+                <label htmlFor="courseSubcategory">Course Sub Category</label>
+                <div className="dropdown" name="courseCategory">
+                  <div className="select">
+                    <span>Select...</span>
+                    <div className="caret"></div>
+                  </div>
+                  <ul className="courseCategory-list">
+                    <li>test1</li>
+                    <li className='active'>test2</li>
+                    <li>test3</li>
+                  </ul>
+                </div>
+              </div> */}
