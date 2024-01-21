@@ -1,0 +1,69 @@
+.addcourse-container {
+    margin: 0 2rem;
+    padding: 0.5rem 1rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    background-color: var(--background-white);
+}
+
+.addcourse-top {
+    padding: 24px 40px;
+}
+
+.addcourse-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 0 40px;
+}
+
+.addcourse-bottom {
+    padding: 0 40px;
+}
+
+.course-text-field input,
+select {
+    color: var(--secondary-text);
+    font-size: 17px;
+    font-weight: 500;
+    max-width: 100%;
+    width: 100%;
+    border: 1px solid var(--secondary-text);
+    height: 50px;
+    letter-spacing: .03rem;
+    background-color: transparent;
+    outline: none;
+    transition: .25s;
+    border-radius: 4px;
+    text-indent: 20px;
+    margin-top: 8px;
+
+}
+
+.sub-text-field-left,
+.sub-text-field-right {
+    width: 100%;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('../../../../../public/chevron-down.svg');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px 20px;
+    cursor: pointer;
+}
+
+.course-text-field input:focus, select:focus {
+    border: 1px solid var(--primary-new);
+}
+
+select option {
+    padding: 4px;
+    background: white;
+    border: none;   
+}
