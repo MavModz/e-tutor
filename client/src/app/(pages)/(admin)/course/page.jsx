@@ -6,6 +6,7 @@ import { allcoursesfunction } from '@/app/lib/Services/api';
 import Header from '@/components/admin/header/header';
 import Card from '@/components/cards/Card';
 import './courses.css';
+import Searchbar from '@/components/Searchbar/Searchbar';
 
 function Course() {
     const [courses, setCourses] = useState([]);
@@ -26,6 +27,7 @@ function Course() {
         <div className='bg-[#f4f7fe] w-full min-h-full'>
             <Header />
             <div className="course-card-container">
+                <Searchbar />
                 <div className="course-top-header flex justify-between mt-8 items-center">
                     <h4>My Courses</h4>
                     <Link href= "/add-course">

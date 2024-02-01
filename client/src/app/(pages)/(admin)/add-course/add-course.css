@@ -1,94 +1,110 @@
 .addcourse-container {
-    margin: 0 2rem;
-    padding: 0.5rem 1rem;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    background-color: var(--background-white);
+  margin: 0 2rem;
+  padding: 0.5rem 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  background-color: var(--background-white);
 }
 
 .addcourse-top {
-    padding: 24px 40px;
+  padding: 24px 40px;
 }
 
 .addcourse-form {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 40px;
 }
 
 .addcourse-bottom {
-    padding: 0 40px;
+  padding: 0 40px;
 }
 
-.course-text-field input, .custom-dropdown {
-    color: var(--secondary-text);
-    font-size: 17px;
-    font-weight: 500;
-    max-width: 100%;
-    width: 100%;
-    border: 1px solid var(--secondary-text);
-    height: 50px;
-    letter-spacing: .03rem;
-    background-color: transparent;
-    outline: none;
-    transition: .25s;
-    border-radius: 4px;
-    text-indent: 20px;
-    margin-top: 8px;
+.course-text-field label {
+  color: var(--text-dark);
+  background: var(--background-white);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .03rem;
+}
 
+.course-text-field input {
+  color: var(--secondary-text);
+  font-size: 17px;
+  font-weight: 500;
+  max-width: 100%;
+  width: 100%;
+  border: 1px solid var(--secondary-text);
+  height: 50px;
+  letter-spacing: .03rem;
+  background-color: transparent;
+  outline: none;
+  transition: .25s;
+  border-radius: 4px;
+  text-indent: 20px;
+  margin-top: 8px;
+
+}
+
+.course-text-field svg {
+  position: absolute;
+  right: -2px;
+  bottom: -4px;
+  width: 30px;
+  height: 30px;
+  background: var(--background-white);
+  transform: translate(-50%, -50%);
+  transform-origin: center;
 }
 
 .sub-text-field-left,
 .sub-text-field-right {
-    width: 100%;
+  width: 100%;
 }
 
 
 .course-text-field input:focus {
-    border: 1px solid var(--primary-new);
+  border: 1px solid var(--primary-new);
 }
 
-.custom-dropdown {
-    position: relative;
-    /* width: 100%;
-    cursor: pointer;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px; */
-  }
-  
-  .custom-dropdown .dropdown-button {
-    width: 100%;
-    text-align: left;
-  }
-  
-  .custom-dropdown .dropdown-content {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    background-color: #f9f9f9;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    border-radius: 4px;
-    display: none;
-  }
-  
-  .custom-dropdown .dropdown-content.show {
-    display: block;
-  }
-  
-  .custom-dropdown .dropdown-content a {
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    color: black;
-  }
-  
-  .custom-dropdown .dropdown-content a:hover {
-    background-color: #ddd;
-  }
-  
+.course-category-search,
+.course-sub-category-search {
+  position: relative;
+  width: 100%;
+}
+
+.course-category-search svg,
+.course-sub-category-search svg {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  transform: translateY(0%);
+}
+
+.cancel-form-btn {
+  color: var(--secondary-text);
+  border: 1px solid var(--secondary-text);
+  padding: 0px 32px;
+  font-family: var(--secondary-font);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 56px;
+  letter-spacing: -0.01em;
+}
+
+.next-form-btn {
+  color: var(--background-white);
+  background-color: var(--primary-new);
+  border: 1px solid var(--primary-new);
+  padding: 0px 32px;
+  font-family: var(--secondary-font);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 56px;
+  letter-spacing: -0.01em;
+}
