@@ -4,29 +4,41 @@ import React, { useState, useEffect } from 'react';
 import './add-course.css';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
-import { allcategoriesfunction } from '@/app/lib/Services/api';
+import { allcategoriesfunction, allsubcategoriesfunction } from '@/app/lib/Services/api';
 
 
 function AddCourse() {
 
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState('');
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [showSubCategoryDropdown, setShowSubCategoryDropdown] = useState(false);
   const [categoryResults, setCategoryResults] = useState([]);
   const [subCategoryResults, setSubCategoryResults] = useState([]);
+  const [courseLevel, setCourseLevel] = useState([]);
 
 
   useEffect(() => {
     fetchCategoryData('');
   }, []);
 
-  const handleSearchFocus = () => {
-    setShowDropdown(true);
+  const handleCategorySearchFocus = () => {
+    setShowCategoryDropdown(true);
   };
 
-  const handleSearchBlur = () => {
+  const handleSubCategorySearchFocus = () => {
+    setShowSubCategoryDropdown(true);
+  };
+
+  const handleCategorySearchBlur = () => {
     setTimeout(() => {
-      setShowDropdown(true);
+      setShowCategoryDropdown(false);
+    }, 100);
+  };
+
+  const handleSubCategorySearchBlur = () => {
+    setTimeout(() => {
+      setShowSubCategoryDropdown(false);
     }, 100);
   };
 
@@ -43,7 +55,7 @@ function AddCourse() {
           );
         }
         setCategoryResults(filteredResult);
-        console.log("Filtered results length:", filteredResult.length);
+        console.log("Filtered results length:", filteredResult.length, filteredResult);
       } else {
         console.error('Expected an array, but received:', response);
         setCategoryResults([]);
@@ -54,11 +66,47 @@ function AddCourse() {
     }
   };
 
+  const fetchSubCategoryData = async (categoryName) => {
+    try {
+      const response = await allsubcategoriesfunction(categoryName);
+      console.log(response);
+      if (Array.isArray(response)) {
+        let subCategoryfilterResult;
+        if (subCategory.trim() === '') {
+          subCategoryfilterResult = response;
+        } else {
+          subCategoryfilterResult = response.filter(category =>
+            category.subCategoryName.toLowerCase().includes(value.toLowerCase())
+          );
+        }
+        setSubCategoryResults(subCategoryfilterResult);
+        console.log("Filtered results length:", subCategoryfilterResult.length, subCategoryfilterResult);
+      }
+      else {
+        console.error('Expected an array, but received:', response);
+        setSubCategoryResults([]);
+      }
+    }
+    catch (error) {
+      console.error("error while fetching sub category", error);
+      setSubCategoryResults([]);
+    }
+  };
 
-  const handleResultClick = (result) => {
+
+
+  const handleCategoryResultClick = (result) => {
     console.log('Selected:', result.categoryName)
     setCategory(result.categoryName);
-    setShowDropdown(false);
+    setShowCategoryDropdown(false);
+    fetchSubCategoryData(result.categoryName);
+  }
+
+  const handleSubCategoryResultClick = (result) => {
+    console.log('Selected Subcategory:', result.subCategoryName);
+    setSubCategory(result.subCategoryName);
+    setShowSubCategoryDropdown(false);
+
   }
 
 
@@ -101,14 +149,15 @@ function AddCourse() {
                   id='categorySearch'
                   name='categorySearch'
                   placeholder='Type to Search Category'
-                  onBlur={handleSearchBlur}
-                  onFocus={handleSearchFocus}
+                  onBlur={handleCategorySearchBlur}
+                  onFocus={handleCategorySearchFocus}
                 />
-                {showDropdown && (
+                {showCategoryDropdown && (
                   <Searchlist
                     result={categoryResults}
                     inputValue={category}
-                    onClick={handleResultClick}
+                    onClick={handleCategoryResultClick}
+                    displayProperty="categoryName"
                   />
                 )}
               </div>
@@ -116,12 +165,74 @@ function AddCourse() {
                 <Searchbar
                   inputValue={subCategory}
                   onInputChange={setSubCategory}
+                  fetchData={fetchSubCategoryData}
                   label='Course Sub-Category'
                   id='subCategorySearch'
                   name='subCategorySearch'
                   placeholder='Type to Search sub-category'
+                  onBlur={handleSubCategorySearchBlur}
+                  onFocus={handleSubCategorySearchFocus}
                 />
-                <Searchlist result={subCategoryResults} />
+                {showSubCategoryDropdown && (
+                  <Searchlist
+                    result={subCategoryResults}
+                    inputValue={subCategory}
+                    onClick={handleSubCategoryResultClick}
+                    displayProperty="subCategoryName" 
+                  />
+                )}
+              </div>
+            </div>
+            <div className="course-text-field">
+              <label htmlFor="courseTopic">Course Topic</label>
+              <input
+                type='text'
+                id='courseTopic'
+                name='courseTopic'
+                placeholder='What is primary taught in the course?'
+                autoComplete='off'
+              />
+            </div>
+            <div className="course-overview-wrapper w-full flex gap-6 justify-between">
+              <div className="course-text-field">
+                <label htmlFor="courseLanguage">Course Language</label>
+                <input
+                  type="text"
+                  id='courseLanguage'
+                  name='courseLanguage'
+                  placeholder='Prefered Language'
+                  autoComplete='off'
+                />
+              </div>
+              <div className="course-text-field">
+                <label htmlFor="optionalLanguage">Optional Language</label>
+                <input type="text"
+                  name="optionalLanguage"
+                  id="optionalLanguage"
+                  placeholder='optional Language'
+                  autoComplete='off'
+                />
+              </div>
+              <div className="course-text-field">
+                <Searchbar
+                  inputValue={courseLevel}
+                  onInputChange={setCourseLevel}
+                  label='Course Level'
+                  id='courseLevel'
+                  name='courseLevel'
+                  placeholder='Course Level'
+                />
+                <Searchlist result={courseLevel} />
+              </div>
+              <div className="course-text-field">
+                <label htmlFor="courseDuration">Course Duration</label>
+                <input
+                  type="text"
+                  id='courseDuration'
+                  name='courseDuration'
+                  placeholder='Course Duration'
+                  autoComplete='off'
+                />
               </div>
             </div>
           </form>

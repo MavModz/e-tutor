@@ -33,19 +33,46 @@ exports.superadminregister = async (req, res) => {
 };
 
 
-exports.addCategory = async(req, res) => {
+exports.addCategory = async (req, res) => {
     const { categoryName } = req.body;
 
     try {
-        const newCategory = new category ({
-            categoryName
+
+        const existingCategory = await category.findOne({ categoryName: categoryName.trim() });
+        if (existingCategory) {
+            return res.status(409).json({ message: 'Category already exists' });
+        }
+
+        const newCategory = new category({
+            categoryName: categoryName.trim()
         });
 
         const storeData = await newCategory.save();
+        res.status(201).json(storeData);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error', details: error });
+    }
+};
+
+
+exports.addSubCategory = async (req, res) => {
+    const { categoryName, subCategoryName } = req.body;
+
+    try {
+        const Category = await category.findOne({categoryName});
+        if(!Category) {
+            res.status(404).json({message: "Category not found"});
+        }
+
+        Category.subCategories.push({subCategoryName});
+        const storeData = await Category.save();
         res.status(200).json(storeData);
     }
-
     catch (error) {
-        res.status(500).json({error:'Internal server error', error})
+        console.log(error)
+        res.status(500).json({ error: 'Internal server error', error });
     }
 }
+  

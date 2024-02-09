@@ -84,3 +84,15 @@ export const allcategoriesfunction = async() => {
         throw error;
     }
 }
+
+// SUB-CATEGORIES FOR COURSES
+
+export const allsubcategoriesfunction = async(categoryName) => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/user/all-subcategories/${categoryName}`)
+        return response.data;
+    }
+    catch(error) {
+
+    }
+}

@@ -23,6 +23,10 @@
   padding: 0 40px;
 }
 
+.course-text-field {
+  flex: 1;
+}
+
 .course-text-field label {
   color: var(--text-dark);
   background: var(--background-white);
@@ -46,7 +50,6 @@
   border-radius: 4px;
   text-indent: 20px;
   margin-top: 8px;
-
 }
 
 .course-text-field svg {
@@ -89,6 +92,7 @@
 .cancel-form-btn {
   color: var(--secondary-text);
   border: 1px solid var(--secondary-text);
+  border-radius: 4px;
   padding: 0px 32px;
   font-family: var(--secondary-font);
   font-size: 18px;
@@ -101,6 +105,7 @@
   color: var(--background-white);
   background-color: var(--primary-new);
   border: 1px solid var(--primary-new);
+  border-radius: 4px;
   padding: 0px 32px;
   font-family: var(--secondary-font);
   font-size: 18px;

@@ -1,13 +1,14 @@
 import React from 'react';
 import './Searchresult.css';
 
-function Searchresult({ results, onClick }) {
+// Pass an additional prop 'displayProperty' to specify what to display
+function Searchresult({ results, onClick, displayProperty }) {
 
   return (
     <div className="search-result-item" onClick={() => onClick(results)} >
-      {results.categoryName}
+      {results[displayProperty]}
     </div>
   )
 }
 
-export default Searchresult
+export default Searchresult;

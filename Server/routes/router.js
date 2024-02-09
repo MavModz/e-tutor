@@ -8,6 +8,7 @@ const superAdminControllers = require("../controllers/superAdminController");
 
 //Routes
 router.post("/superadmin/add-category", superAdminControllers.addCategory);
+router.post("/superadmin/add-subcategory", superAdminControllers.addSubCategory);
 
 router.post("/admin/register", adminControllers.adminregister);
 router.post("/admin/login", adminControllers.adminlogin);
@@ -20,4 +21,5 @@ router.post("/user/enroll", userAuth, userControllers.enrollCourse);
 router.get("/user/total-courses", userAuth, userControllers.totalenrolledcourses);
 router.get("/user/all-courses", userControllers.allcourses);
 router.get("/user/all-categories", userControllers.allcategories);
+router.get('/user/all-subcategories/:categoryName', userControllers.allsubcategories);
 module.exports = router;
