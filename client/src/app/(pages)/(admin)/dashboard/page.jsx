@@ -31,7 +31,7 @@ function Dashboard() {
   return (
     <div className='bg-[#f4f7fe] w-full min-h-full'>
       <Header />
-      <div className="dashboard-conatiner h-screen">
+      <div className="dashboard-conatiner">
         <div className="dashboard-wrapper">
           <div className="banner-container h-80 rounded-2xl flex justify-around items-center">
             <div className="top-banner">
@@ -44,7 +44,7 @@ function Dashboard() {
               <img src='/study.png' alt="student studying on the table" className='h-72' />
             </div>
           </div>
-          <div className="stats-wrapper flex gap-8 justify-around h-96 mt-5">
+          <div className="stats-wrapper flex gap-8 justify-around mt-5">
             <div className="course-progress w-5/12 px-8">
               <div className="course-heading my-4">
                 <h1 className='progress-heading text-2xl'>progress data</h1>

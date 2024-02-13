@@ -1,24 +1,180 @@
 'use client'
 
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import './add-course.css';
+import Searchbar from '@/components/Searchbar/Searchbar';
+import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
+import { allcategoriesfunction, allsubcategoriesfunction } from '@/app/lib/Services/api';
 
-function AddCourse() {
+function BasicDetails({ onNext }) {
+  const [courseName, setCourseName] = useState('');
+  const [courseSubtitle, setCourseSubtitle] = useState('');
+  const [category, setCategory] = useState('');
+  const [subCategory, setSubCategory] = useState('');
+  const [courseTopic, setCourseTopic] = useState('');
+  const [courseLanguage, setCourseLanguage] = useState('');
+  const [optionalLanguage, setOptionalLanguage] = useState('');
+  const [courseDuration, setCourseDuration] = useState('');
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [showSubCategoryDropdown, setShowSubCategoryDropdown] = useState(false);
+  const [categoryResults, setCategoryResults] = useState([]);
+  const [subCategoryResults, setSubCategoryResults] = useState([]);
+  const [courseLevel, setCourseLevel] = useState('');
+  const [showCourseLevelDropdown, setShowCourseLevelDropdown] = useState(false);
+  const defaultCourseLevels = [
+    { levelName: "Beginner" },
+    { levelName: "Intermediate" },
+    { levelName: "Expert" }
+  ];
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('Select Category');
+  const [courseLevelResults, setCourseLevelResults] = useState(defaultCourseLevels);
 
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-  const selectCategory = (category) => {
-    setSelectedCategory(category);
-    setDropdownOpen(false);
+  useEffect(() => {
+    try {
+      fetchCategoryData('');
+    }
+    catch (error) {
+      console.log('error', error)
+    }
+  }, []);
+
+  const handleCategorySearchFocus = () => {
+    setShowCategoryDropdown(true);
   };
+
+  const handleSubCategorySearchFocus = () => {
+    setShowSubCategoryDropdown(true);
+  };
+
+  const handleCourseLevelSearchFocus = () => {
+    setShowCourseLevelDropdown(true);
+  };
+
+  const handleCategorySearchBlur = () => {
+    setTimeout(() => {
+      setShowCategoryDropdown(true);
+    }, 100);
+  };
+
+  const handleSubCategorySearchBlur = () => {
+    setTimeout(() => {
+      setShowSubCategoryDropdown(true);
+    }, 100);
+  };
+
+  const handleCourseLevelSearchBlur = () => {
+    setTimeout(() => {
+      setShowCourseLevelDropdown(true);
+    }, 100);
+  };
+
+  const fetchCategoryData = async (value = '') => {
+    try {
+      const response = await allcategoriesfunction(value);
+      if (Array.isArray(response)) {
+        let filteredResult;
+        if (value.trim() === '') {
+          filteredResult = response;
+        } else {
+          filteredResult = response.filter(category =>
+            category.categoryName.toLowerCase().includes(value.toLowerCase())
+          );
+        }
+        setCategoryResults(filteredResult);
+        console.log("Filtered results length:", filteredResult.length, filteredResult);
+      } else {
+        console.error('Expected an array, but received:', response);
+        setCategoryResults([]);
+      }
+    } catch (error) {
+      console.error("Error while fetching data:", error);
+      setCategoryResults([]);
+    }
+  };
+
+  const fetchSubCategoryData = async (categoryName) => {
+    try {
+      const response = await allsubcategoriesfunction(categoryName);
+      console.log(response);
+      if (Array.isArray(response)) {
+        let subCategoryfilterResult;
+        if (subCategory.trim() === '') {
+          subCategoryfilterResult = response;
+        } else {
+          subCategoryfilterResult = response.filter(category =>
+            category.subCategoryName.toLowerCase().includes(value.toLowerCase())
+          );
+        }
+        setSubCategoryResults(subCategoryfilterResult);
+        console.log("Filtered results length:", subCategoryfilterResult.length, subCategoryfilterResult);
+      }
+      else {
+        console.error('Expected an array, but received:', response);
+        setSubCategoryResults([]);
+      }
+    }
+    catch (error) {
+      console.error("error while fetching sub category", error);
+      setSubCategoryResults([]);
+    }
+  };
+
+  const filterCourseLevels = (inputValue) => {
+    if (!inputValue) {
+      setCourseLevelResults(defaultCourseLevels);
+    } else {
+      const filtered = defaultCourseLevels.filter(level =>
+        level.levelName.toLowerCase().includes(inputValue.toLowerCase())
+      );
+      setCourseLevelResults(filtered);
+    }
+  };
+
+
+  const handleCategoryResultClick = (result) => {
+    console.log('Selected:', result.categoryName)
+    setCategory(result.categoryName);
+    setShowCategoryDropdown(false);
+    fetchSubCategoryData(result.categoryName);
+  }
+
+  const handleSubCategoryResultClick = (result) => {
+    console.log('Selected Subcategory:', result.subCategoryName);
+    setSubCategory(result.subCategoryName);
+    setShowSubCategoryDropdown(false);
+  }
+
+  const handleCourseLevelInputChange = (value) => {
+    setCourseLevel(value);
+    filterCourseLevels(value);
+  };
+
+  const handleCourseLevelResultClick = (result) => {
+    setCourseLevel(result.levelName);
+    setShowCourseLevelDropdown(false);
+  };
+
+  const handleBasicDetails = () => {
+    const basicDetailsData = {
+      courseName,
+      courseSubtitle,
+      category,
+      subCategory,
+      courseTopic,
+      courseLanguage,
+      optionalLanguage,
+      courseLevel,
+      courseDuration,
+    };
+   onNext(basicDetailsData);
+   console.log(basicDetailsData);
+  }
 
   return (
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
-        <div className="addcourse-top">
-          <h2>Basic Details</h2>
+        <div className="addcourse-top flex gap-6">
+          <h2 className='form-wizard-heading'><img src="/Stack.svg" alt="Stack png icom" />Basic Details</h2>
         </div>
         <div className="addcourse-middle">
           <form className='addcourse-form'>
@@ -28,6 +184,8 @@ function AddCourse() {
                 type="text"
                 id="courseName"
                 name="courseName"
+                value={courseName}
+                onChange={(e) => setCourseName(e.target.value)}
                 placeholder="Your Course Title"
                 autoComplete="off"
                 required
@@ -39,64 +197,176 @@ function AddCourse() {
                 type="text"
                 id='courseSubtitle'
                 name='courseSubtitle'
+                value={courseSubtitle}
+                onChange={(e) => setCourseSubtitle(e.target.value)}
                 placeholder='Your Course Subtitle'
                 autoComplete='off'
               />
             </div>
             <div className='course-text-field flex gap-6'>
-              <div className="custom-dropdown">
-                <button className="dropdown-button" onClick={toggleDropdown}>
-                  {selectedCategory}
-                </button>
-                <div className={`dropdown-content ${dropdownOpen ? 'show' : ''}`}>
-                  <a onClick={() => selectCategory('Video')}>Video</a>
-                  <a onClick={() => selectCategory('Attach File')}>Attach File</a>
-                  <a onClick={() => selectCategory('Captions')}>Captions</a>
-                  <a onClick={() => selectCategory('Description')}>Description</a>
-                  <a onClick={() => selectCategory('Lecture Notes')}>Lecture Notes</a>
-                </div>
+              <div className="course-category-search">
+                <Searchbar
+                  inputValue={category}
+                  onInputChange={setCategory}
+                  fetchData={fetchCategoryData}
+                  label='Course Category'
+                  id='categorySearch'
+                  name='categorySearch'
+                  placeholder='Type to Search Category'
+                  onBlur={handleCategorySearchBlur}
+                  onFocus={handleCategorySearchFocus}
+                />
+                {showCategoryDropdown && (
+                  <Searchlist
+                    result={categoryResults}
+                    inputValue={category}
+                    onClick={handleCategoryResultClick}
+                    displayProperty="categoryName"
+                  />
+                )}
+              </div>
+              <div className="course-sub-category-search">
+                <Searchbar
+                  inputValue={subCategory}
+                  onInputChange={setSubCategory}
+                  fetchData={fetchSubCategoryData}
+                  label='Course Sub-Category'
+                  id='subCategorySearch'
+                  name='subCategorySearch'
+                  placeholder='Type to Search sub-category'
+                  onBlur={handleSubCategorySearchBlur}
+                  onFocus={handleSubCategorySearchFocus}
+                />
+                {showSubCategoryDropdown && (
+                  <Searchlist
+                    result={subCategoryResults}
+                    inputValue={subCategory}
+                    onClick={handleSubCategoryResultClick}
+                    displayProperty="subCategoryName"
+                  />
+                )}
+              </div>
+            </div>
+            <div className="course-text-field">
+              <label htmlFor="courseTopic">Course Topic</label>
+              <input
+                type='text'
+                id='courseTopic'
+                name='courseTopic'
+                value={courseTopic}
+                onChange={(e) => setCourseTopic(e.target.value)}
+                placeholder='What is primary taught in the course?'
+                autoComplete='off'
+              />
+            </div>
+            <div className="course-overview-wrapper w-full flex gap-6 justify-between">
+              <div className="course-text-field">
+                <label htmlFor="courseLanguage">Course Language</label>
+                <input
+                  type="text"
+                  id='courseLanguage'
+                  name='courseLanguage'
+                  value={courseLanguage}
+                  onChange={(e) => setCourseLanguage(e.target.value)}
+                  placeholder='Prefered Language'
+                  autoComplete='off'
+                />
+              </div>
+              <div className="course-text-field">
+                <label htmlFor="optionalLanguage">Optional Language</label>
+                <input type="text"
+                  name="optionalLanguage"
+                  id="optionalLanguage"
+                  value={optionalLanguage}
+                  onChange={(e) => setOptionalLanguage(e.target.value)}
+                  placeholder='optional Language'
+                  autoComplete='off'
+                />
+              </div>
+              <div className="course-text-field relative">
+                <Searchbar
+                  inputValue={courseLevel}
+                  onInputChange={handleCourseLevelInputChange}
+                  label='Course Level'
+                  id='courseLevelSearch'
+                  name='courseLevelSearch'
+                  placeholder='Beginner, Intermediate, Expert'
+                  onFocus={handleCourseLevelSearchFocus}
+                  onBlur={handleCourseLevelSearchBlur}
+                />
+                {showCourseLevelDropdown && (
+                  <Searchlist
+                    result={courseLevelResults}
+                    inputValue={courseLevel}
+                    onClick={handleCourseLevelResultClick}
+                    displayProperty="levelName"
+                  />
+                )}
+              </div>
+              <div className="course-text-field">
+                <label htmlFor="courseDuration">Course Duration</label>
+                <input
+                  type="text"
+                  id='courseDuration'
+                  name='courseDuration'
+                  value={courseDuration}
+                  onChange={(e) => setCourseDuration(e.target.value)}
+                  placeholder='Course Duration'
+                  autoComplete='off'
+                />
               </div>
             </div>
           </form>
         </div>
-        <div className="addcourse-bottom">
-          <button>cancel</button>
+        <div className="addcourse-bottom flex justify-between">
+          <button className='cancel-form-btn'>Cancel</button>
+          <button className='next-form-btn' onClick={handleBasicDetails}>Save & Next</button>
         </div>
       </div>
     </div>
   )
 }
 
+function AdvanceInformation({ onNext }) {
+return (
+  <div>Hello AdvaceInformation</div>
+)
+}
+
+function AddCourse() {
+
+  const [ currentStep, setCurrentStep ] = useState(1);
+  const [ formData, setFormData ] = useState({BasicDetails: {}, AdvanceInformation: {}});
+
+  const nextStep = (stepData) => {
+    let key;
+    switch(currentStep) {
+      case 1:
+        key = 'BasicDetails';
+        break;
+      case 2:
+        key = 'AdvanceInformation';
+        break;
+    }
+    setFormData(prevFormData => ({...prevFormData, [key]: {...prevFormData[key], ...stepData}}));
+    setCurrentStep(currentStep + 1);
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <BasicDetails onNext={nextStep} formData={formData.BasicDetails} />;
+      case 2:
+        return <AdvanceInformation onNext={nextStep} formData={formData.AdvanceInformation} />;    
+        default:
+          return <div>Unknow step</div>
+    }
+  }
+
+  return (
+    <div>{renderStep()}</div>
+  )
+}
+
 export default AddCourse
 // 8591185985 ashwani kumar (happy)
-
-
-{/* <div className="sub-text-field-left">
-                <label htmlFor="courseCategory">Course Category</label>
-                <div className="dropdown" name="courseCategory">
-                  <div className="select">
-                    <span>Select...</span>
-                    <div className="caret"></div>
-                  </div>
-                  <ul className="courseCategory-list">
-                    <li>test1</li>
-                    <li className='active'>test2</li>
-                    <li>test3</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="sub-text-field-right">
-                <label htmlFor="courseSubcategory">Course Sub Category</label>
-                <div className="dropdown" name="courseCategory">
-                  <div className="select">
-                    <span>Select...</span>
-                    <div className="caret"></div>
-                  </div>
-                  <ul className="courseCategory-list">
-                    <li>test1</li>
-                    <li className='active'>test2</li>
-                    <li>test3</li>
-                  </ul>
-                </div>
-              </div> */}

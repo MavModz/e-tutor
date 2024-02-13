@@ -1,6 +1,7 @@
 const checkouts = require("../models/checkoutSchema");
 const users = require("../models/userSchema");
 const Course = require('../models/courseSchema');
+const Categories = require('../models/categorySchema');
 
 exports.userregister = async (req, res) => {
   const { name, phone, email, password, birth, gender } = req.body;
@@ -139,5 +140,33 @@ exports.allcourses = async (req, res) => {
 
   catch {
     res.status(500).json({ error: "Internal server error", error })
+  }
+}
+
+exports.allcategories = async (req, res) => {
+  try {
+    const allcategories = await Categories.find({});
+    res.status(200).json(allcategories);
+  }
+
+  catch(error) {
+    res.status(500).json({error: 'Internal server error', error})
+  }
+}
+
+exports.allsubcategories = async (req, res) => {
+  try {
+    const categoryName = req.params.categoryName;
+    const category = await Categories.findOne({ categoryName });
+
+    if(!category) {
+      res.status(404).json({error: 'Category not found'});
+      return;
+    }
+    const allsubcategories = category.subCategories
+    res.status(200).json(allsubcategories);
+  }
+  catch(error) {
+    res.status(500).json({error: 'Internal server error', error})
   }
 }

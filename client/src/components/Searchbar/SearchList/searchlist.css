@@ -1,0 +1,16 @@
+.searchlist-wrapper {
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    background-color: var(--background-white);
+    margin-top: 0.5rem;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.06);
+    max-height: 250px;
+    overflow-y: scroll;
+}
