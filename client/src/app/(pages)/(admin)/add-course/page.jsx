@@ -6,20 +6,36 @@ import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
 import { allcategoriesfunction, allsubcategoriesfunction } from '@/app/lib/Services/api';
 
-
-function AddCourse() {
-
+function BasicDetails({ onNext }) {
+  const [courseName, setCourseName] = useState('');
+  const [courseSubtitle, setCourseSubtitle] = useState('');
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState('');
+  const [courseTopic, setCourseTopic] = useState('');
+  const [courseLanguage, setCourseLanguage] = useState('');
+  const [optionalLanguage, setOptionalLanguage] = useState('');
+  const [courseDuration, setCourseDuration] = useState('');
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [showSubCategoryDropdown, setShowSubCategoryDropdown] = useState(false);
   const [categoryResults, setCategoryResults] = useState([]);
   const [subCategoryResults, setSubCategoryResults] = useState([]);
-  const [courseLevel, setCourseLevel] = useState([]);
+  const [courseLevel, setCourseLevel] = useState('');
+  const [showCourseLevelDropdown, setShowCourseLevelDropdown] = useState(false);
+  const defaultCourseLevels = [
+    { levelName: "Beginner" },
+    { levelName: "Intermediate" },
+    { levelName: "Expert" }
+  ];
 
+  const [courseLevelResults, setCourseLevelResults] = useState(defaultCourseLevels);
 
   useEffect(() => {
-    fetchCategoryData('');
+    try {
+      fetchCategoryData('');
+    }
+    catch (error) {
+      console.log('error', error)
+    }
   }, []);
 
   const handleCategorySearchFocus = () => {
@@ -30,15 +46,25 @@ function AddCourse() {
     setShowSubCategoryDropdown(true);
   };
 
+  const handleCourseLevelSearchFocus = () => {
+    setShowCourseLevelDropdown(true);
+  };
+
   const handleCategorySearchBlur = () => {
     setTimeout(() => {
-      setShowCategoryDropdown(false);
+      setShowCategoryDropdown(true);
     }, 100);
   };
 
   const handleSubCategorySearchBlur = () => {
     setTimeout(() => {
-      setShowSubCategoryDropdown(false);
+      setShowSubCategoryDropdown(true);
+    }, 100);
+  };
+
+  const handleCourseLevelSearchBlur = () => {
+    setTimeout(() => {
+      setShowCourseLevelDropdown(true);
     }, 100);
   };
 
@@ -93,6 +119,16 @@ function AddCourse() {
     }
   };
 
+  const filterCourseLevels = (inputValue) => {
+    if (!inputValue) {
+      setCourseLevelResults(defaultCourseLevels);
+    } else {
+      const filtered = defaultCourseLevels.filter(level =>
+        level.levelName.toLowerCase().includes(inputValue.toLowerCase())
+      );
+      setCourseLevelResults(filtered);
+    }
+  };
 
 
   const handleCategoryResultClick = (result) => {
@@ -106,15 +142,39 @@ function AddCourse() {
     console.log('Selected Subcategory:', result.subCategoryName);
     setSubCategory(result.subCategoryName);
     setShowSubCategoryDropdown(false);
-
   }
 
+  const handleCourseLevelInputChange = (value) => {
+    setCourseLevel(value);
+    filterCourseLevels(value);
+  };
+
+  const handleCourseLevelResultClick = (result) => {
+    setCourseLevel(result.levelName);
+    setShowCourseLevelDropdown(false);
+  };
+
+  const handleBasicDetails = () => {
+    const basicDetailsData = {
+      courseName,
+      courseSubtitle,
+      category,
+      subCategory,
+      courseTopic,
+      courseLanguage,
+      optionalLanguage,
+      courseLevel,
+      courseDuration,
+    };
+   onNext(basicDetailsData);
+   console.log(basicDetailsData);
+  }
 
   return (
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
-        <div className="addcourse-top">
-          <h2>Basic Details</h2>
+        <div className="addcourse-top flex gap-6">
+          <h2 className='form-wizard-heading'><img src="/Stack.svg" alt="Stack png icom" />Basic Details</h2>
         </div>
         <div className="addcourse-middle">
           <form className='addcourse-form'>
@@ -124,6 +184,8 @@ function AddCourse() {
                 type="text"
                 id="courseName"
                 name="courseName"
+                value={courseName}
+                onChange={(e) => setCourseName(e.target.value)}
                 placeholder="Your Course Title"
                 autoComplete="off"
                 required
@@ -135,6 +197,8 @@ function AddCourse() {
                 type="text"
                 id='courseSubtitle'
                 name='courseSubtitle'
+                value={courseSubtitle}
+                onChange={(e) => setCourseSubtitle(e.target.value)}
                 placeholder='Your Course Subtitle'
                 autoComplete='off'
               />
@@ -178,7 +242,7 @@ function AddCourse() {
                     result={subCategoryResults}
                     inputValue={subCategory}
                     onClick={handleSubCategoryResultClick}
-                    displayProperty="subCategoryName" 
+                    displayProperty="subCategoryName"
                   />
                 )}
               </div>
@@ -189,6 +253,8 @@ function AddCourse() {
                 type='text'
                 id='courseTopic'
                 name='courseTopic'
+                value={courseTopic}
+                onChange={(e) => setCourseTopic(e.target.value)}
                 placeholder='What is primary taught in the course?'
                 autoComplete='off'
               />
@@ -200,6 +266,8 @@ function AddCourse() {
                   type="text"
                   id='courseLanguage'
                   name='courseLanguage'
+                  value={courseLanguage}
+                  onChange={(e) => setCourseLanguage(e.target.value)}
                   placeholder='Prefered Language'
                   autoComplete='off'
                 />
@@ -209,20 +277,31 @@ function AddCourse() {
                 <input type="text"
                   name="optionalLanguage"
                   id="optionalLanguage"
+                  value={optionalLanguage}
+                  onChange={(e) => setOptionalLanguage(e.target.value)}
                   placeholder='optional Language'
                   autoComplete='off'
                 />
               </div>
-              <div className="course-text-field">
+              <div className="course-text-field relative">
                 <Searchbar
                   inputValue={courseLevel}
-                  onInputChange={setCourseLevel}
+                  onInputChange={handleCourseLevelInputChange}
                   label='Course Level'
-                  id='courseLevel'
-                  name='courseLevel'
-                  placeholder='Course Level'
+                  id='courseLevelSearch'
+                  name='courseLevelSearch'
+                  placeholder='Beginner, Intermediate, Expert'
+                  onFocus={handleCourseLevelSearchFocus}
+                  onBlur={handleCourseLevelSearchBlur}
                 />
-                <Searchlist result={courseLevel} />
+                {showCourseLevelDropdown && (
+                  <Searchlist
+                    result={courseLevelResults}
+                    inputValue={courseLevel}
+                    onClick={handleCourseLevelResultClick}
+                    displayProperty="levelName"
+                  />
+                )}
               </div>
               <div className="course-text-field">
                 <label htmlFor="courseDuration">Course Duration</label>
@@ -230,6 +309,8 @@ function AddCourse() {
                   type="text"
                   id='courseDuration'
                   name='courseDuration'
+                  value={courseDuration}
+                  onChange={(e) => setCourseDuration(e.target.value)}
                   placeholder='Course Duration'
                   autoComplete='off'
                 />
@@ -239,10 +320,51 @@ function AddCourse() {
         </div>
         <div className="addcourse-bottom flex justify-between">
           <button className='cancel-form-btn'>Cancel</button>
-          <button className='next-form-btn'>Save & Next</button>
+          <button className='next-form-btn' onClick={handleBasicDetails}>Save & Next</button>
         </div>
       </div>
     </div>
+  )
+}
+
+function AdvanceInformation({ onNext }) {
+return (
+  <div>Hello AdvaceInformation</div>
+)
+}
+
+function AddCourse() {
+
+  const [ currentStep, setCurrentStep ] = useState(1);
+  const [ formData, setFormData ] = useState({BasicDetails: {}, AdvanceInformation: {}});
+
+  const nextStep = (stepData) => {
+    let key;
+    switch(currentStep) {
+      case 1:
+        key = 'BasicDetails';
+        break;
+      case 2:
+        key = 'AdvanceInformation';
+        break;
+    }
+    setFormData(prevFormData => ({...prevFormData, [key]: {...prevFormData[key], ...stepData}}));
+    setCurrentStep(currentStep + 1);
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <BasicDetails onNext={nextStep} formData={formData.BasicDetails} />;
+      case 2:
+        return <AdvanceInformation onNext={nextStep} formData={formData.AdvanceInformation} />;    
+        default:
+          return <div>Unknow step</div>
+    }
+  }
+
+  return (
+    <div>{renderStep()}</div>
   )
 }
 
