@@ -6,7 +6,9 @@ function Searchbar({ inputValue, onInputChange, fetchData, id, name, label, plac
 
   const handleInputChange = (value) => {
     onInputChange(value);
-    fetchData(value);
+    if (typeof fetchData === 'function') {
+      fetchData(value);
+    }
   };
 
   return (

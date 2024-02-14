@@ -30,12 +30,7 @@ function BasicDetails({ onNext }) {
   const [courseLevelResults, setCourseLevelResults] = useState(defaultCourseLevels);
 
   useEffect(() => {
-    try {
-      fetchCategoryData('');
-    }
-    catch (error) {
-      console.log('error', error)
-    }
+    fetchCategoryData('');
   }, []);
 
   const handleCategorySearchFocus = () => {
@@ -166,8 +161,8 @@ function BasicDetails({ onNext }) {
       courseLevel,
       courseDuration,
     };
-   onNext(basicDetailsData);
-   console.log(basicDetailsData);
+    onNext(basicDetailsData);
+    console.log(basicDetailsData);
   }
 
   return (
@@ -327,20 +322,69 @@ function BasicDetails({ onNext }) {
   )
 }
 
-function AdvanceInformation({ onNext }) {
-return (
-  <div>Hello AdvaceInformation</div>
-)
+function AdvanceInformation({ onNext, formData, setFormData }) {
+
+  const [courseTopics, setCourseTopics] = useState(['']);
+  
+
+  const handleTopicChange = (index, value) => {
+    console.log(`Topic at index ${index} changed to: ${value}`);
+    const updatedTopics = [...courseTopics];
+    updatedTopics[index] = value;
+    setFormData({ ...formData, courseTopics: updatedTopics });
+  };
+
+  const addNewTopic = () => {
+    setFormData({ ...formData, courseTopics: [...courseTopics, ''] });
+  };
+
+  const handleNext = () => {
+    onNext();
+  };
+
+  return (
+    <div className="bg-[#f4f7fe] w-full min-h-full">
+      <div className="addcourse-container">
+        <div className="addcourse-top flex gap-6">
+          <h2 className='form-wizard-heading'><img src="/Stack.svg" alt="Stack png icom" />Advance Information</h2>
+        </div>
+        <div className="addcourse-middle">
+          <form className='addcourse-form'>
+            {courseTopics.map((topic, index) => (
+              <div key={index} className="course-text-field">
+                <label htmlFor={`courseTopics-${index}`}>What you will teach in this course</label>
+                <input
+                  type="text"
+                  id={`courseTopics-${index}`}
+                  name={`courseTopics-${index}`}
+                  value={topic}
+                  onChange={(e) => handleTopicChange(index, e.target.value)}
+                  placeholder="What you will teach in this course"
+                  autoComplete="off"
+                  required
+                />
+              </div>
+            ))}
+            <button type="button" onClick={addNewTopic}>+ Add Topic</button>
+          </form>
+        </div>
+        <div className="addcourse-bottom flex justify-between">
+          <button className='cancel-form-btn'>Cancel</button>
+          <button className='next-form-btn' onClick={handleNext}>Save & Next</button>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 function AddCourse() {
 
-  const [ currentStep, setCurrentStep ] = useState(1);
-  const [ formData, setFormData ] = useState({BasicDetails: {}, AdvanceInformation: {}});
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({ BasicDetails: {}, AdvanceInformation: { courseTopics: [] } });
 
   const nextStep = (stepData) => {
     let key;
-    switch(currentStep) {
+    switch (currentStep) {
       case 1:
         key = 'BasicDetails';
         break;
@@ -348,7 +392,7 @@ function AddCourse() {
         key = 'AdvanceInformation';
         break;
     }
-    setFormData(prevFormData => ({...prevFormData, [key]: {...prevFormData[key], ...stepData}}));
+    setFormData(prevFormData => ({ ...prevFormData, [key]: { ...prevFormData[key], ...stepData } }));
     setCurrentStep(currentStep + 1);
   };
 
@@ -357,9 +401,9 @@ function AddCourse() {
       case 1:
         return <BasicDetails onNext={nextStep} formData={formData.BasicDetails} />;
       case 2:
-        return <AdvanceInformation onNext={nextStep} formData={formData.AdvanceInformation} />;    
-        default:
-          return <div>Unknow step</div>
+        return <AdvanceInformation onNext={nextStep} formData={formData.AdvanceInformation} setFormData={setFormData} />;
+      default:
+        return <div>Unknow step</div>
     }
   }
 

@@ -26,7 +26,10 @@ const courseSchema = new mongoose.Schema({
     courseThumbnail: {
         type: Object,
         // required: true
-    }
+    },
+    topics: [{
+        description: String,
+    }]
 });
 
 const courses = new mongoose.model("courses", courseSchema);
