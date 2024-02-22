@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './add-course.css';
+import { Trash2, Upload } from 'lucide-react';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
 import { allcategoriesfunction, allsubcategoriesfunction } from '@/app/lib/Services/api';
@@ -322,60 +323,233 @@ function BasicDetails({ onNext }) {
   )
 }
 
-function AdvanceInformation({ onNext, formData, setFormData }) {
+function AdvanceInformation({ onNext }) {
 
-  const [courseTopics, setCourseTopics] = useState(['']);
-  
+  const fileInputRef = useRef();
+  const [thumbnailSrc, setThumbnailSrc] = useState('/course-thumbnail.png');
+  const [formData, setFormData] = useState({ courseTopics: ['', ''], targetAudience: ['', ''], courseRequirements: ['', ''], });
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click(); // Trigger the file input when button is clicked
+  };
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setThumbnailSrc(e.target.result); // Update the image source with the selected file
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // CODE START TO HANDLE TOPICS FROM ADMIN
 
   const handleTopicChange = (index, value) => {
-    console.log(`Topic at index ${index} changed to: ${value}`);
-    const updatedTopics = [...courseTopics];
-    updatedTopics[index] = value;
-    setFormData({ ...formData, courseTopics: updatedTopics });
+    const newTopics = formData.courseTopics.map((topic, i) => {
+      if (i === index) return value;
+      return topic;
+    });
+    setFormData({ ...formData, courseTopics: newTopics });
   };
 
   const addNewTopic = () => {
-    setFormData({ ...formData, courseTopics: [...courseTopics, ''] });
+    if (formData.courseTopics.length < 8) {
+      setFormData({
+        ...formData,
+        courseTopics: [...formData.courseTopics, ''],
+      });
+    } else {
+      // Optionally, you can alert the user or disable the add button instead.
+      console.log("Maximum of 8 topics can be added.");
+    }
   };
 
+
+  const removeTopic = (index) => {
+    const newTopics = formData.courseTopics.filter((_, i) => i !== index);
+    setFormData({ ...formData, courseTopics: newTopics });
+  };
+
+  // CODE END TO HANDLE TOPICS FROM ADMIN
+
+  // CODE START TO HANDLE AUDIENCE
+
+  const handleAudienceChange = (index, value) => {
+    const newAudience = formData.targetAudience.map((audience, i) => {
+      if (i === index) return value;
+      return audience;
+    });
+    setFormData({ ...formData, targetAudience: newAudience });
+  };
+
+  const addNewAudience = () => {
+    if (formData.targetAudience.length < 8) {
+      setFormData({
+        ...formData,
+        targetAudience: [...formData.targetAudience, ''],
+      });
+    }
+  };
+
+  const removeAudience = (index) => {
+    const newAudience = formData.targetAudience.filter((_, i) => i !== index);
+    setFormData({ ...formData, targetAudience: newAudience });
+  };
+
+  // CODE END TO HANDLE AUDIENCE
+
+  // CODE START TO HANDLE COURSE REQUIREMENTS
+
+  const handleRequirementChange = (index, value) => {
+    const newRequirements = formData.courseRequirements.map((requirement, i) => {
+      if (i === index) return value;
+      return requirement;
+    });
+    setFormData({ ...formData, courseRequirements: newRequirements });
+  };
+
+  const addNewRequirement = () => {
+    if (formData.courseRequirements.length < 8) {
+      setFormData({
+        ...formData,
+        courseRequirements: [...formData.courseRequirements, ''],
+      });
+    }
+  };
+
+  const removeRequirement = (index) => {
+    const newRequirements = formData.courseRequirements.filter((_, i) => i !== index);
+    setFormData({ ...formData, courseRequirements: newRequirements });
+  };
+
+  // CODE END TO HANDLE COURSE REQUIREMENTS
+
   const handleNext = () => {
-    onNext();
+    console.log("AdvanceInformation Data:", formData);
+    onNext(formData);
   };
 
   return (
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
         <div className="addcourse-top flex gap-6">
-          <h2 className='form-wizard-heading'><img src="/Stack.svg" alt="Stack png icom" />Advance Information</h2>
+          <h2 className='form-wizard-heading'><img src="/Stack.svg" alt="Stack icon" />Advance Information</h2>
         </div>
         <div className="addcourse-middle">
           <form className='addcourse-form'>
-            {courseTopics.map((topic, index) => (
+            <hr />
+            <div className="course-thumbnail-wrapper flex gap-12 w-full">
+              <div className="thumbnail-img-wrapper flex flex-col flex-1 gap-4">
+                <p>Course Thumbnail</p>
+                <div className="thumbnail-img-container">
+                  <div className="image-container w-56 h-40">
+                    {/* Image will change based on the selected file */}
+                    <img src={thumbnailSrc} alt="course-thumbnail" />
+                  </div>
+                  <div className="thumbnail-image-info">
+                    <p>
+                      Upload your course Thumbnail here. <span>Important guidelines:</span> 1200x800 pixels or 12:8 Ratio.
+                      Supported format: <span>.jpg, .jpeg, or .png</span>
+                    </p>
+                    <div className="upload-button-container">
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                        onChange={handleFileSelect}
+                        accept=".jpg, .jpeg, .png" // It's good practice to specify accepted file types
+                      />
+                      <button onClick={handleButtonClick} className='next-form-btn'>
+                        Upload File
+                        <Upload />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="thumbnail-video-wrapper flex-1">
+                <p>Course Trailer</p>
+              </div>
+            </div>
+            <hr />
+            <div className="course-topics-wrapper flex justify-between">
+              <p>What you will teach in this course</p>
+              <button type="button" onClick={addNewTopic} disabled={formData.courseTopics.length >= 8}>+ Add new</button>
+            </div>
+            {formData.courseTopics.map((topic, index) => (
               <div key={index} className="course-text-field">
-                <label htmlFor={`courseTopics-${index}`}>What you will teach in this course</label>
+                <label htmlFor={`courseTopics-${index}`}>Topic {index + 1}</label>
                 <input
                   type="text"
                   id={`courseTopics-${index}`}
-                  name={`courseTopics-${index}`}
                   value={topic}
                   onChange={(e) => handleTopicChange(index, e.target.value)}
                   placeholder="What you will teach in this course"
                   autoComplete="off"
                   required
                 />
+                {formData.courseTopics.length > 2 && (
+                  <button className='remove-btn' type="button" onClick={() => removeTopic(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button>
+                )}
               </div>
             ))}
-            <button type="button" onClick={addNewTopic}>+ Add Topic</button>
+            <hr />
+            <div className="course-topics-wrapper flex justify-between">
+              <p>Target Audience</p>
+              <button type="button" onClick={addNewAudience} disabled={formData.targetAudience.length >= 8}>+ Add new</button>
+            </div>
+            {formData.targetAudience.map((audience, index) => (
+              <div key={index} className="course-text-field">
+                <label htmlFor={`targetAudience-${index}`}>Audience {index + 1}</label>
+                <input
+                  type="text"
+                  id={`targetAudience-${index}`}
+                  value={audience}
+                  onChange={(e) => handleAudienceChange(index, e.target.value)}
+                  placeholder="Describe your target audience"
+                  autoComplete="off"
+                  required
+                />
+                {formData.targetAudience.length > 2 && (
+                  <button className='remove-btn' type="button" onClick={() => removeAudience(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button> // Adjust styling as needed
+                )}
+              </div>
+            ))}
+            <hr />
+            <div className="course-topics-wrapper flex justify-between">
+              <p>Course Requirements</p>
+              <button type="button" onClick={addNewRequirement} disabled={formData.courseRequirements.length >= 8}>+ Add new</button>
+            </div>
+            {formData.courseRequirements.map((requirement, index) => (
+              <div key={index} className="course-text-field">
+                <label htmlFor={`courseRequirements-${index}`}>Requirement {index + 1}</label>
+                <input
+                  type="text"
+                  id={`courseRequirements-${index}`}
+                  value={requirement}
+                  onChange={(e) => handleRequirementChange(index, e.target.value)}
+                  placeholder="Enter a requirement"
+                  autoComplete="off"
+                  required
+                />
+                {formData.courseRequirements.length > 2 && (
+                  <button type="button" onClick={() => removeRequirement(index)}>Remove</button> // Adjust styling as needed
+                )}
+              </div>
+            ))}
           </form>
         </div>
         <div className="addcourse-bottom flex justify-between">
-          <button className='cancel-form-btn'>Cancel</button>
-          <button className='next-form-btn' onClick={handleNext}>Save & Next</button>
+          <button className='cancel-form-btn' type="button">Cancel</button>
+          <button className='next-form-btn' type="button" onClick={handleNext}>Save & Next</button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
 
 function AddCourse() {
 
