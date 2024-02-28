@@ -6,6 +6,8 @@ import { Trash2, Upload } from 'lucide-react';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
 import { allcategoriesfunction, allsubcategoriesfunction } from '@/app/lib/Services/api';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 function BasicDetails({ onNext }) {
   const [courseName, setCourseName] = useState('');
@@ -326,11 +328,26 @@ function BasicDetails({ onNext }) {
 function AdvanceInformation({ onNext }) {
 
   const fileInputRef = useRef();
+  const videoInputRef = useRef();
   const [thumbnailSrc, setThumbnailSrc] = useState('/course-thumbnail.png');
-  const [formData, setFormData] = useState({ courseTopics: ['', ''], targetAudience: ['', ''], courseRequirements: ['', ''], });
-
-  const handleButtonClick = () => {
+  const [vidThumbnailSrc, setVidThumbnailSrc] = useState('/course-video-thumbnail.png');
+  const [richEditor, setRichEditor] = useState('');
+  const [formData, setFormData] = useState({ courseTopics: ['', ''], targetAudience: ['', ''], courseRequirements: ['', ''],richEditor: '', thumbnailSrc: '', vidThumbnailSrc: '' });
+  const toolbarOptions = [
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }]
+  ];
+  
+  const module = {
+    toolbar: toolbarOptions,
+  }
+  
+  const handleImgButtonClick = () => {
     fileInputRef.current.click(); // Trigger the file input when button is clicked
+  };
+
+  const handleVideoButtonClick = () => {
+    videoInputRef.current.click(); // Trigger the file input when button is clicked
   };
 
   const handleFileSelect = (event) => {
@@ -341,6 +358,13 @@ function AdvanceInformation({ onNext }) {
         setThumbnailSrc(e.target.result); // Update the image source with the selected file
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleVideoFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setVidThumbnailSrc(URL.createObjectURL(file)); // Set the source for the video thumbnail
     }
   };
 
@@ -427,8 +451,14 @@ function AdvanceInformation({ onNext }) {
   // CODE END TO HANDLE COURSE REQUIREMENTS
 
   const handleNext = () => {
-    console.log("AdvanceInformation Data:", formData);
-    onNext(formData);
+    const completeFormData = {
+      ...formData,
+      richEditor,
+      thumbnailSrc,
+      vidThumbnailSrc
+    };
+    console.log("AdvanceInformation Data:", completeFormData);
+    onNext(completeFormData);
   };
 
   return (
@@ -445,7 +475,6 @@ function AdvanceInformation({ onNext }) {
                 <p>Course Thumbnail</p>
                 <div className="thumbnail-img-container">
                   <div className="image-container w-56 h-40">
-                    {/* Image will change based on the selected file */}
                     <img src={thumbnailSrc} alt="course-thumbnail" />
                   </div>
                   <div className="thumbnail-image-info">
@@ -459,9 +488,9 @@ function AdvanceInformation({ onNext }) {
                         ref={fileInputRef}
                         style={{ display: 'none' }}
                         onChange={handleFileSelect}
-                        accept=".jpg, .jpeg, .png" // It's good practice to specify accepted file types
+                        accept=".jpg, .jpeg, .png"
                       />
-                      <button onClick={handleButtonClick} className='next-form-btn'>
+                      <button onClick={handleImgButtonClick} className='next-form-btn'>
                         Upload File
                         <Upload />
                       </button>
@@ -469,9 +498,43 @@ function AdvanceInformation({ onNext }) {
                   </div>
                 </div>
               </div>
-              <div className="thumbnail-video-wrapper flex-1">
+              <div className="thumbnail-video-wrapper flex flex-col flex-1 gap-4">
                 <p>Course Trailer</p>
+                <div className="thumbnail-img-container">
+                  <div className="image-container w-56 h-40">
+                    <img src={vidThumbnailSrc} alt="course-thumbnail" />
+                  </div>
+                  <div className="thumbnail-image-info">
+                    <p>
+                      Students who watch <span> a well-made promo videos</span> can increase
+                      <span>course enrollment</span> by up to 10X.
+                    </p>
+                    <div className="upload-button-container">
+                      <input
+                        type="file"
+                        ref={videoInputRef}
+                        style={{ display: 'none' }}
+                        onChange={handleVideoFileSelect}
+                        accept="video/*"
+                      />
+                      <button onClick={handleVideoButtonClick} className='next-form-btn'>
+                        Upload Video
+                        <Upload />
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
+            <hr />
+            <div className="course-description-wrapper">
+              <p>Course Description</p>
+              <ReactQuill
+                theme='snow'
+                value={richEditor}
+                onChange={setRichEditor}
+                modules={module}
+              />
             </div>
             <hr />
             <div className="course-topics-wrapper flex justify-between">
@@ -535,7 +598,7 @@ function AdvanceInformation({ onNext }) {
                   required
                 />
                 {formData.courseRequirements.length > 2 && (
-                  <button type="button" onClick={() => removeRequirement(index)}>Remove</button> // Adjust styling as needed
+                  <button className='remove-btn' type="button" onClick={() => removeRequirement(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button>
                 )}
               </div>
             ))}
@@ -551,40 +614,40 @@ function AdvanceInformation({ onNext }) {
 };
 
 
-function AddCourse() {
+  function AddCourse() {
 
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({ BasicDetails: {}, AdvanceInformation: { courseTopics: [] } });
+    const [currentStep, setCurrentStep] = useState(1);
+    const [formData, setFormData] = useState({ BasicDetails: {}, AdvanceInformation: { courseTopics: [] } });
 
-  const nextStep = (stepData) => {
-    let key;
-    switch (currentStep) {
-      case 1:
-        key = 'BasicDetails';
-        break;
-      case 2:
-        key = 'AdvanceInformation';
-        break;
+    const nextStep = (stepData) => {
+      let key;
+      switch (currentStep) {
+        case 1:
+          key = 'BasicDetails';
+          break;
+        case 2:
+          key = 'AdvanceInformation';
+          break;
+      }
+      setFormData(prevFormData => ({ ...prevFormData, [key]: { ...prevFormData[key], ...stepData } }));
+      setCurrentStep(currentStep + 1);
+    };
+
+    const renderStep = () => {
+      switch (currentStep) {
+        case 1:
+          return <BasicDetails onNext={nextStep} formData={formData.BasicDetails} />;
+        case 2:
+          return <AdvanceInformation onNext={nextStep} formData={formData.AdvanceInformation} setFormData={setFormData} />;
+        default:
+          return <div>Unknow step</div>
+      }
     }
-    setFormData(prevFormData => ({ ...prevFormData, [key]: { ...prevFormData[key], ...stepData } }));
-    setCurrentStep(currentStep + 1);
-  };
 
-  const renderStep = () => {
-    switch (currentStep) {
-      case 1:
-        return <BasicDetails onNext={nextStep} formData={formData.BasicDetails} />;
-      case 2:
-        return <AdvanceInformation onNext={nextStep} formData={formData.AdvanceInformation} setFormData={setFormData} />;
-      default:
-        return <div>Unknow step</div>
-    }
+    return (
+      <div>{renderStep()}</div>
+    )
   }
-
-  return (
-    <div>{renderStep()}</div>
-  )
-}
 
 export default AddCourse
 // 8591185985 ashwani kumar (happy)
