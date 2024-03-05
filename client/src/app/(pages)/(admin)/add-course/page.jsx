@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import './add-course.css';
-import { Trash2, Upload } from 'lucide-react';
+import { Trash2, Upload, ChevronDown } from 'lucide-react';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
 import { allcategoriesfunction, allsubcategoriesfunction } from '@/app/lib/Services/api';
@@ -332,16 +332,16 @@ function AdvanceInformation({ onNext }) {
   const [thumbnailSrc, setThumbnailSrc] = useState('/course-thumbnail.png');
   const [vidThumbnailSrc, setVidThumbnailSrc] = useState('/course-video-thumbnail.png');
   const [richEditor, setRichEditor] = useState('');
-  const [formData, setFormData] = useState({ courseTopics: ['', ''], targetAudience: ['', ''], courseRequirements: ['', ''],richEditor: '', thumbnailSrc: '', vidThumbnailSrc: '' });
+  const [formData, setFormData] = useState({ courseTopics: ['', ''], targetAudience: ['', ''], courseRequirements: ['', ''], richEditor: '', thumbnailSrc: '', vidThumbnailSrc: '' });
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
     [{ 'list': 'ordered' }, { 'list': 'bullet' }]
   ];
-  
+
   const module = {
     toolbar: toolbarOptions,
   }
-  
+
   const handleImgButtonClick = () => {
     fileInputRef.current.click(); // Trigger the file input when button is clicked
   };
@@ -491,7 +491,7 @@ function AdvanceInformation({ onNext }) {
                         accept=".jpg, .jpeg, .png"
                       />
                       <button onClick={handleImgButtonClick} className='next-form-btn'>
-                        Upload File
+                        Upload Image
                         <Upload />
                       </button>
                     </div>
@@ -527,7 +527,7 @@ function AdvanceInformation({ onNext }) {
               </div>
             </div>
             <hr />
-            <div className="course-description-wrapper">
+            <div className="course-description-wrapper flex flex-col gap-4">
               <p>Course Description</p>
               <ReactQuill
                 theme='snow'
@@ -613,41 +613,146 @@ function AdvanceInformation({ onNext }) {
   );
 };
 
+function Curriculum({ onNext }) {
+  const [sections, setSections] = useState([{ name: 'Section 1: Section Name', lectures: [{ name: 'Lecture Name' }] }]);
 
-  function AddCourse() {
+  const addSection = () => {
+    const newSectionNumber = sections.length + 1;
+    const newSections = [
+      ...sections,
+      { name: `Section ${newSectionNumber}: Section Name`, lectures: [{ name: 'Lecture Name' }] }
+    ];
+    setSections(newSections);
+  };
 
-    const [currentStep, setCurrentStep] = useState(1);
-    const [formData, setFormData] = useState({ BasicDetails: {}, AdvanceInformation: { courseTopics: [] } });
-
-    const nextStep = (stepData) => {
-      let key;
-      switch (currentStep) {
-        case 1:
-          key = 'BasicDetails';
-          break;
-        case 2:
-          key = 'AdvanceInformation';
-          break;
-      }
-      setFormData(prevFormData => ({ ...prevFormData, [key]: { ...prevFormData[key], ...stepData } }));
-      setCurrentStep(currentStep + 1);
-    };
-
-    const renderStep = () => {
-      switch (currentStep) {
-        case 1:
-          return <BasicDetails onNext={nextStep} formData={formData.BasicDetails} />;
-        case 2:
-          return <AdvanceInformation onNext={nextStep} formData={formData.AdvanceInformation} setFormData={setFormData} />;
-        default:
-          return <div>Unknow step</div>
-      }
+  const deleteSection = (sectionIndex) => {
+    if (sections.length > 1) {
+      // Filter out the section to delete
+      const newSections = sections.filter((_, index) => index !== sectionIndex)
+        .map((section, index) => {
+          // Update the section name with the correct number after deletion
+          return {
+            ...section,
+            name: `Section ${index + 1}: ${section.name.split(': ')[1]}`
+          };
+        });
+      setSections(newSections);
+    } else {
+      // Optionally, alert the user that they can't delete the last section
+      alert("You cannot delete the last section.");
     }
+  };
 
-    return (
-      <div>{renderStep()}</div>
-    )
+  const addLecture = (sectionIndex) => {
+    const newSections = sections.map((section, index) => {
+      if (index === sectionIndex) {
+        return {
+          ...section,
+          lectures: [...section.lectures, { name: 'Lecture Name' }]
+        };
+      }
+      return section;
+    });
+    setSections(newSections);
+  };
+
+
+  const saveCurriculum = () => {
+    // Logic to save curriculum data
+  };
+
+  return (
+    <div className="bg-[#f4f7fe] w-full min-h-full">
+      <div className="addcourse-container">
+        <div className="addcourse-top flex gap-6">
+          <h2 className='form-wizard-heading'><img src="/Stack.svg" alt="Stack png icom" />Curriculam</h2>
+        </div>
+        <div className="addcourse-middle">
+          <form className='addcourse-form course-curriculam-container'>
+            {sections.map((section, sectionIndex) => (
+              <div key={sectionIndex} className="course-curriculam-wrapper">
+                <div className="course-curriculam-topbar flex justify-between">
+                  <div className='flex gap-2 items-center h-6'>
+                    <img src="/Menu.svg" alt="menu-image" />
+                    {/* <p className='static-curriculam'>Section {sectionIndex + 1}:</p> */}
+                    <p className='dynamic-curriculam'>{section.name || 'Section Name'}</p>
+                  </div>
+                  <div className='flex gap-4'>
+                      <button type="button" onClick={() => addLecture(sectionIndex)}>
+                        <img src="/Plus.svg" alt="plus-svg-icon" className='action-btn' />
+                      </button>
+                    <button type="button"><img src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
+                    <button type="button" onClick={() => deleteSection(sectionIndex)}><img src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
+                  </div>
+                </div>
+                <div className="curriculam-list-wrapper flex flex-col gap-4">
+                  {section.lectures.map((lecture, lectureIndex) => (
+                    <div key={lectureIndex} className="curriculam-list flex justify-between items-center">
+                      <div className='flex gap-2 items-center h-6'>
+                        <img src="/Menu.svg" alt="menu-image" />
+                        <p className='dynamic-curriculam'>{lecture.name || 'Lecture Name'}</p>
+                      </div>
+                      <div className='flex gap-4'>
+                        <button type="button" className='curriculam-content-btn'>Content</button>
+                        <button type="button"><img src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
+                        <button type="button"><img src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+            <button type='button' className='next-form-btn' onClick={addSection}>Add Section</button>
+          </form>
+        </div>
+        <div className="addcourse-bottom flex justify-between">
+          <button type="button" className='cancel-form-btn'>Cancel</button>
+          <button type="button" className='next-form-btn'>Save & Next</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function AddCourse() {
+
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({ BasicDetails: {}, AdvanceInformation: { courseTopics: [] } });
+
+  const nextStep = (stepData) => {
+    let key;
+    switch (currentStep) {
+      case 1:
+        key = 'BasicDetails';
+        break;
+      case 2:
+        key = 'AdvanceInformation';
+        break;
+      case 3:
+        key = 'Curriculam';
+        break;
+    }
+    setFormData(prevFormData => ({ ...prevFormData, [key]: { ...prevFormData[key], ...stepData } }));
+    setCurrentStep(currentStep + 1);
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <BasicDetails onNext={nextStep} formData={formData.BasicDetails} />;
+      case 2:
+        return <AdvanceInformation onNext={nextStep} formData={formData.AdvanceInformation} setFormData={setFormData} />;
+      case 3:
+        return <Curriculum onNext={nextStep} />
+      default:
+        return <div>Unknow step</div>
+    }
   }
+
+  return (
+    <div>{renderStep()}</div>
+  )
+}
 
 export default AddCourse
 // 8591185985 ashwani kumar (happy)
