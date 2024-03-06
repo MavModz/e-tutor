@@ -57,19 +57,19 @@
 }
 
 .thumbnail-image-info span {
-font-family: var(--secondary-font);
-font-size: 15px;
-font-weight: 500;
-line-height: 20px;
-letter-spacing: -0.01em;
-text-align: left;
+  font-family: var(--secondary-font);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+  text-align: left;
 }
 
 .course-description-wrapper {
   height: 250px;
 }
 
-.course-description-wrapper > p {
+.course-description-wrapper>p {
   font-family: var(--secondary-font);
   font-size: 18px;
   font-weight: 500;
@@ -181,7 +181,7 @@ text-align: left;
   font-weight: 600;
   line-height: 50px;
   letter-spacing: -0.01em;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
   gap: 8px;
   display: inline-flex;
@@ -230,18 +230,18 @@ text-align: left;
 }
 
 .static-curriculam {
-font-family: var(--secondary-font);
-color: var(--text-dark);
-font-size: 16px;
-font-weight: 500;
-line-height: 24px;
+  font-family: var(--secondary-font);
+  color: var(--text-dark);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
 }
 
 .dynamic-curriculam {
-font-family: var(--secondary-font);
-font-size: 16px;
-font-weight: 400;
-line-height: 24px;
+  font-family: var(--secondary-font);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
 }
 
 .action-btn {
@@ -268,12 +268,61 @@ line-height: 24px;
   font-family: var(--secondary-font);
   font-size: 18px;
   font-weight: 600;
-  line-height: 40px;
-  align-items: center; 
+  line-height: 45px;
+  align-items: center;
   justify-content: center;
   gap: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+}
+
+.modal {
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding-bottom: 24px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 650px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pop-modal-topbar {
+  border-bottom: 1px solid var(--secondary-white);
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pop-modal-topbar h4 {
+  font-family: var(--secondary-font);
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
 }

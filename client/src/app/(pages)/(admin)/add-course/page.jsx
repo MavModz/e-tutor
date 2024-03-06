@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import './add-course.css';
-import { Trash2, Upload, ChevronDown } from 'lucide-react';
+import { Trash2, Upload, X } from 'lucide-react';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
 import { allcategoriesfunction, allsubcategoriesfunction } from '@/app/lib/Services/api';
@@ -615,6 +615,38 @@ function AdvanceInformation({ onNext }) {
 
 function Curriculum({ onNext }) {
   const [sections, setSections] = useState([{ name: 'Section 1: Section Name', lectures: [{ name: 'Lecture Name' }] }]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingSectionIndex, setEditingSectionIndex] = useState(null);
+  const [editingLectureIndex, setEditingLectureIndex] = useState(null);
+  const [tempName, setTempName] = useState('');
+
+  const openEditModal = (sectionIndex, lectureIndex = null) => {
+    setEditingSectionIndex(sectionIndex);
+    setEditingLectureIndex(lectureIndex);
+    const name = lectureIndex !== null
+      ? sections[sectionIndex].lectures[lectureIndex].name
+      : sections[sectionIndex].name.split(': ')[1];
+    setTempName(name);
+    setIsModalOpen(true);
+  };
+
+  const saveName = () => {
+    const newSections = [...sections];
+    if (editingLectureIndex !== null) {
+      newSections[editingSectionIndex].lectures[editingLectureIndex].name = tempName;
+    } else {
+      newSections[editingSectionIndex].name = `Section ${editingSectionIndex + 1}: ${tempName}`;
+    }
+    setSections(newSections);
+    closeModal();
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingSectionIndex(null);
+    setEditingLectureIndex(null);
+    setTempName('');
+  };
 
   const addSection = () => {
     const newSectionNumber = sections.length + 1;
@@ -678,10 +710,10 @@ function Curriculum({ onNext }) {
                     <p className='dynamic-curriculam'>{section.name || 'Section Name'}</p>
                   </div>
                   <div className='flex gap-4'>
-                      <button type="button" onClick={() => addLecture(sectionIndex)}>
-                        <img src="/Plus.svg" alt="plus-svg-icon" className='action-btn' />
-                      </button>
-                    <button type="button"><img src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
+                    <button type="button" onClick={() => addLecture(sectionIndex)}>
+                      <img src="/Plus.svg" alt="plus-svg-icon" className='action-btn' />
+                    </button>
+                    <button type="button" onClick={() => openEditModal(sectionIndex)}><img src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
                     <button type="button" onClick={() => deleteSection(sectionIndex)}><img src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
                   </div>
                 </div>
@@ -694,7 +726,7 @@ function Curriculum({ onNext }) {
                       </div>
                       <div className='flex gap-4'>
                         <button type="button" className='curriculam-content-btn'>Content</button>
-                        <button type="button"><img src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
+                        <button type="button" onClick={() => openEditModal(sectionIndex, lectureIndex)}><img src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
                         <button type="button"><img src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
                       </div>
                     </div>
@@ -702,7 +734,25 @@ function Curriculum({ onNext }) {
                 </div>
               </div>
             ))}
-            <button type='button' className='next-form-btn' onClick={addSection}>Add Section</button>
+            {isModalOpen && (
+              <div className="modal">
+                <div className="modal-content">
+                  <div className='pop-modal-topbar px-5'>
+                    <h4>Edit {editingLectureIndex !== null ? 'Lecture' : 'Section'} Name</h4>
+                    <button className="close-button" onClick={closeModal}><X color="#565658" strokeWidth={1} size={20} /></button>
+                  </div>
+                  <div className="course-text-field px-6">
+                    <label htmlFor='pop-modal'>{editingLectureIndex !== null ? 'Lecture' : 'Section'}</label>
+                    <input type="text" id='pop-modal' value={tempName} onChange={(e) => setTempName(e.target.value)} />
+                  </div>
+                  <div className='flex justify-between px-6'>
+                    <button onClick={closeModal} className='cancel-form-btn'>Cancel</button>
+                    <button onClick={saveName} className='next-form-btn'>Save Changes</button>
+                  </div>
+                </div>
+              </div>
+            )}
+            <button type='button' className='curriculam-content-btn' onClick={addSection}>Add Section</button>
           </form>
         </div>
         <div className="addcourse-bottom flex justify-between">
