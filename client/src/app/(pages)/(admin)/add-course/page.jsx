@@ -614,19 +614,51 @@ function AdvanceInformation({ onNext }) {
 };
 
 function Curriculum({ onNext }) {
-  const [sections, setSections] = useState([{ name: 'Section 1: Section Name', lectures: [{ name: 'Lecture Name' }] }]);
+  const [sections, setSections] = useState([{ name: 'Section 1: Section Name', lectures: [{ name: 'Lecture Name', content: null }] }]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState(null); // "editName" or "content"
   const [editingSectionIndex, setEditingSectionIndex] = useState(null);
   const [editingLectureIndex, setEditingLectureIndex] = useState(null);
+  const [currentContentType, setCurrentContentType] = useState(null); // "Video", "Attach File", "Description"
   const [tempName, setTempName] = useState('');
+  const [dropdownVisibility, setDropdownVisibility] = useState({});
+
+  // Function to toggle dropdown
+  const toggleDropdown = (sectionIndex, lectureIndex) => {
+    const key = `section-${sectionIndex}-lecture-${lectureIndex}`;
+    setDropdownVisibility(prev => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+
+  // Function to handle content type selection and open the modal
+  const selectContentType = (sectionIndex, lectureIndex, contentType) => {
+    setCurrentContentType(contentType);
+    openContentModal(sectionIndex, lectureIndex, contentType);
+    // Hide dropdown after selection
+    setDropdownVisibility(prev => ({
+      ...prev,
+      [`section-${sectionIndex}-lecture-${lectureIndex}`]: false,
+    }));
+  };
 
   const openEditModal = (sectionIndex, lectureIndex = null) => {
+    setModalType('editName');
     setEditingSectionIndex(sectionIndex);
     setEditingLectureIndex(lectureIndex);
     const name = lectureIndex !== null
       ? sections[sectionIndex].lectures[lectureIndex].name
       : sections[sectionIndex].name.split(': ')[1];
     setTempName(name);
+    setIsModalOpen(true);
+  };
+
+  const openContentModal = (sectionIndex, lectureIndex, contentType) => {
+    setModalType('content');
+    setEditingSectionIndex(sectionIndex);
+    setEditingLectureIndex(lectureIndex);
+    setCurrentContentType(contentType);
     setIsModalOpen(true);
   };
 
@@ -646,6 +678,52 @@ function Curriculum({ onNext }) {
     setEditingSectionIndex(null);
     setEditingLectureIndex(null);
     setTempName('');
+    setCurrentContentType(null);
+  };
+
+  const renderModalContent = () => {
+    if (modalType === 'editName') {
+      return (
+        <div className="modal-content">
+          <div className='pop-modal-topbar px-5'>
+            <h4>Edit {editingLectureIndex !== null ? 'Lecture' : 'Section'} Name</h4>
+            <button className="close-button" onClick={closeModal}>&times;</button>
+          </div>
+          <div className="course-text-field px-6">
+            <label htmlFor='pop-modal'>{editingLectureIndex !== null ? 'Lecture' : 'Section'}</label>
+            <input type="text" id='pop-modal' value={tempName} onChange={(e) => setTempName(e.target.value)} />
+          </div>
+          <div className='flex justify-between px-6'>
+            <button onClick={closeModal} className='cancel-form-btn'>Cancel</button>
+            <button onClick={saveName} className='next-form-btn'>Save Changes</button>
+          </div>
+        </div>
+      );
+    } else if (modalType === 'content' && currentContentType === 'Video') {
+      return (
+        <div className="modal-content">
+          <div className='pop-modal-topbar px-5'>
+            <h4>Upload Video</h4>
+            <button className="close-button" onClick={closeModal}>&times;</button>
+          </div>
+          <div className="course-text-field px-6">
+            <label htmlFor='video-upload'>Video File</label>
+            <input
+              type="file"
+              id='video-upload'
+              accept="video/*"
+              onChange={(e) => handleVideoUpload(e.target.files[0])}
+            />
+          </div>
+          <div className='flex justify-between px-6'>
+            <button onClick={closeModal} className='cancel-form-btn'>Cancel</button>
+            <button onClick={saveName} className='next-form-btn'>Upload Video</button>
+          </div>
+        </div>
+      );
+    }
+    // Add cases for 'Attach File' and 'Description' if needed
+    return null;
   };
 
   const addSection = () => {
@@ -725,7 +803,15 @@ function Curriculum({ onNext }) {
                         <p className='dynamic-curriculam'>{lecture.name || 'Lecture Name'}</p>
                       </div>
                       <div className='flex gap-4'>
-                        <button type="button" className='curriculam-content-btn'>Content</button>
+                        <button type="button" className='curriculam-content-btn' onClick={() => toggleDropdown(sectionIndex, lectureIndex)}>Content</button>
+                        {/* Dropdown menu for content selection */}
+                        {dropdownVisibility[`section-${sectionIndex}-lecture-${lectureIndex}`] && (
+                          <div className="dropdown-menu">
+                            <div onClick={() => selectContentType(sectionIndex, lectureIndex, 'Video')}>Video</div>
+                            <div onClick={() => selectContentType(sectionIndex, lectureIndex, 'Attach File')}>Attach File</div>
+                            <div onClick={() => selectContentType(sectionIndex, lectureIndex, 'Description')}>Description</div>
+                          </div>
+                        )}
                         <button type="button" onClick={() => openEditModal(sectionIndex, lectureIndex)}><img src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
                         <button type="button"><img src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
                       </div>
@@ -736,20 +822,7 @@ function Curriculum({ onNext }) {
             ))}
             {isModalOpen && (
               <div className="modal">
-                <div className="modal-content">
-                  <div className='pop-modal-topbar px-5'>
-                    <h4>Edit {editingLectureIndex !== null ? 'Lecture' : 'Section'} Name</h4>
-                    <button className="close-button" onClick={closeModal}><X color="#565658" strokeWidth={1} size={20} /></button>
-                  </div>
-                  <div className="course-text-field px-6">
-                    <label htmlFor='pop-modal'>{editingLectureIndex !== null ? 'Lecture' : 'Section'}</label>
-                    <input type="text" id='pop-modal' value={tempName} onChange={(e) => setTempName(e.target.value)} />
-                  </div>
-                  <div className='flex justify-between px-6'>
-                    <button onClick={closeModal} className='cancel-form-btn'>Cancel</button>
-                    <button onClick={saveName} className='next-form-btn'>Save Changes</button>
-                  </div>
-                </div>
+                {renderModalContent()}
               </div>
             )}
             <button type='button' className='curriculam-content-btn' onClick={addSection}>Add Section</button>
