@@ -326,3 +326,40 @@
   font-weight: 500;
   line-height: 22px;
 }
+
+.dropdown-menu {
+  position: absolute; /* Positioned relative to its position in the DOM */
+  background-color: #ffffff; /* White background */
+  border: 1px solid #ddd; /* Light grey border */
+  border-radius: 4px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Slight shadow for depth */
+  padding: 10px 0; /* Some padding within the dropdown */
+  z-index: 1000; /* Make sure it appears above other content */
+  width: auto; /* Auto width to fit content */
+  right: 0; /* Align to the right */
+}
+
+.dropdown-menu div {
+  color: #333; /* Darker text for better readability */
+  padding: 8px 16px; /* Comfortable padding around items */
+  cursor: pointer; /* Indicate items are clickable */
+  text-align: left; /* Align text to the left */
+  font-size: 14px; /* Set a default font size */
+}
+
+.dropdown-menu div:hover {
+  background-color: #f6f6f6; /* Light grey background on hover */
+}
+
+/* You may need to adjust the selector to target the specific button that triggers the dropdown */
+.curriculam-content-btn + .dropdown-menu {
+  right: 166px;
+  top: 245px; /* Position it below the content button */
+}
+
+/* Clearfix for the dropdown content */
+.dropdown-menu:after {
+  content: "";
+  display: block;
+  clear: both;
+}
