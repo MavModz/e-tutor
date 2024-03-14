@@ -1,5 +1,6 @@
 const superAdmin = require('../models/superAdminSchema');
 const category = require('../models/categorySchema');
+const admins = require('../models/adminSchema');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const SECRET_KEY = process.env.key;
@@ -75,4 +76,15 @@ exports.addSubCategory = async (req, res) => {
         res.status(500).json({ error: 'Internal server error', error });
     }
 }
-  
+
+
+exports.allinstructors = async (req, res) => {
+    try {
+        const Teacher = await admins.find({});
+        res.status(200).json(Teacher);
+    }
+    catch(error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal server error', error});
+    }
+}

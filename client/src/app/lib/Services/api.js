@@ -96,3 +96,15 @@ export const allsubcategoriesfunction = async(categoryName) => {
 
     }
 }
+
+// INSTRUCTUTORS DATA
+
+export const allinstructorsfunction = async() => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/superadmin/instructor-list`);
+        return response.data;
+    }
+    catch(error) {
+        throw error;
+    }
+}

@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import './add-course.css';
-import { Trash2, Upload, X } from 'lucide-react';
+import { Dice1, Trash2, Upload, X } from 'lucide-react';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
-import { allcategoriesfunction, allsubcategoriesfunction } from '@/app/lib/Services/api';
+import { allcategoriesfunction, allsubcategoriesfunction, allinstructorsfunction } from '@/app/lib/Services/api';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -450,15 +450,15 @@ function AdvanceInformation({ onNext }) {
 
   // CODE END TO HANDLE COURSE REQUIREMENTS
 
-  const handleNext = () => {
-    const completeFormData = {
+  const handleAdvanceInformation = () => {
+    const advanceInformationDetails = {
       ...formData,
       richEditor,
       thumbnailSrc,
       vidThumbnailSrc
     };
-    console.log("AdvanceInformation Data:", completeFormData);
-    onNext(completeFormData);
+    onNext(advanceInformationDetails);
+    console.log(advanceInformationDetails);
   };
 
   return (
@@ -606,7 +606,7 @@ function AdvanceInformation({ onNext }) {
         </div>
         <div className="addcourse-bottom flex justify-between">
           <button className='cancel-form-btn' type="button">Cancel</button>
-          <button className='next-form-btn' type="button" onClick={handleNext}>Save & Next</button>
+          <button className='next-form-btn' type="button" onClick={handleAdvanceInformation}>Save & Next</button>
         </div>
       </div>
     </div>
@@ -614,7 +614,7 @@ function AdvanceInformation({ onNext }) {
 };
 
 function Curriculum({ onNext }) {
-  const [sections, setSections] = useState([{ name: 'Section 1: Section Name', lectures: [{ name: 'Lecture Name', content: null }] }]);
+  const [sections, setSections] = useState([{ name: 'Section 1: Section Name', lectures: [{ name: 'Lecture Name', content: { videos: [], attachedfile: [], description: [] } }] }]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState(null); // "editName" or "content"
   const [editingSectionIndex, setEditingSectionIndex] = useState(null);
@@ -622,18 +622,38 @@ function Curriculum({ onNext }) {
   const [currentContentType, setCurrentContentType] = useState(null); // "Video", "Attach File", "Description"
   const [tempName, setTempName] = useState('');
   const [dropdownVisibility, setDropdownVisibility] = useState({});
+  const [recordedLectureThumb, setRecordedLectureThumb] = useState('');
+  const [recordedLectureFileName, setRecordedFileName] = useState('');
+  const [attachedFileName, setAttachedFileName] = useState('');
+  const [lectureDescription, setLectureDescription] = useState('');
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(null);
+  const [currentLectureIndex, setCurrentLectureIndex] = useState(null);
+  const toolbarOptions = [['clean']];
+  const module = {
+    toolbar: toolbarOptions,
+  }
+  const recordedLectureRef = useRef(null);
+
 
   // Function to toggle dropdown
   const toggleDropdown = (sectionIndex, lectureIndex) => {
     const key = `section-${sectionIndex}-lecture-${lectureIndex}`;
-    setDropdownVisibility(prev => ({
-      ...prev,
-      [key]: !prev[key],
+
+    // Set all dropdowns to false and then toggle the current one.
+    setDropdownVisibility(prevVisibility => ({
+      ...Object.keys(prevVisibility).reduce((acc, dropdownKey) => {
+        acc[dropdownKey] = false; // Set all to false initially
+        return acc;
+      }, {}),
+      [key]: !prevVisibility[key] // Toggle the current one
     }));
   };
 
+
   // Function to handle content type selection and open the modal
   const selectContentType = (sectionIndex, lectureIndex, contentType) => {
+    setCurrentSectionIndex(sectionIndex);
+    setCurrentLectureIndex(lectureIndex);
     setCurrentContentType(contentType);
     openContentModal(sectionIndex, lectureIndex, contentType);
     // Hide dropdown after selection
@@ -655,11 +675,18 @@ function Curriculum({ onNext }) {
   };
 
   const openContentModal = (sectionIndex, lectureIndex, contentType) => {
+    resetContentState();
     setModalType('content');
     setEditingSectionIndex(sectionIndex);
     setEditingLectureIndex(lectureIndex);
     setCurrentContentType(contentType);
     setIsModalOpen(true);
+  };
+
+  const resetContentState = () => {
+    setRecordedFileName('');
+    setAttachedFileName('');
+    setLectureDescription('');
   };
 
   const saveName = () => {
@@ -681,13 +708,156 @@ function Curriculum({ onNext }) {
     setCurrentContentType(null);
   };
 
+  const addVideoToLecture = (sectionIndex, lectureIndex, video) => {
+    setSections(prevSections => {
+      const updatedSections = [...prevSections];
+      const targetSection = updatedSections[sectionIndex];
+      if (!targetSection) {
+        console.error(`Section at index ${sectionIndex} not found.`);
+        return prevSections;
+      }
+
+      const targetLecture = targetSection.lectures[lectureIndex];
+      if (!targetLecture) {
+        console.error(`Lecture at index ${lectureIndex} not found in section ${sectionIndex}.`);
+        return prevSections;
+      }
+
+      if (!targetLecture.content) {
+        targetLecture.content = {
+          videos: [],
+        };
+      }
+
+      targetLecture.content.videos.push(video);
+      console.log(`Video added to section ${sectionIndex} lecture ${lectureIndex}:`, video);
+
+      return updatedSections;
+    });
+  };
+
+
+
+  // UPLOAD RECORDED LECTURE BUTTON
+  const handleRecordedButtonClick = () => {
+    document.getElementById('video-upload').click();
+  };
+
+  const handleRecodedLecture = (event) => {
+    const files = event.target.files;
+    if (files && files[0]) {
+      const file = files[0];
+      const videoURL = URL.createObjectURL(file);
+      const videoName = file.name;
+
+      // Set the video name in state
+      setRecordedFileName(videoName);
+      const video = {
+        url: videoURL,
+        name: videoName,
+      };
+
+      // Now add this video object to the lecture
+      addVideoToLecture(currentSectionIndex, currentLectureIndex, video);
+    }
+  };
+
+
+  // ATTATCH FILE HANDLE
+  const handleAttachFileChange = (event) => {
+    const files = event.target.files;
+    if (files && files[0]) {
+      const file = files[0];
+      setAttachedFileName(file.name);
+      const fileObject = {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        // You may not create an object URL for non-media files unless you need to display them
+      };
+
+      // Call a function to add this file to the lecture
+      addFileToLecture(currentSectionIndex, currentLectureIndex, fileObject);
+    }
+  };
+
+  //
+  const addFileToLecture = (sectionIndex, lectureIndex, fileObject) => {
+    setSections(prevSections => {
+      const updatedSections = [...prevSections];
+      const targetSection = updatedSections[sectionIndex];
+      if (!targetSection) {
+        console.error(`Section not found at index: ${sectionIndex}`);
+        return;
+      }
+      const targetLecture = targetSection.lectures[lectureIndex];
+      if (!targetLecture) {
+        console.error(`Lecture not found at index: ${lectureIndex} in section: ${sectionIndex}`);
+        return;
+      }
+      if (!targetLecture.content) {
+        targetLecture.content = { videos: [], attachedFiles: [], description: '' };
+      }
+      if (!Array.isArray(targetLecture.content.attachedFiles)) {
+        targetLecture.content.attachedFiles = [];
+      }
+      targetLecture.content.attachedFiles.push(fileObject);
+      console.log(`File added to lecture at index ${lectureIndex} in section ${sectionIndex}`, fileObject);
+
+      return updatedSections;
+    });
+  };
+
+
+
+  // DESCRIPTION HANDLE
+  const handleDescriptionChange = (event) => {
+    setLectureDescription(event.target.value);
+  };
+
+  const addDescriptionToLecture = (sectionIndex, lectureIndex, descriptionText) => {
+    setSections(prevSections => {
+      const updatedSections = [...prevSections];
+      const targetSection = updatedSections[sectionIndex];
+      const targetLecture = targetSection.lectures[lectureIndex];
+
+      // Ensure the content object and descriptions array exist
+      if (!targetLecture.content) {
+        targetLecture.content = { descriptions: [] };
+      }
+      if (!Array.isArray(targetLecture.content.descriptions)) {
+        targetLecture.content.descriptions = [];
+      }
+
+      // Add the description text to the descriptions array
+      targetLecture.content.descriptions.push(descriptionText);
+
+      console.log(`Description added to section ${sectionIndex} lecture ${lectureIndex}:`, descriptionText);
+
+      return updatedSections;
+    });
+  };
+
+
+  const saveDescription = () => {
+    addDescriptionToLecture(currentSectionIndex, currentLectureIndex, lectureDescription);
+    console.log(`Description for section ${currentSectionIndex} lecture ${currentLectureIndex}:`, lectureDescription);
+
+    // Clear the input after saving
+    setLectureDescription('');
+
+    // Close the modal
+    closeModal();
+  };
+
+
   const renderModalContent = () => {
     if (modalType === 'editName') {
       return (
         <div className="modal-content">
           <div className='pop-modal-topbar px-5'>
             <h4>Edit {editingLectureIndex !== null ? 'Lecture' : 'Section'} Name</h4>
-            <button className="close-button" onClick={closeModal}>&times;</button>
+            <button className="close-button" onClick={closeModal}><X size={20} strokeWidth={1.5} /></button>
           </div>
           <div className="course-text-field px-6">
             <label htmlFor='pop-modal'>{editingLectureIndex !== null ? 'Lecture' : 'Section'}</label>
@@ -703,17 +873,87 @@ function Curriculum({ onNext }) {
       return (
         <div className="modal-content">
           <div className='pop-modal-topbar px-5'>
-            <h4>Upload Video</h4>
-            <button className="close-button" onClick={closeModal}>&times;</button>
+            <h4>Lecture Video</h4>
+            <button className="close-button" onClick={closeModal}><X size={20} strokeWidth={1.5} /></button>
           </div>
-          <div className="course-text-field px-6">
-            <label htmlFor='video-upload'>Video File</label>
+          <div className="course-text-field flex gap-6 px-6">
+            {!recordedLectureFileName && (
+              <label htmlFor='video-upload'>Video File</label>
+            )}
+            <label htmlFor='video-upload' style={{ display: 'none' }}>Video File</label>
             <input
               type="file"
               id='video-upload'
+              ref={recordedLectureRef}
+              style={{ display: 'none' }}
+              onChange={handleRecodedLecture}
               accept="video/*"
-              onChange={(e) => handleVideoUpload(e.target.files[0])}
             />
+            {recordedLectureFileName && (
+              <div className="uploaded-file-info-container flex gap-2">
+                <div className="recordedthumb-container">
+                  <img src="/recorded-thumb.png" alt="recorded lecture thumbnail" />
+                </div>
+                <div className="uploaded-file-info-wrapper">
+                  <p className='file-uploaded'>FILE UPLOADED</p>
+                  <p className="uploaded-file-name">{recordedLectureFileName}</p>
+                </div>
+              </div>
+
+            )}
+          </div>
+          <div className="upload-instruction px-6">
+            <p className="file-note">Note: All files should be at least 720p and less than 4.0 GB.</p>
+          </div>
+          <div className='flex justify-between px-6'>
+            <button onClick={closeModal} className='cancel-form-btn'>Cancel</button>
+            <button type='button' onClick={handleRecordedButtonClick} className='next-form-btn'>Upload Video</button>
+          </div>
+        </div>
+      );
+    } else if (modalType === 'content' && currentContentType === 'Attach File') {
+      return (
+        <div className="modal-content">
+          <div className='pop-modal-topbar px-5'>
+            <h4>Attach File</h4>
+            <button className="close-button" onClick={closeModal}><X size={20} strokeWidth={1.5} /></button>
+          </div>
+          <div className='mx-6'>
+            <div className="upload-thumbnail flex gap-6 px-6">
+              <label htmlFor="fileInput" className="upload-label">
+                <input type="file"
+                  id="courseThumbnail"
+                  className="course-thumbnail px-6"
+                  onChange={handleAttachFileChange}
+                />
+                <span>Attach File</span>
+                <span className="upload-text">{attachedFileName ? `${attachedFileName}` : 'Drag and drop a file or browse file'}</span>
+              </label>
+            </div>
+          </div>
+          <div className='flex justify-between px-6'>
+            <button onClick={closeModal} className='cancel-form-btn'>Cancel</button>
+            <button type='button' onClick={handleRecordedButtonClick} className='next-form-btn'>Upload Video</button>
+          </div>
+        </div>
+      );
+    } else if (modalType === 'content' && currentContentType === 'Description') {
+      return (
+        <div className="modal-content">
+          <div className='pop-modal-topbar px-5'>
+            <h4>Add Lecture Description</h4>
+            <button className="close-button" onClick={closeModal}><X size={20} strokeWidth={1.5} /></button>
+          </div>
+          <div className="course-text-field flex flex-col gap-2 px-6">
+            <label htmlFor="lecture-description">Description</label>
+            <textarea
+              id="lecture-description"
+              name="lecture-description"
+              placeholder="Write your lecture description here..."
+              value={lectureDescription}
+              onChange={handleDescriptionChange}
+            />
+            <button className='next-form-btn' onClick={(e) => saveDescription(e)}>Save Description</button>
           </div>
           <div className='flex justify-between px-6'>
             <button onClick={closeModal} className='cancel-form-btn'>Cancel</button>
@@ -722,7 +962,6 @@ function Curriculum({ onNext }) {
         </div>
       );
     }
-    // Add cases for 'Attach File' and 'Description' if needed
     return null;
   };
 
@@ -748,7 +987,6 @@ function Curriculum({ onNext }) {
         });
       setSections(newSections);
     } else {
-      // Optionally, alert the user that they can't delete the last section
       alert("You cannot delete the last section.");
     }
   };
@@ -767,8 +1005,9 @@ function Curriculum({ onNext }) {
   };
 
 
-  const saveCurriculum = () => {
-    // Logic to save curriculum data
+  const handleCurriculum = () => {
+    onNext(sections);
+    console.log(sections);
   };
 
   return (
@@ -830,7 +1069,128 @@ function Curriculum({ onNext }) {
         </div>
         <div className="addcourse-bottom flex justify-between">
           <button type="button" className='cancel-form-btn'>Cancel</button>
-          <button type="button" className='next-form-btn'>Save & Next</button>
+          <button type="button" className='next-form-btn' onClick={handleCurriculum}>Save & Next</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function PublishCourse({ onNext }) {
+
+
+  const [welcomeMessage, setWelcomeMessage] = useState('');
+  const [congratulationsMessage, setCongratulationsMessage] = useState('');
+  const [showInstructorDropdown, setShowIstructorDropdown] = useState(false);
+  const [instructorName, setInstructorName] = useState('');
+  const [instructorResults, setInstructorResults] = useState([]);
+
+  const fetchInstructorData = async (value = '') => {
+    try {
+      const response = await allinstructorsfunction(value);
+      if (Array.isArray(response)) {
+        let filteredResult;
+        if (value.trim() === '') {
+          filteredResult = response;
+        } else {
+          filteredResult = response.filter(instructor =>
+            instructor.name.toLowerCase().includes(value.toLowerCase())
+          );
+        }
+        setInstructorResults(filteredResult);
+        console.log("Filtered results length:", filteredResult.length, filteredResult);
+      } else {
+        console.error('Expected an array, but received:', response);
+        setInstructorResults([]);
+      }
+    } catch (error) {
+      console.error("Error while fetching data:", error);
+      setInstructorResults([]);
+    }
+  };
+
+  const handleInstructorSearchBlur = () => {
+    setTimeout(() => {
+      setShowIstructorDropdown(true);
+    }, 100);
+  };
+
+  const handleInstructorSearchFocus = () => {
+    setShowIstructorDropdown(true);
+  };
+
+  const handleInstructorResultClick = (result) => {
+    console.log('Selected:', result.name)
+    setInstructorName(result.name);
+    setShowIstructorDropdown(false);
+  }
+
+  const handlePublishCourse = () => {
+    // onNext(handlePublishCourse);
+    console.log('publish Course data');
+  }
+
+  return (
+    <div className="bg-[#f4f7fe] w-full min-h-full">
+      <div className="addcourse-container">
+        <div className="addcourse-top flex gap-6">
+          <h2 className='form-wizard-heading'><img src="/Stack.svg" alt="Stack png icom" />Publish Course</h2>
+        </div>
+        <div className="addcourse-middle">
+          <form className='addcourse-form'>
+            <div className="message-wrapper flex flex-col gap-6">
+              <p>Message</p>
+              <div className="message-container flex gap-6">
+                <div className="welcome-message w-full">
+                  <label htmlFor="welcome-message">Welcome Message</label>
+                  <textarea
+                    name="welcome-message"
+                    id="welcome-message"
+                    placeholder='Enter course starting message here...'
+                    value={welcomeMessage}
+                    onChange={(e) => setWelcomeMessage(e.target.value)}
+                  />
+                </div>
+                <div className="welcome-message w-full">
+                  <label htmlFor="welcome-message">Congratulations Message</label>
+                  <textarea
+                    name="congrats-message"
+                    id="congrats-message"
+                    placeholder='Enter course completed message here...'
+                    value={congratulationsMessage}
+                    onChange={(e) => setCongratulationsMessage(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="intructor-wrapper">
+              <div className="course-text-field course-category-search">
+                <Searchbar
+                  inputValue={instructorName}
+                  onInputChange={setInstructorName}
+                  fetchData={fetchInstructorData}
+                  label='Add Instructor'
+                  id='instructorSearch'
+                  name='instructorSearch'
+                  placeholder='Search by name'
+                  onBlur={handleInstructorSearchBlur}
+                  onFocus={handleInstructorSearchFocus}
+                />
+                {showInstructorDropdown && (
+                  <Searchlist
+                    result={instructorResults}
+                    inputValue={instructorName}
+                    onClick={handleInstructorResultClick}
+                    displayProperty="name"
+                  />
+                )}
+              </div>
+            </div>
+          </form>
+        </div>
+        <div className="addcourse-bottom flex justify-between">
+          <button type="button" className='cancel-form-btn'>Cancel</button>
+          <button type="button" className='next-form-btn' onClick={handlePublishCourse}>Save & Next</button>
         </div>
       </div>
     </div>
@@ -840,8 +1200,28 @@ function Curriculum({ onNext }) {
 function AddCourse() {
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({ BasicDetails: {}, AdvanceInformation: { courseTopics: [] } });
+  const [formData, setFormData] = useState({ BasicDetails: {}, AdvanceInformation: { courseTopics: [] }, Curriculum: {}, PublishCourse: {} });
 
+  // const nextStep = (stepData) => {
+  //   let key;
+  //   switch (currentStep) {
+  //     case 1:
+  //       key = 'BasicDetails';
+  //       break;
+  //     case 2:
+  //       key = 'AdvanceInformation';
+  //       break;
+  //     case 3:
+  //       key = 'Curriculam';
+  //       break;
+  //   }
+  //   setFormData(prevFormData => ({ ...prevFormData, [key]: { ...prevFormData[key], ...stepData } }));
+  //   setCurrentStep(currentStep + 1);
+  //   console.log(`Data after ${key}:`, newFormData); // This will log the updated formData to the console
+  //   return newFormData;
+  // };
+
+  // Inside AddCourse component
   const nextStep = (stepData) => {
     let key;
     switch (currentStep) {
@@ -854,10 +1234,28 @@ function AddCourse() {
       case 3:
         key = 'Curriculam';
         break;
+      case 4:
+        Key = 'PublishCourse'
+      default:
+        key = '';
+        break;
     }
-    setFormData(prevFormData => ({ ...prevFormData, [key]: { ...prevFormData[key], ...stepData } }));
-    setCurrentStep(currentStep + 1);
+
+    setFormData(prevFormData => {
+      const newFormData = { ...prevFormData, [key]: { ...prevFormData[key], ...stepData } };
+      console.log(`Data after ${key}:`, newFormData); // This will log the updated formData to the console
+      return newFormData;
+    });
+
+    if (currentStep < 4) { // If there are more steps, go to the next one
+      setCurrentStep(currentStep + 1);
+    } else {
+      // Handle the final step (submission to backend here)
+      console.log('Final Form Data:', formData); // This should log the complete form data
+      // submitCourseData(formData); // This is where you would submit all the collected data to the backend
+    }
   };
+
 
   const renderStep = () => {
     switch (currentStep) {
@@ -866,7 +1264,9 @@ function AddCourse() {
       case 2:
         return <AdvanceInformation onNext={nextStep} formData={formData.AdvanceInformation} setFormData={setFormData} />;
       case 3:
-        return <Curriculum onNext={nextStep} />
+        return <Curriculum onNext={nextStep} formData={formData.Curriculum} />;
+      case 4:
+        return <PublishCourse onNext={nextStep} />;
       default:
         return <div>Unknow step</div>
     }
