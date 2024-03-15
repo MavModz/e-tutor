@@ -104,7 +104,8 @@
   letter-spacing: .03rem;
 }
 
-.course-text-field input, textarea {
+.course-text-field input,
+textarea {
   color: var(--secondary-text);
   font-size: 17px;
   font-weight: 500;
@@ -138,7 +139,8 @@
 }
 
 
-.course-text-field input:focus, textarea:focus {
+.course-text-field input:focus,
+textarea:focus {
   border: 1px solid var(--primary-new);
 }
 
@@ -339,29 +341,46 @@
 }
 
 .dropdown-menu {
-  position: absolute; /* Positioned relative to its parent specified by `position: relative;` */
-  background-color: #ffffff; /* White background */
-  border: 1px solid #ddd; /* Light grey border */
-  border-radius: 4px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Slight shadow for depth */
-  padding: 10px 0; /* Some padding within the dropdown */
-  z-index: 1000; /* Make sure it appears above other content */
-  top: 100%; /* Position it directly below the button */
-  left: 89%; /* Start from the middle of the button */
-  transform: translateX(-50%); /* Adjust the position to center it under the button */
-  min-width: 160px; /* Minimum width or width according to content */
+  position: absolute;
+  /* Positioned relative to its parent specified by `position: relative;` */
+  background-color: #ffffff;
+  /* White background */
+  border: 1px solid #ddd;
+  /* Light grey border */
+  border-radius: 4px;
+  /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  /* Slight shadow for depth */
+  padding: 10px 0;
+  /* Some padding within the dropdown */
+  z-index: 1000;
+  /* Make sure it appears above other content */
+  top: 100%;
+  /* Position it directly below the button */
+  left: 89%;
+  /* Start from the middle of the button */
+  transform: translateX(-50%);
+  /* Adjust the position to center it under the button */
+  min-width: 160px;
+  /* Minimum width or width according to content */
 }
 
 .dropdown-menu div {
-  color: #333; /* Darker text for better readability */
-  padding: 8px 16px; /* Comfortable padding around items */
-  cursor: pointer; /* Indicate items are clickable */
-  text-align: left; /* Align text to the left */
-  font-size: 14px; /* Set a default font size */
+  color: #333;
+  /* Darker text for better readability */
+  padding: 8px 16px;
+  /* Comfortable padding around items */
+  cursor: pointer;
+  /* Indicate items are clickable */
+  text-align: left;
+  /* Align text to the left */
+  font-size: 14px;
+  /* Set a default font size */
 }
 
 .dropdown-menu div:hover {
-  background-color: #f6f6f6; /* Light grey background on hover */
+  background-color: #f6f6f6;
+  /* Light grey background on hover */
 }
 
 
@@ -407,4 +426,23 @@
 textarea {
   resize: none;
   height: 160px;
+}
+
+.instructor-list-container {
+  width: 312px;
+  background-color: #F5F7FA;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 24px;
+  height: 80px;
+  padding: 10px;
+}
+
+.instructor-list-container span {
+  font-family: var(--secondary-text);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.01em;
 }

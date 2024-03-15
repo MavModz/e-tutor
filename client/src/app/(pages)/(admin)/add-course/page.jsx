@@ -1084,6 +1084,7 @@ function PublishCourse({ onNext }) {
   const [showInstructorDropdown, setShowIstructorDropdown] = useState(false);
   const [instructorName, setInstructorName] = useState('');
   const [instructorResults, setInstructorResults] = useState([]);
+  const [selectedInstructors, setSelectedInstructors] = useState([]);
 
   const fetchInstructorData = async (value = '') => {
     try {
@@ -1119,11 +1120,24 @@ function PublishCourse({ onNext }) {
     setShowIstructorDropdown(true);
   };
 
-  const handleInstructorResultClick = (result) => {
-    console.log('Selected:', result.name)
-    setInstructorName(result.name);
-    setShowIstructorDropdown(false);
-  }
+  // const handleInstructorResultClick = (result) => {
+  //   console.log('Selected:', result.name)
+  //   setInstructorName(result.name);
+  //   setShowIstructorDropdown(false);
+  // }
+
+  const handleInstructorResultClick = (instructor) => {
+    if (!selectedInstructors.some(selected => selected.name === instructor.name)) {
+      setSelectedInstructors(prev => [...prev, instructor]);
+      setShowIstructorDropdown(false);
+      setInstructorName('');
+      console.log(instructor);
+    }
+  };
+
+  const handleRemoveInstructor = (instructorName) => {
+    setSelectedInstructors(prev => prev.filter(instructor => instructor.name !== instructorName));
+  };
 
   const handlePublishCourse = () => {
     // onNext(handlePublishCourse);
@@ -1163,7 +1177,7 @@ function PublishCourse({ onNext }) {
                 </div>
               </div>
             </div>
-            <div className="intructor-wrapper">
+            <div className="intructor-wrapper flex flex-col gap-6">
               <div className="course-text-field course-category-search">
                 <Searchbar
                   inputValue={instructorName}
@@ -1180,11 +1194,21 @@ function PublishCourse({ onNext }) {
                   <Searchlist
                     result={instructorResults}
                     inputValue={instructorName}
-                    onClick={handleInstructorResultClick}
+                    onClick={(instructor) => handleInstructorResultClick(instructor)}
                     displayProperty="name"
                   />
                 )}
               </div>
+              <div className='flex gap-6'>
+                {selectedInstructors.map((instructor, index) => (
+                  <div className='instructor-list-container' key={index}>
+                      <img src="/user-2.jpg" alt="user-profile-image" width={48} height={48} className='rounded-full' />
+                      <span className='w-48'>{instructor.name}</span>
+                    <button onClick={() => handleRemoveInstructor(instructor.name)}><X strokeWidth={1.5} /></button>
+                  </div>
+                ))}
+              </div>
+
             </div>
           </form>
         </div>
