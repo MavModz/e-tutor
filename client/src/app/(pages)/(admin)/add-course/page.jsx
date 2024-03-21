@@ -1,28 +1,52 @@
 'use client'
 
+require("dotenv").config();
 import React, { useState, useEffect, useRef } from 'react';
 import './add-course.css';
 import { Dice1, Trash2, Upload, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
 import { allcategoriesfunction, allsubcategoriesfunction, allinstructorsfunction } from '@/app/lib/Services/api';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import aws_s3 from '@/app/lib/Services/aws_s3';
 
-function BasicDetails({ onNext }) {
-  const [courseName, setCourseName] = useState('');
-  const [courseSubtitle, setCourseSubtitle] = useState('');
-  const [category, setCategory] = useState('');
-  const [subCategory, setSubCategory] = useState('');
-  const [courseTopic, setCourseTopic] = useState('');
-  const [courseLanguage, setCourseLanguage] = useState('');
-  const [optionalLanguage, setOptionalLanguage] = useState('');
-  const [courseDuration, setCourseDuration] = useState('');
+async function uploadFileToS3(file, key) {
+  const bucket_name = process.env.NEXT_PUBLIC_AWS_BUCKET_NAME;
+  const bucketName = bucket_name;
+  const params = {
+      Bucket: bucketName,
+      Key: key,
+      Body: file,
+      ACL: 'public-read'
+  };
+
+  try {
+      const data = await aws_s3.upload(params).promise();
+      console.log("Upload Success", data);
+      return data.Location; // The URL to the uploaded file
+  } catch (error) {
+      console.log("Error in file upload", error);
+      throw error;
+  }
+}
+
+function BasicDetails({ onNext, formData }) {
+  const router = useRouter();
+  const [courseName, setCourseName] = useState(formData.courseName || '');
+  const [courseSubtitle, setCourseSubtitle] = useState(formData.courseSubtitle || '');
+  const [category, setCategory] = useState(formData.category || '');
+  const [subCategory, setSubCategory] = useState(formData.subCategory || '');
+  const [courseTopic, setCourseTopic] = useState(formData.courseTopic || '');
+  const [courseLanguage, setCourseLanguage] = useState(formData.courseLanguage || '');
+  const [optionalLanguage, setOptionalLanguage] = useState(formData.optionalLanguage || '');
+  const [courseDuration, setCourseDuration] = useState(formData.courseDuration || '');
+  const [courseLevel, setCourseLevel] = useState(formData.courseLevel || '');
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [showSubCategoryDropdown, setShowSubCategoryDropdown] = useState(false);
   const [categoryResults, setCategoryResults] = useState([]);
   const [subCategoryResults, setSubCategoryResults] = useState([]);
-  const [courseLevel, setCourseLevel] = useState('');
   const [showCourseLevelDropdown, setShowCourseLevelDropdown] = useState(false);
   const defaultCourseLevels = [
     { levelName: "Beginner" },
@@ -35,6 +59,7 @@ function BasicDetails({ onNext }) {
   useEffect(() => {
     fetchCategoryData('');
   }, []);
+
 
   const handleCategorySearchFocus = () => {
     setShowCategoryDropdown(true);
@@ -151,6 +176,12 @@ function BasicDetails({ onNext }) {
     setCourseLevel(result.levelName);
     setShowCourseLevelDropdown(false);
   };
+
+  const handleCancel = () => {
+    if (window.confirm("Are you sure you want to cancel? The data will not be saved.")) {
+      router.push("/course")
+    }
+  }
 
   const handleBasicDetails = () => {
     const basicDetailsData = {
@@ -317,7 +348,7 @@ function BasicDetails({ onNext }) {
           </form>
         </div>
         <div className="addcourse-bottom flex justify-between">
-          <button className='cancel-form-btn'>Cancel</button>
+          <button className='cancel-form-btn' onClick={handleCancel}>Cancel</button>
           <button className='next-form-btn' onClick={handleBasicDetails}>Save & Next</button>
         </div>
       </div>
@@ -325,7 +356,7 @@ function BasicDetails({ onNext }) {
   )
 }
 
-function AdvanceInformation({ onNext }) {
+function AdvanceInformation({ onNext, onPrevious }) {
 
   const fileInputRef = useRef();
   const videoInputRef = useRef();
@@ -342,6 +373,14 @@ function AdvanceInformation({ onNext }) {
     toolbar: toolbarOptions,
   }
 
+  useEffect(() => {
+    // Get the uploaded file URL from local storage
+    const savedThumbnailURL = sessionStorage.getItem('uploadedThumbnail');
+    if (savedThumbnailURL) {
+        setThumbnailSrc(savedThumbnailURL);
+    }
+}, []);
+
   const handleImgButtonClick = () => {
     fileInputRef.current.click(); // Trigger the file input when button is clicked
   };
@@ -350,21 +389,40 @@ function AdvanceInformation({ onNext }) {
     videoInputRef.current.click(); // Trigger the file input when button is clicked
   };
 
-  const handleFileSelect = (event) => {
+  const handleFileSelect = async (event) => {
+    event.preventDefault();
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setThumbnailSrc(e.target.result); // Update the image source with the selected file
-      };
-      reader.readAsDataURL(file);
+      const key = `course-thumbnails/${Date.now()}-${file.name}`;
+      try {
+        const uploadedFileURL = await uploadFileToS3(file, key);
+        setThumbnailSrc(uploadedFileURL);
+        sessionStorage.setItem('uploadedThumbnail', uploadedFileURL);
+        console.log(uploadedFileURL);
+      }
+      catch(error) {
+        console.log("error uploading the file to S3",error);
+      }
+      // const reader = new FileReader();
+      // reader.onload = (e) => {
+      //   setThumbnailSrc(e.target.result);
+      // };
+      // reader.readAsDataURL(file);
     }
   };
 
-  const handleVideoFileSelect = (event) => {
+  const handleVideoFileSelect = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      setVidThumbnailSrc(URL.createObjectURL(file)); // Set the source for the video thumbnail
+      setVidThumbnailSrc(URL.createObjectURL(file));
+      const key = `video-thumbnail/${Date.now()}-${file.name}`;
+      try {
+        const uploadedVideoFileURL = await uploadFileToS3(file, key);
+        setVidThumbnailSrc(uploadedVideoFileURL);
+      }
+      catch(error) {
+        console.log('error uploading the video to s3', error);
+      }
     }
   };
 
@@ -605,7 +663,7 @@ function AdvanceInformation({ onNext }) {
           </form>
         </div>
         <div className="addcourse-bottom flex justify-between">
-          <button className='cancel-form-btn' type="button">Cancel</button>
+          <button type="button" className='cancel-form-btn' onClick={onPrevious}>Previous</button>
           <button className='next-form-btn' type="button" onClick={handleAdvanceInformation}>Save & Next</button>
         </div>
       </div>
@@ -613,25 +671,21 @@ function AdvanceInformation({ onNext }) {
   );
 };
 
-function Curriculum({ onNext }) {
-  const [sections, setSections] = useState([{ name: 'Section 1: Section Name', lectures: [{ name: 'Lecture Name', content: { videos: [], attachedfile: [], description: [] } }] }]);
+function Curriculum({ onNext, onPrevious, formData }) {
+  const [sections, setSections] = useState(formData.sections || [{ name: 'Section 1: Section Name', lectures: [{ name: 'Lecture Name', content: { videos: [], attachedFiles: [], descriptions: [] } }] }]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState(null); // "editName" or "content"
+  const [modalType, setModalType] = useState(null);
   const [editingSectionIndex, setEditingSectionIndex] = useState(null);
   const [editingLectureIndex, setEditingLectureIndex] = useState(null);
   const [currentContentType, setCurrentContentType] = useState(null); // "Video", "Attach File", "Description"
-  const [tempName, setTempName] = useState('');
+  const [tempName, setTempName] = useState(formData.tempName || '');
   const [dropdownVisibility, setDropdownVisibility] = useState({});
-  const [recordedLectureThumb, setRecordedLectureThumb] = useState('');
-  const [recordedLectureFileName, setRecordedFileName] = useState('');
-  const [attachedFileName, setAttachedFileName] = useState('');
-  const [lectureDescription, setLectureDescription] = useState('');
+  const [recordedLectureThumb, setRecordedLectureThumb] = useState(formData.recordedLectureThumb || '');
+  const [recordedLectureFileName, setRecordedFileName] = useState(formData. recordedLectureFileName || '');
+  const [attachedFileName, setAttachedFileName] = useState(formData.attachedFileName || '');
+  const [lectureDescription, setLectureDescription] = useState(formData.lectureDescription || '');
   const [currentSectionIndex, setCurrentSectionIndex] = useState(null);
   const [currentLectureIndex, setCurrentLectureIndex] = useState(null);
-  const toolbarOptions = [['clean']];
-  const module = {
-    toolbar: toolbarOptions,
-  }
   const recordedLectureRef = useRef(null);
 
 
@@ -743,22 +797,23 @@ function Curriculum({ onNext }) {
     document.getElementById('video-upload').click();
   };
 
-  const handleRecodedLecture = (event) => {
+  const handleRecodedLecture = async (event) => {
     const files = event.target.files;
     if (files && files[0]) {
       const file = files[0];
-      const videoURL = URL.createObjectURL(file);
-      const videoName = file.name;
-
-      // Set the video name in state
-      setRecordedFileName(videoName);
-      const video = {
-        url: videoURL,
-        name: videoName,
-      };
-
-      // Now add this video object to the lecture
-      addVideoToLecture(currentSectionIndex, currentLectureIndex, video);
+      // const videoURL = URL.createObjectURL(file);
+      const videoName = `videos/${Date.now()}-${file.name}`;
+      try {
+        const uploadedVideoURL = await uploadFileToS3(file, videoName);
+        const video = {
+          url: uploadedVideoURL,
+          name: file.name,
+        };
+        addVideoToLecture(currentSectionIndex, currentLectureIndex, video);
+      }
+      catch(error) {
+        console.log('error uploading recorded lecture', error);
+      }
     }
   };
 
@@ -1068,7 +1123,8 @@ function Curriculum({ onNext }) {
           </form>
         </div>
         <div className="addcourse-bottom flex justify-between">
-          <button type="button" className='cancel-form-btn'>Cancel</button>
+          {/* <button type="button" className='cancel-form-btn'>Cancel</button> */}
+          <button type="button" className='cancel-form-btn' onClick={onPrevious}>Previous</button>
           <button type="button" className='next-form-btn' onClick={handleCurriculum}>Save & Next</button>
         </div>
       </div>
@@ -1076,7 +1132,7 @@ function Curriculum({ onNext }) {
   )
 }
 
-function PublishCourse({ onNext }) {
+function PublishCourse({ onNext, onPrevious }) {
 
 
   const [welcomeMessage, setWelcomeMessage] = useState('');
@@ -1140,8 +1196,8 @@ function PublishCourse({ onNext }) {
   };
 
   const handlePublishCourse = () => {
-    // onNext(handlePublishCourse);
-    console.log('publish Course data');
+    //onNext(handlePublishCourse);
+    console.log('publish Course data', handlePublishCourse);
   }
 
   return (
@@ -1202,8 +1258,8 @@ function PublishCourse({ onNext }) {
               <div className='flex gap-6'>
                 {selectedInstructors.map((instructor, index) => (
                   <div className='instructor-list-container' key={index}>
-                      <img src="/user-2.jpg" alt="user-profile-image" width={48} height={48} className='rounded-full' />
-                      <span className='w-48'>{instructor.name}</span>
+                    <img src="/user-2.jpg" alt="user-profile-image" width={48} height={48} className='rounded-full' />
+                    <span className='w-48'>{instructor.name}</span>
                     <button onClick={() => handleRemoveInstructor(instructor.name)}><X strokeWidth={1.5} /></button>
                   </div>
                 ))}
@@ -1213,7 +1269,7 @@ function PublishCourse({ onNext }) {
           </form>
         </div>
         <div className="addcourse-bottom flex justify-between">
-          <button type="button" className='cancel-form-btn'>Cancel</button>
+          <button type="button" className='previous-form-btn' onClick={onPrevious}>Previous</button>
           <button type="button" className='next-form-btn' onClick={handlePublishCourse}>Save & Next</button>
         </div>
       </div>
@@ -1267,30 +1323,37 @@ function AddCourse() {
 
     setFormData(prevFormData => {
       const newFormData = { ...prevFormData, [key]: { ...prevFormData[key], ...stepData } };
-      console.log(`Data after ${key}:`, newFormData); // This will log the updated formData to the console
+      console.log(`Data after ${key}:`, newFormData);
       return newFormData;
     });
 
-    if (currentStep < 4) { // If there are more steps, go to the next one
+    const previousStep = () => {
+      setCurrentStep(prevStep => prevStep - 1);
+    };
+
+    if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Handle the final step (submission to backend here)
-      console.log('Final Form Data:', formData); // This should log the complete form data
-      // submitCourseData(formData); // This is where you would submit all the collected data to the backend
+      console.log('Final Form Data:', formData);
     }
   };
 
+  const previousStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
 
   const renderStep = () => {
     switch (currentStep) {
       case 1:
         return <BasicDetails onNext={nextStep} formData={formData.BasicDetails} />;
       case 2:
-        return <AdvanceInformation onNext={nextStep} formData={formData.AdvanceInformation} setFormData={setFormData} />;
+        return <AdvanceInformation onNext={nextStep} onPrevious={previousStep} formData={formData.AdvanceInformation} setFormData={setFormData} />;
       case 3:
-        return <Curriculum onNext={nextStep} formData={formData.Curriculum} />;
+        return <Curriculum onNext={nextStep} onPrevious={previousStep} formData={formData.Curriculum} />;
       case 4:
-        return <PublishCourse onNext={nextStep} />;
+        return <PublishCourse onNext={nextStep} onPrevious={previousStep} />;
       default:
         return <div>Unknow step</div>
     }
