@@ -84,15 +84,47 @@ exports.adminlogin = async (req, res) => {
 };
 
 exports.addCourse = async (req, res) => {
-    const { courseName, courseCode, teacherName, coursePrice } = req.body;
+    const { courseName,
+        courseSubtitle,
+        courseCategory,
+        courseSubcategory,
+        courseTopic,
+        courseLanguage,
+        courseLevel,
+        courseDuration,
+        courseThumbnail,
+        videoThumbnail,
+        courseDescription,
+        courseTopics,
+        targetAudience,
+        courseRequirements,
+        sections,
+        welcomeMessage,
+        congratsMessage,
+        instructors, } = req.body;
+        
     const adminId = req.adminId;
 
     try {
         const newCourse = new courses({
             courseName,
-            courseCode,
-            teacherName,
-            coursePrice,
+            courseSubtitle,
+            courseCategory,
+            courseSubcategory,
+            courseTopic,
+            courseLanguage,
+            courseLevel,
+            courseDuration,
+            courseThumbnail,
+            videoThumbnail,
+            courseDescription,
+            courseTopics,
+            targetAudience,
+            courseRequirements,
+            sections,
+            welcomeMessage,
+            congratsMessage,
+            instructors,
             adminId,
         });
 
@@ -101,7 +133,7 @@ exports.addCourse = async (req, res) => {
     }
 
     catch (error) {
-        res.status(500).json({error: 'internal server error', error })
+        res.status(500).json({ error: 'internal server error', error })
     }
 }
 

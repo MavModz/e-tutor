@@ -239,8 +239,8 @@ function BasicDetails({ onNext, formData }) {
                   onInputChange={setCategory}
                   fetchData={fetchCategoryData}
                   label='Course Category'
-                  id='categorySearch'
-                  name='categorySearch'
+                  id='courseCategory'
+                  name='courseCategory'
                   placeholder='Type to Search Category'
                   onBlur={handleCategorySearchBlur}
                   onFocus={handleCategorySearchFocus}
@@ -260,8 +260,8 @@ function BasicDetails({ onNext, formData }) {
                   onInputChange={setSubCategory}
                   fetchData={fetchSubCategoryData}
                   label='Course Sub-Category'
-                  id='subCategorySearch'
-                  name='subCategorySearch'
+                  id='courseSubcategory'
+                  name='courseSubcategory'
                   placeholder='Type to Search sub-category'
                   onBlur={handleSubCategorySearchBlur}
                   onFocus={handleSubCategorySearchFocus}
@@ -317,9 +317,9 @@ function BasicDetails({ onNext, formData }) {
                   inputValue={courseLevel}
                   onInputChange={handleCourseLevelInputChange}
                   label='Course Level'
-                  id='courseLevelSearch'
-                  name='courseLevelSearch'
-                  placeholder='Beginner, Intermediate, Expert'
+                  id='courseLevel'
+                  name='courseLevel'
+                  placeholder='Beginner, Intermediate'
                   onFocus={handleCourseLevelSearchFocus}
                   onBlur={handleCourseLevelSearchBlur}
                 />
@@ -544,6 +544,8 @@ function AdvanceInformation({ onNext, onPrevious }) {
                       <input
                         type="file"
                         ref={fileInputRef}
+                        id='courseThumbnail'
+                        name='courseThumbnail'
                         style={{ display: 'none' }}
                         onChange={handleFileSelect}
                         accept=".jpg, .jpeg, .png"
@@ -571,6 +573,8 @@ function AdvanceInformation({ onNext, onPrevious }) {
                       <input
                         type="file"
                         ref={videoInputRef}
+                        id='videoThumbnail'
+                        name='videoThumbnail'
                         style={{ display: 'none' }}
                         onChange={handleVideoFileSelect}
                         accept="video/*"
@@ -592,6 +596,8 @@ function AdvanceInformation({ onNext, onPrevious }) {
                 value={richEditor}
                 onChange={setRichEditor}
                 modules={module}
+                id='courseDescription'
+                name='courseDescription'
               />
             </div>
             <hr />
@@ -1212,20 +1218,20 @@ function PublishCourse({ onNext, onPrevious }) {
               <p>Message</p>
               <div className="message-container flex gap-6">
                 <div className="welcome-message w-full">
-                  <label htmlFor="welcome-message">Welcome Message</label>
+                  <label htmlFor="welcomeMessage">Welcome Message</label>
                   <textarea
-                    name="welcome-message"
-                    id="welcome-message"
+                    name="welcomeMessage"
+                    id="welcomeMessage"
                     placeholder='Enter course starting message here...'
                     value={welcomeMessage}
                     onChange={(e) => setWelcomeMessage(e.target.value)}
                   />
                 </div>
                 <div className="welcome-message w-full">
-                  <label htmlFor="welcome-message">Congratulations Message</label>
+                  <label htmlFor="congratsMessage">Congratulations Message</label>
                   <textarea
-                    name="congrats-message"
-                    id="congrats-message"
+                    name="congratsMessage"
+                    id="congratsMessage"
                     placeholder='Enter course completed message here...'
                     value={congratulationsMessage}
                     onChange={(e) => setCongratulationsMessage(e.target.value)}
@@ -1240,8 +1246,8 @@ function PublishCourse({ onNext, onPrevious }) {
                   onInputChange={setInstructorName}
                   fetchData={fetchInstructorData}
                   label='Add Instructor'
-                  id='instructorSearch'
-                  name='instructorSearch'
+                  id='instructors'
+                  name='instructors'
                   placeholder='Search by name'
                   onBlur={handleInstructorSearchBlur}
                   onFocus={handleInstructorSearchFocus}
