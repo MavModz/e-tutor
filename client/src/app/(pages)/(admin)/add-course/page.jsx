@@ -4,7 +4,7 @@ require("dotenv").config();
 import React, { useState, useEffect, useRef } from 'react';
 import './add-course.css';
 import Image from 'next/image';
-import { Dice1, Trash2, Upload, X } from 'lucide-react';
+import { Trash2, Upload, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
@@ -856,7 +856,12 @@ function Curriculum({ onNext, onPrevious }) {
 
   // UPLOAD RECORDED LECTURE BUTTON
   const handleRecordedButtonClick = () => {
-    document.getElementById('video-upload').click();
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        // Safe to use document or window here
+        document.getElementById('video-upload').click();
+      }
+    }, []);
   };
 
   const handleRecodedLecture = async (event) => {
@@ -1134,13 +1139,13 @@ function Curriculum({ onNext, onPrevious }) {
     setSections(prevSections => {
       // Create a deep copy to prevent direct mutations
       const newSections = JSON.parse(JSON.stringify(prevSections));
-  
+
       // Determine the new lecture's name
       const newLectureName = `Lecture ${newSections[sectionIndex].lectures.length + 1}`;
-  
+
       // Check if this lecture name already exists to avoid duplicate names
       const doesLectureExist = newSections[sectionIndex].lectures.some(lecture => lecture.name === newLectureName);
-  
+
       if (!doesLectureExist) {
         // Push the new lecture only if it doesn't exist
         newSections[sectionIndex].lectures.push({
@@ -1148,7 +1153,7 @@ function Curriculum({ onNext, onPrevious }) {
           content: { type: '', url: '', description: '' },
         });
       }
-  
+
       return newSections;
     });
   };
@@ -1162,7 +1167,7 @@ function Curriculum({ onNext, onPrevious }) {
             alert("You cannot delete the last lecture in a section.");
             return section;
           }
-  
+
           const updatedLectures = section.lectures
             .filter((_, lIndex) => lIndex !== lectureIndex)
             .map((lecture, index) => {
@@ -1176,7 +1181,7 @@ function Curriculum({ onNext, onPrevious }) {
               }
               return lecture;
             });
-  
+
           return {
             ...section,
             lectures: updatedLectures,
@@ -1186,8 +1191,8 @@ function Curriculum({ onNext, onPrevious }) {
       });
     });
   };
-  
-   
+
+
 
   const handleCurriculum = () => {
     // Preparing the sections data to be passed to the parent component
