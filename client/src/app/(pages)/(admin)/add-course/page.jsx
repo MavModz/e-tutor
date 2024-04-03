@@ -855,14 +855,12 @@ function Curriculum({ onNext, onPrevious }) {
 
 
   // UPLOAD RECORDED LECTURE BUTTON
-  const handleRecordedButtonClick = () => {
-    useEffect(() => {
-      if (typeof window !== "undefined") {
-        // Safe to use document or window here
-        document.getElementById('video-upload').click();
-      }
-    }, []);
-  };
+  useEffect(() => {
+    const handleRecordedButtonClick = () => {
+      document.getElementById('video-upload').click();
+    };
+  }, []);
+
 
   const handleRecodedLecture = async (event) => {
     const files = event.target.files;
