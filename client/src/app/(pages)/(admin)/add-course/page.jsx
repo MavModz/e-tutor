@@ -3,6 +3,7 @@
 require("dotenv").config();
 import React, { useState, useEffect, useRef } from 'react';
 import './add-course.css';
+import Image from 'next/image';
 import { Dice1, Trash2, Upload, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Searchbar from '@/components/Searchbar/Searchbar';
@@ -203,7 +204,7 @@ function BasicDetails({ onNext }) {
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
         <div className="addcourse-top flex gap-6">
-          <h2 className='form-wizard-heading'><img src="/Stack.svg" alt="Stack png icom" />Basic Details</h2>
+          <h2 className='form-wizard-heading'><Image src="/Stack.svg" alt="Stack png icom" />Basic Details</h2>
         </div>
         <div className="addcourse-middle">
           <form className='addcourse-form'>
@@ -508,7 +509,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
         <div className="addcourse-top flex gap-6">
-          <h2 className='form-wizard-heading'><img src="/Stack.svg" alt="Stack icon" />Advance Information</h2>
+          <h2 className='form-wizard-heading'><Image src="/Stack.svg" alt="Stack icon" />Advance Information</h2>
         </div>
         <div className="addcourse-middle">
           <form className='addcourse-form'>
@@ -518,7 +519,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
                 <p>Course Thumbnail</p>
                 <div className="thumbnail-img-container">
                   <div className="image-container w-56 h-40">
-                    <img src={thumbnailSrc} alt="course-thumbnail" />
+                    <Image src={thumbnailSrc} alt="course-thumbnail" />
                   </div>
                   <div className="thumbnail-image-info">
                     <p>
@@ -547,7 +548,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
                 <p>Course Trailer</p>
                 <div className="thumbnail-img-container">
                   <div className="image-container w-56 h-40">
-                    <img src={vidThumbnailSrc} alt="course-thumbnail" />
+                    <Image src={vidThumbnailSrc} alt="course-thumbnail" />
                   </div>
                   <div className="thumbnail-image-info">
                     <p>
@@ -1008,7 +1009,7 @@ function Curriculum({ onNext, onPrevious }) {
             {recordedLectureFileName && (
               <div className="uploaded-file-info-container flex gap-2">
                 <div className="recordedthumb-container">
-                  <img src="/recorded-thumb.png" alt="recorded lecture thumbnail" />
+                  <Image src="/recorded-thumb.png" alt="recorded lecture thumbnail" />
                 </div>
                 <div className="uploaded-file-info-wrapper">
                   <p className='file-uploaded'>FILE UPLOADED</p>
@@ -1210,7 +1211,7 @@ function Curriculum({ onNext, onPrevious }) {
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
         <div className="addcourse-top flex gap-6">
-          <h2 className='form-wizard-heading'><img src="/Stack.svg" alt="Stack png icom" />Curriculam</h2>
+          <h2 className='form-wizard-heading'><Image src="/Stack.svg" alt="Stack png icom" />Curriculam</h2>
         </div>
         <div className="addcourse-middle">
           <form className='addcourse-form course-curriculam-container'>
@@ -1218,23 +1219,23 @@ function Curriculum({ onNext, onPrevious }) {
               <div key={sectionIndex} className="course-curriculam-wrapper">
                 <div className="course-curriculam-topbar flex justify-between">
                   <div className='flex gap-2 items-center h-6'>
-                    <img src="/Menu.svg" alt="menu-image" />
+                    <Image src="/Menu.svg" alt="menu-image" />
                     {/* <p className='static-curriculam'>Section {sectionIndex + 1}:</p> */}
                     <p className='dynamic-curriculam'>{section.name || 'Section Name'}</p>
                   </div>
                   <div className='flex gap-4'>
                     <button type="button" onClick={() => addLecture(sectionIndex)}>
-                      <img src="/Plus.svg" alt="plus-svg-icon" className='action-btn' />
+                      <Image src="/Plus.svg" alt="plus-svg-icon" className='action-btn' />
                     </button>
-                    <button type="button" onClick={() => openEditModal(sectionIndex)}><img src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
-                    <button type="button" onClick={() => deleteSection(sectionIndex)}><img src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
+                    <button type="button" onClick={() => openEditModal(sectionIndex)}><Image src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
+                    <button type="button" onClick={() => deleteSection(sectionIndex)}><Image src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
                   </div>
                 </div>
                 <div className="curriculam-list-wrapper flex flex-col gap-4">
                   {section.lectures.map((lecture, lectureIndex) => (
                     <div key={lectureIndex} className="curriculam-list flex justify-between items-center">
                       <div className='flex gap-2 items-center h-6'>
-                        <img src="/Menu.svg" alt="menu-image" />
+                        <Image src="/Menu.svg" alt="menu-image" />
                         <p className='dynamic-curriculam'>{lecture.name || 'Lecture Name'}</p>
                       </div>
                       <div className='flex gap-4'>
@@ -1247,8 +1248,8 @@ function Curriculum({ onNext, onPrevious }) {
                             <div onClick={() => selectContentType(sectionIndex, lectureIndex, 'Description')}>Description</div>
                           </div>
                         )}
-                        <button type="button" onClick={() => openEditModal(sectionIndex, lectureIndex)}><img src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
-                        <button type="button" onClick={() => deleteLecture(sectionIndex, lectureIndex)}><img src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
+                        <button type="button" onClick={() => openEditModal(sectionIndex, lectureIndex)}><Image src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
+                        <button type="button" onClick={() => deleteLecture(sectionIndex, lectureIndex)}><Image src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
                       </div>
                     </div>
                   ))}
@@ -1352,7 +1353,7 @@ function PublishCourse({ onPrevious, onSubmit }) {
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
         <div className="addcourse-top flex gap-6">
-          <h2 className='form-wizard-heading'><img src="/Stack.svg" alt="Stack png icom" />Publish Course</h2>
+          <h2 className='form-wizard-heading'><Image src="/Stack.svg" alt="Stack png icom" />Publish Course</h2>
         </div>
         <div className="addcourse-middle">
           <form className='addcourse-form'>
@@ -1406,7 +1407,7 @@ function PublishCourse({ onPrevious, onSubmit }) {
               <div className='flex gap-6'>
                 {selectedInstructors.map((instructor, index) => (
                   <div className='instructor-list-container' key={index}>
-                    <img src="/user-2.jpg" alt="user-profile-image" width={48} height={48} className='rounded-full' />
+                    <Image src="/user-2.jpg" alt="user-profile-image" width={48} height={48} className='rounded-full' />
                     <span className='w-48'>{instructor.name}</span>
                     <button onClick={() => handleRemoveInstructor(instructor.name)}><X strokeWidth={1.5} /></button>
                   </div>
