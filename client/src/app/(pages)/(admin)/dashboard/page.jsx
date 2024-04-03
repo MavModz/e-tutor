@@ -5,6 +5,7 @@ import Auth from '../../(auth)/middleware/auth';
 import Header from '@/components/admin/header/header';
 import Loader from '@/components/loader/Loader';
 import Graph from '@/components/admin/graph/Graph';
+import Image from 'next/image';
 import './dashboard.css'
 
 function Dashboard() {
@@ -41,7 +42,7 @@ function Dashboard() {
               </p>
             </div>
             <div className='banner-svg'>
-              <img src='/study.png' alt="student studying on the table" className='h-72' />
+              <Image src='/study.png' alt="student studying on the table" className='h-72' />
             </div>
           </div>
           <div className="stats-wrapper flex gap-8 justify-around mt-5">
@@ -52,7 +53,7 @@ function Dashboard() {
               <div className="course-details">
                 <div className='course-info flex gap-4'>
                   <div className="course-image flex items-center">
-                    <img src='/user-2.jpg' alt="course thumbnail" className='course-image' />
+                    <Image src='/user-2.jpg' alt="course thumbnail" className='course-image' />
                   </div>
                   <div className="course-data">
                     <p>Coding</p>

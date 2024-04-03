@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { allcoursesfunction } from '@/app/lib/Services/api';
 import Header from '@/components/admin/header/header';
 import Card from '@/components/cards/Card';
@@ -32,7 +33,7 @@ function Course() {
                     <h4>My Courses</h4>
                     <Link href= "/add-course">
                         <button className='course-action-btn flex items-center gap-2'>
-                            <img src="/Create-course.svg" alt="add course svg icon" width={20} height={20} />
+                            <Image src="/Create-course.svg" alt="add course svg icon" width={20} height={20} />
                             Create Course
                         </button>
                     </Link>
