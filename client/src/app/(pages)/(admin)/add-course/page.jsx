@@ -4,10 +4,17 @@ require("dotenv").config();
 import React, { useState } from 'react';
 import './add-course.css';
 import { addcoursefunction } from '@/app/lib/Services/api';
-import BasicDetails from '@/components/admin/addcourseform/BasicDetails/BasicDetails';
-import AdvanceInformation from '@/components/admin/addcourseform/AdvanceInformation/AdvanceInformation';
-import Curriculum from '@/components/admin/addcourseform/Curriculum/Curriculum';
-import PublishCourse from '@/components/admin/addcourseform/PublishCourse/PublishCourse';
+// import BasicDetails from '@/components/admin/addcourseform/BasicDetails/BasicDetails';
+// import AdvanceInformation from '@/components/admin/addcourseform/AdvanceInformation/AdvanceInformation';
+// import Curriculum from '@/components/admin/addcourseform/Curriculum/Curriculum';
+// import PublishCourse from '@/components/admin/addcourseform/PublishCourse/PublishCourse';
+
+import dynamic from 'next/dynamic';
+
+const BasicDetails = dynamic(() => import('@/components/admin/addcourseform/BasicDetails/BasicDetails'), {ssr: false});
+const AdvanceInformation = dynamic(() => import('@/components/admin/addcourseform/AdvanceInformation/AdvanceInformation'), {ssr:false});
+const Curriculum = dynamic(() => import('@/components/admin/addcourseform/Curriculum/Curriculum'), {ssr: false});
+const PublishCourse = dynamic(() => import('@/components/admin/addcourseform/PublishCourse/PublishCourse'), {ssr: false});
 
 // async function uploadFileToS3(file, key) {
 //   const bucket_name = process.env.NEXT_PUBLIC_AWS_BUCKET_NAME;
