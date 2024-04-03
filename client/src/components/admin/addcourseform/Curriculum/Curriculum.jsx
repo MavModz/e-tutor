@@ -1,6 +1,7 @@
 require("dotenv").config();
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
+import { X } from 'lucide-react';
 import aws_s3 from '@/app/lib/Services/aws_s3';
 
 async function uploadFileToS3(file, key) {
