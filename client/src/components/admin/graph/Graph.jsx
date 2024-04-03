@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { adminchartfunction, userchartfunction } from '@/app/lib/Services/api';
 import './graph.css';
 
@@ -50,7 +51,7 @@ function Graph() {
           <h3>5 Courses</h3>
         </div>
         <div className="bar-stats">
-          <img src="/vector-points.svg" alt="vector-stats" className='stats-vector' />
+          <Image src="/vector-points.svg" width={20} height={20} alt="vector-stats" />
         </div>
       </div>
       <div className="bar-dotted-line">

@@ -1,5 +1,6 @@
-import React from 'react'
-import successPopup from '../../../assets/images/success.gif'
+import React from 'react';
+import Image from 'next/image';
+import successPopup from '../../../assets/images/success.gif';
 import './sucess.css';
 
 function Success({ show, onClose, message }) {
@@ -18,7 +19,7 @@ function Success({ show, onClose, message }) {
     return (
         <div className="modal">
             <div className="modal-content">
-                <img src={successPopup} alt="success popup" className='popup-img' />
+                <Image src={successPopup} width={180} height={180} alt="success popup" />
                 <h2 className='popup-title-success'>Success!</h2>
                 <p className='popup-message'>{defaultMessage}</p>
                 <button

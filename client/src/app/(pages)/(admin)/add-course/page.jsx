@@ -204,7 +204,7 @@ function BasicDetails({ onNext }) {
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
         <div className="addcourse-top flex gap-6">
-          <h2 className='form-wizard-heading'><Image src="/Stack.svg" alt="Stack png icom" />Basic Details</h2>
+          <h2 className='form-wizard-heading'><Image src="/Stack.svg" width={24} height={24} alt="Stack png icom" />Basic Details</h2>
         </div>
         <div className="addcourse-middle">
           <form className='addcourse-form'>
@@ -372,7 +372,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
     [{ 'list': 'ordered' }, { 'list': 'bullet' }]
   ];
 
-  const module = {
+  const quillmodule = {
     toolbar: toolbarOptions,
   }
 
@@ -509,7 +509,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
         <div className="addcourse-top flex gap-6">
-          <h2 className='form-wizard-heading'><Image src="/Stack.svg" alt="Stack icon" />Advance Information</h2>
+          <h2 className='form-wizard-heading'><Image src="/Stack.svg" width={24} height={24} alt="Stack icon" />Advance Information</h2>
         </div>
         <div className="addcourse-middle">
           <form className='addcourse-form'>
@@ -519,7 +519,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
                 <p>Course Thumbnail</p>
                 <div className="thumbnail-img-container">
                   <div className="image-container w-56 h-40">
-                    <Image src={thumbnailSrc} alt="course-thumbnail" />
+                    <Image src={thumbnailSrc} width={124} height={124} alt="course-thumbnail" />
                   </div>
                   <div className="thumbnail-image-info">
                     <p>
@@ -548,7 +548,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
                 <p>Course Trailer</p>
                 <div className="thumbnail-img-container">
                   <div className="image-container w-56 h-40">
-                    <Image src={vidThumbnailSrc} alt="course-thumbnail" />
+                    <Image src={vidThumbnailSrc} width={124} height={124} alt="course-thumbnail" />
                   </div>
                   <div className="thumbnail-image-info">
                     <p>
@@ -581,7 +581,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
                 theme='snow'
                 value={richEditor}
                 onChange={setRichEditor}
-                modules={module}
+                modules={quillmodule}
                 id='courseDescription'
                 name='courseDescription'
               />
@@ -1009,7 +1009,7 @@ function Curriculum({ onNext, onPrevious }) {
             {recordedLectureFileName && (
               <div className="uploaded-file-info-container flex gap-2">
                 <div className="recordedthumb-container">
-                  <Image src="/recorded-thumb.png" alt="recorded lecture thumbnail" />
+                  <Image src="/recorded-thumb.png" width={124} height={124} alt="recorded lecture thumbnail" />
                 </div>
                 <div className="uploaded-file-info-wrapper">
                   <p className='file-uploaded'>FILE UPLOADED</p>
@@ -1211,7 +1211,7 @@ function Curriculum({ onNext, onPrevious }) {
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
         <div className="addcourse-top flex gap-6">
-          <h2 className='form-wizard-heading'><Image src="/Stack.svg" alt="Stack png icom" />Curriculam</h2>
+          <h2 className='form-wizard-heading'><Image src="/Stack.svg" width={24} height={24} alt="Stack png icom" />Curriculam</h2>
         </div>
         <div className="addcourse-middle">
           <form className='addcourse-form course-curriculam-container'>
@@ -1219,16 +1219,16 @@ function Curriculum({ onNext, onPrevious }) {
               <div key={sectionIndex} className="course-curriculam-wrapper">
                 <div className="course-curriculam-topbar flex justify-between">
                   <div className='flex gap-2 items-center h-6'>
-                    <Image src="/Menu.svg" alt="menu-image" />
+                    <Image src="/Menu.svg" width={20} height={20} alt="menu-image" />
                     {/* <p className='static-curriculam'>Section {sectionIndex + 1}:</p> */}
                     <p className='dynamic-curriculam'>{section.name || 'Section Name'}</p>
                   </div>
                   <div className='flex gap-4'>
                     <button type="button" onClick={() => addLecture(sectionIndex)}>
-                      <Image src="/Plus.svg" alt="plus-svg-icon" className='action-btn' />
+                      <Image src="/Plus.svg" width={24} height={24} alt="plus-svg-icon" className='action-btn' />
                     </button>
-                    <button type="button" onClick={() => openEditModal(sectionIndex)}><Image src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
-                    <button type="button" onClick={() => deleteSection(sectionIndex)}><Image src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
+                    <button type="button" onClick={() => openEditModal(sectionIndex)}><Image src="/PencilLine.svg" width={24} height={24} alt="Pencil-svg-icon" className='action-btn' /></button>
+                    <button type="button" onClick={() => deleteSection(sectionIndex)}><Image src="/Trash.svg" width={24} height={24} alt="Trash-svg-icon" className='action-btn' /></button>
                   </div>
                 </div>
                 <div className="curriculam-list-wrapper flex flex-col gap-4">
@@ -1248,8 +1248,8 @@ function Curriculum({ onNext, onPrevious }) {
                             <div onClick={() => selectContentType(sectionIndex, lectureIndex, 'Description')}>Description</div>
                           </div>
                         )}
-                        <button type="button" onClick={() => openEditModal(sectionIndex, lectureIndex)}><Image src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
-                        <button type="button" onClick={() => deleteLecture(sectionIndex, lectureIndex)}><Image src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
+                        <button type="button" onClick={() => openEditModal(sectionIndex, lectureIndex)}><Image src="/PencilLine.svg" width={24} height={24} alt="Pencil-svg-icon" className='action-btn' /></button>
+                        <button type="button" onClick={() => deleteLecture(sectionIndex, lectureIndex)}><Image src="/Trash.svg" width={24} height={24} alt="Trash-svg-icon" className='action-btn' /></button>
                       </div>
                     </div>
                   ))}
@@ -1353,7 +1353,7 @@ function PublishCourse({ onPrevious, onSubmit }) {
     <div className="bg-[#f4f7fe] w-full min-h-full">
       <div className="addcourse-container">
         <div className="addcourse-top flex gap-6">
-          <h2 className='form-wizard-heading'><Image src="/Stack.svg" alt="Stack png icom" />Publish Course</h2>
+          <h2 className='form-wizard-heading'><Image src="/Stack.svg" width={24} height={24} alt="Stack png icom" />Publish Course</h2>
         </div>
         <div className="addcourse-middle">
           <form className='addcourse-form'>

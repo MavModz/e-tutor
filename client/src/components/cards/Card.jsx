@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import './card.css';
 function Card({ courseName, courseCode, teacherName, coursePrice, rating }) {
     return (
@@ -6,7 +7,7 @@ function Card({ courseName, courseCode, teacherName, coursePrice, rating }) {
             <div className="card-container">
                 <div className="card-wrapper">
                     <div className="card-image">
-                        <img src='/course-img.png' alt="courses thumbnail" className='card-thumbnail' />
+                        <Image src='/course-img.png' width={335} height={191} alt="courses thumbnail" className='card-thumbnail' />
                     </div>
                     <div className="card-data">
                         <div className="card-course-title flex justify-between">
@@ -15,7 +16,7 @@ function Card({ courseName, courseCode, teacherName, coursePrice, rating }) {
                         </div>
                         <hr />
                         <div className="course-card-info">
-                            <img src='/Star.svg' alt="course rating" />
+                            <Image src='/Star.svg' width={20} height={20} alt="course rating" />
                             <span>{rating}</span>
                         </div>
                         <hr />

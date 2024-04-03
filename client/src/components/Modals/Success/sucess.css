@@ -23,10 +23,10 @@
     box-shadow: var(--box-shadow);
 }
 
-.popup-img {
+/* .popup-img {
     width: 180px;
     height: 180px;
-}
+} */
 
 .popup-title-success {
     color: var(--background-variant);

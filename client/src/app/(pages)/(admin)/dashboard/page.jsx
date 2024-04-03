@@ -42,7 +42,7 @@ function Dashboard() {
               </p>
             </div>
             <div className='banner-svg'>
-              <Image src='/study.png' alt="student studying on the table" className='h-72' />
+              <Image src='/study.png' alt="student studying on the table" width={393} height={288} />
             </div>
           </div>
           <div className="stats-wrapper flex gap-8 justify-around mt-5">
@@ -53,7 +53,7 @@ function Dashboard() {
               <div className="course-details">
                 <div className='course-info flex gap-4'>
                   <div className="course-image flex items-center">
-                    <Image src='/user-2.jpg' alt="course thumbnail" className='course-image' />
+                    <Image src='/user-2.jpg' width={200} height={110} alt="course thumbnail" className='course-image' />
                   </div>
                   <div className="course-data">
                     <p>Coding</p>
