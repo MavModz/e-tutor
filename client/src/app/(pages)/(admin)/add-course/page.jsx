@@ -856,14 +856,13 @@ function Curriculum({ onNext, onPrevious }) {
 
   // UPLOAD RECORDED LECTURE BUTTON
   const handleRecordedButtonClick = () => {
-    if (typeof window !== "undefined") {
-      // It's safe to use document or window here
-      const uploadButton = document.getElementById('video-upload');
-      if (uploadButton) {
-        uploadButton.click();
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        // Safe to use document or window here
+        document.getElementById('video-upload').click();
       }
-    }
-  };  
+    }, []);
+  };
 
   const handleRecodedLecture = async (event) => {
     const files = event.target.files;
