@@ -1,7 +1,6 @@
 import React from 'react';
-import './Searchresult.css';
+import './searchresult.css';
 
-// Pass an additional prop 'displayProperty' to specify what to display
 function Searchresult({ results, onClick, displayProperty }) {
 
   return (

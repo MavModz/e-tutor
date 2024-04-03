@@ -2,109 +2,112 @@ import { commonrequest } from "./apiCalls";
 import { backend_url } from "./helper";
 
 // ALL USER AND ADMIN LOGIN
-export const loginfunction = async(email, password) => {
+export const loginfunction = async (email, password) => {
     try {
-        const response = await commonrequest("POST", `${backend_url}/admin/login`, {email: email, password: password});
+        const response = await commonrequest("POST", `${backend_url}/admin/login`, { email: email, password: password });
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }
 
 // USER REGISTER
-export const registerfunction = async(name, phone, email, password, birth, gender) => {
+export const registerfunction = async (name, phone, email, password, birth, gender) => {
     try {
-        const response = await commonrequest("POST", `${backend_url}/user/register`, {name: name, phone:phone, email:email, birth: birth, gender: gender, password:password});
+        const response = await commonrequest("POST", `${backend_url}/user/register`, { name: name, phone: phone, email: email, birth: birth, gender: gender, password: password });
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }
 
 //ADMIN CHART DATA
-export const adminchartfunction = async() => {
-    try{
+export const adminchartfunction = async () => {
+    try {
         const response = await commonrequest("GET", `${backend_url}/admin/total-enrollments`);
         console.log(response);
         return response.data;
     }
 
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }
 
 //USER COURSE ENROLLMENT CHART DATA
-export const userchartfunction = async() => {
+export const userchartfunction = async () => {
     try {
         const response = await commonrequest("GET", `${backend_url}/user/total-courses`);
         console.log(response);
         return response.data;
     }
 
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }
 
 // ADD NEW COURSE
-export const addcoursefunction = async(courseName, courseCode, coursePrice, teacherName) => {
+export const addcoursefunction = async (submitData) => {
+    console.log('api data in api.js', submitData)
     try {
-        const response = await commonrequest("POST", `${backend_url}/admin/add-course`, {courseName: courseName, courseCode: courseCode, coursePrice: coursePrice, teacherName: teacherName});
+        const response = await commonrequest("POST", `${backend_url}/admin/add-course`, {
+            submitData
+        });
         console.log(response);
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }
 
 // LISTING OF ALL COURSES
-export const allcoursesfunction = async() => {
+export const allcoursesfunction = async () => {
     try {
         const response = await commonrequest("GET", `${backend_url}/user/all-courses`)
         console.log(response.data);
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }
 
 // CATEGORIES FOR COURSES
 
-export const allcategoriesfunction = async() => {
+export const allcategoriesfunction = async () => {
     try {
         const response = await commonrequest("GET", `${backend_url}/user/all-categories`)
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }
 
 // SUB-CATEGORIES FOR COURSES
 
-export const allsubcategoriesfunction = async(categoryName) => {
+export const allsubcategoriesfunction = async (categoryName) => {
     try {
         const response = await commonrequest("GET", `${backend_url}/user/all-subcategories/${categoryName}`)
         return response.data;
     }
-    catch(error) {
+    catch (error) {
 
     }
 }
 
 // INSTRUCTUTORS DATA
 
-export const allinstructorsfunction = async() => {
+export const allinstructorsfunction = async () => {
     try {
         const response = await commonrequest("GET", `${backend_url}/superadmin/instructor-list`);
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }

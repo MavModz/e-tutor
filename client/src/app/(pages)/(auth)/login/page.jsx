@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { loginfunction } from "@/app/lib/Services/api";
 import { Phone, Fingerprint } from 'lucide-react';
 import { toast, ToastContainer } from "react-toastify";
+import Image from "next/image";
 import "react-toastify/dist/ReactToastify.css";
 import "./login.css";
 
@@ -49,7 +50,7 @@ const Login = () => {
         <span className="centering">
           <form className="my-form">
             <span className="login-welcome-row">
-              <img src='/astronaut.jpg' className="login-welcome" alt="main logo img" />
+              <Image src='/astronaut.jpg' width={80} height={80} className="login-welcome" alt="main logo img" />
               <h1>LogIn</h1>
             </span>
             <div className="text-field">
