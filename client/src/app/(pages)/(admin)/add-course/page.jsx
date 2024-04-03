@@ -7,7 +7,7 @@ import { Dice1, Trash2, Upload, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
-import { allcategoriesfunction, allsubcategoriesfunction, allinstructorsfunction } from '@/app/lib/Services/api';
+import { allcategoriesfunction, allsubcategoriesfunction, allinstructorsfunction, addcoursefunction } from '@/app/lib/Services/api';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import aws_s3 from '@/app/lib/Services/aws_s3';
@@ -16,33 +16,33 @@ async function uploadFileToS3(file, key) {
   const bucket_name = process.env.NEXT_PUBLIC_AWS_BUCKET_NAME;
   const bucketName = bucket_name;
   const params = {
-      Bucket: bucketName,
-      Key: key,
-      Body: file,
-      ACL: 'public-read'
+    Bucket: bucketName,
+    Key: key,
+    Body: file,
+    ACL: 'public-read'
   };
 
   try {
-      const data = await aws_s3.upload(params).promise();
-      console.log("Upload Success", data);
-      return data.Location; // The URL to the uploaded file
+    const data = await aws_s3.upload(params).promise();
+    console.log("Upload Success", data);
+    return data.Location; // The URL to the uploaded file
   } catch (error) {
-      console.log("Error in file upload", error);
-      throw error;
+    console.log("Error in file upload", error);
+    throw error;
   }
 }
 
-function BasicDetails({ onNext, formData }) {
+function BasicDetails({ onNext }) {
   const router = useRouter();
-  const [courseName, setCourseName] = useState(formData.courseName || '');
-  const [courseSubtitle, setCourseSubtitle] = useState(formData.courseSubtitle || '');
-  const [category, setCategory] = useState(formData.category || '');
-  const [subCategory, setSubCategory] = useState(formData.subCategory || '');
-  const [courseTopic, setCourseTopic] = useState(formData.courseTopic || '');
-  const [courseLanguage, setCourseLanguage] = useState(formData.courseLanguage || '');
-  const [optionalLanguage, setOptionalLanguage] = useState(formData.optionalLanguage || '');
-  const [courseDuration, setCourseDuration] = useState(formData.courseDuration || '');
-  const [courseLevel, setCourseLevel] = useState(formData.courseLevel || '');
+  const [courseName, setCourseName] = useState('');
+  const [courseSubtitle, setCourseSubtitle] = useState('');
+  const [category, setCategory] = useState('');
+  const [subCategory, setSubCategory] = useState('');
+  const [courseTopic, setCourseTopic] = useState('');
+  const [courseLanguage, setCourseLanguage] = useState('');
+  const [optionalLanguage, setOptionalLanguage] = useState('');
+  const [courseDuration, setCourseDuration] = useState('');
+  const [courseLevel, setCourseLevel] = useState('');
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [showSubCategoryDropdown, setShowSubCategoryDropdown] = useState(false);
   const [categoryResults, setCategoryResults] = useState([]);
@@ -362,8 +362,10 @@ function AdvanceInformation({ onNext, onPrevious }) {
   const videoInputRef = useRef();
   const [thumbnailSrc, setThumbnailSrc] = useState('/course-thumbnail.png');
   const [vidThumbnailSrc, setVidThumbnailSrc] = useState('/course-video-thumbnail.png');
+  const [courseTopics, setCourseTopics] = useState(['', '']);
+  const [targetAudience, setTargetAudience] = useState(['', '']);
+  const [courseRequirements, setCourseRequirements] = useState(['', '']);
   const [richEditor, setRichEditor] = useState('');
-  const [formData, setFormData] = useState({ courseTopics: ['', ''], targetAudience: ['', ''], courseRequirements: ['', ''], richEditor: '', thumbnailSrc: '', vidThumbnailSrc: '' });
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
     [{ 'list': 'ordered' }, { 'list': 'bullet' }]
@@ -377,9 +379,9 @@ function AdvanceInformation({ onNext, onPrevious }) {
     // Get the uploaded file URL from local storage
     const savedThumbnailURL = sessionStorage.getItem('uploadedThumbnail');
     if (savedThumbnailURL) {
-        setThumbnailSrc(savedThumbnailURL);
+      setThumbnailSrc(savedThumbnailURL);
     }
-}, []);
+  }, []);
 
   const handleImgButtonClick = () => {
     fileInputRef.current.click(); // Trigger the file input when button is clicked
@@ -400,8 +402,8 @@ function AdvanceInformation({ onNext, onPrevious }) {
         sessionStorage.setItem('uploadedThumbnail', uploadedFileURL);
         console.log(uploadedFileURL);
       }
-      catch(error) {
-        console.log("error uploading the file to S3",error);
+      catch (error) {
+        console.log("error uploading the file to S3", error);
       }
       // const reader = new FileReader();
       // reader.onload = (e) => {
@@ -420,7 +422,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
         const uploadedVideoFileURL = await uploadFileToS3(file, key);
         setVidThumbnailSrc(uploadedVideoFileURL);
       }
-      catch(error) {
+      catch (error) {
         console.log('error uploading the video to s3', error);
       }
     }
@@ -429,29 +431,20 @@ function AdvanceInformation({ onNext, onPrevious }) {
   // CODE START TO HANDLE TOPICS FROM ADMIN
 
   const handleTopicChange = (index, value) => {
-    const newTopics = formData.courseTopics.map((topic, i) => {
-      if (i === index) return value;
-      return topic;
-    });
-    setFormData({ ...formData, courseTopics: newTopics });
+    const newTopics = courseTopics.map((topic, i) => (i === index ? value : topic));
+    setCourseTopics(newTopics);
   };
 
   const addNewTopic = () => {
-    if (formData.courseTopics.length < 8) {
-      setFormData({
-        ...formData,
-        courseTopics: [...formData.courseTopics, ''],
-      });
+    if (courseTopics.length < 8) {
+      setCourseTopics([...courseTopics, '']);
     } else {
-      // Optionally, you can alert the user or disable the add button instead.
       console.log("Maximum of 8 topics can be added.");
     }
   };
 
-
   const removeTopic = (index) => {
-    const newTopics = formData.courseTopics.filter((_, i) => i !== index);
-    setFormData({ ...formData, courseTopics: newTopics });
+    setCourseTopics(courseTopics.filter((_, i) => i !== index));
   };
 
   // CODE END TO HANDLE TOPICS FROM ADMIN
@@ -459,25 +452,20 @@ function AdvanceInformation({ onNext, onPrevious }) {
   // CODE START TO HANDLE AUDIENCE
 
   const handleAudienceChange = (index, value) => {
-    const newAudience = formData.targetAudience.map((audience, i) => {
-      if (i === index) return value;
-      return audience;
-    });
-    setFormData({ ...formData, targetAudience: newAudience });
+    const newAudience = targetAudience.map((audience, i) => (i === index ? value : audience));
+    setTargetAudience(newAudience);
   };
 
   const addNewAudience = () => {
-    if (formData.targetAudience.length < 8) {
-      setFormData({
-        ...formData,
-        targetAudience: [...formData.targetAudience, ''],
-      });
+    if (targetAudience.length < 8) {
+      setTargetAudience([...targetAudience, '']);
+    } else {
+      console.log("Maximum of 8 target audiences can be added.");
     }
   };
 
   const removeAudience = (index) => {
-    const newAudience = formData.targetAudience.filter((_, i) => i !== index);
-    setFormData({ ...formData, targetAudience: newAudience });
+    setTargetAudience(targetAudience.filter((_, i) => i !== index));
   };
 
   // CODE END TO HANDLE AUDIENCE
@@ -485,32 +473,29 @@ function AdvanceInformation({ onNext, onPrevious }) {
   // CODE START TO HANDLE COURSE REQUIREMENTS
 
   const handleRequirementChange = (index, value) => {
-    const newRequirements = formData.courseRequirements.map((requirement, i) => {
-      if (i === index) return value;
-      return requirement;
-    });
-    setFormData({ ...formData, courseRequirements: newRequirements });
+    const newRequirements = courseRequirements.map((requirement, i) => (i === index ? value : requirement));
+    setCourseRequirements(newRequirements);
   };
 
   const addNewRequirement = () => {
-    if (formData.courseRequirements.length < 8) {
-      setFormData({
-        ...formData,
-        courseRequirements: [...formData.courseRequirements, ''],
-      });
+    if (courseRequirements.length < 8) {
+      setCourseRequirements([...courseRequirements, '']);
+    } else {
+      console.log("Maximum of 8 course requirements can be added.");
     }
   };
 
   const removeRequirement = (index) => {
-    const newRequirements = formData.courseRequirements.filter((_, i) => i !== index);
-    setFormData({ ...formData, courseRequirements: newRequirements });
+    setCourseRequirements(courseRequirements.filter((_, i) => i !== index));
   };
 
   // CODE END TO HANDLE COURSE REQUIREMENTS
 
   const handleAdvanceInformation = () => {
     const advanceInformationDetails = {
-      ...formData,
+      courseTopics,
+      targetAudience,
+      courseRequirements,
       richEditor,
       thumbnailSrc,
       vidThumbnailSrc
@@ -603,9 +588,9 @@ function AdvanceInformation({ onNext, onPrevious }) {
             <hr />
             <div className="course-topics-wrapper flex justify-between">
               <p>What you will teach in this course</p>
-              <button type="button" onClick={addNewTopic} disabled={formData.courseTopics.length >= 8}>+ Add new</button>
+              <button type="button" onClick={addNewTopic} disabled={courseTopics.length >= 8}>+ Add new</button>
             </div>
-            {formData.courseTopics.map((topic, index) => (
+            {courseTopics.map((topic, index) => (
               <div key={index} className="course-text-field">
                 <label htmlFor={`courseTopics-${index}`}>Topic {index + 1}</label>
                 <input
@@ -617,7 +602,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
                   autoComplete="off"
                   required
                 />
-                {formData.courseTopics.length > 2 && (
+                {courseTopics.length > 2 && (
                   <button className='remove-btn' type="button" onClick={() => removeTopic(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button>
                 )}
               </div>
@@ -625,9 +610,9 @@ function AdvanceInformation({ onNext, onPrevious }) {
             <hr />
             <div className="course-topics-wrapper flex justify-between">
               <p>Target Audience</p>
-              <button type="button" onClick={addNewAudience} disabled={formData.targetAudience.length >= 8}>+ Add new</button>
+              <button type="button" onClick={addNewAudience} disabled={targetAudience.length >= 8}>+ Add new</button>
             </div>
-            {formData.targetAudience.map((audience, index) => (
+            {targetAudience.map((audience, index) => (
               <div key={index} className="course-text-field">
                 <label htmlFor={`targetAudience-${index}`}>Audience {index + 1}</label>
                 <input
@@ -639,7 +624,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
                   autoComplete="off"
                   required
                 />
-                {formData.targetAudience.length > 2 && (
+                {targetAudience.length > 2 && (
                   <button className='remove-btn' type="button" onClick={() => removeAudience(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button> // Adjust styling as needed
                 )}
               </div>
@@ -647,9 +632,9 @@ function AdvanceInformation({ onNext, onPrevious }) {
             <hr />
             <div className="course-topics-wrapper flex justify-between">
               <p>Course Requirements</p>
-              <button type="button" onClick={addNewRequirement} disabled={formData.courseRequirements.length >= 8}>+ Add new</button>
+              <button type="button" onClick={addNewRequirement} disabled={courseRequirements.length >= 8}>+ Add new</button>
             </div>
-            {formData.courseRequirements.map((requirement, index) => (
+            {courseRequirements.map((requirement, index) => (
               <div key={index} className="course-text-field">
                 <label htmlFor={`courseRequirements-${index}`}>Requirement {index + 1}</label>
                 <input
@@ -661,7 +646,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
                   autoComplete="off"
                   required
                 />
-                {formData.courseRequirements.length > 2 && (
+                {courseRequirements.length > 2 && (
                   <button className='remove-btn' type="button" onClick={() => removeRequirement(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button>
                 )}
               </div>
@@ -677,23 +662,31 @@ function AdvanceInformation({ onNext, onPrevious }) {
   );
 };
 
-function Curriculum({ onNext, onPrevious, formData }) {
-  const [sections, setSections] = useState(formData.sections || [{ name: 'Section 1: Section Name', lectures: [{ name: 'Lecture Name', content: { videos: [], attachedFiles: [], descriptions: [] } }] }]);
+function Curriculum({ onNext, onPrevious }) {
+  const [sections, setSections] = useState([{
+    name: 'Section 1: Section Name',
+    lectures: [{
+      name: 'Lecture Name', content: {
+        type: '',
+        url: '',
+        description: '',
+      },
+    }]
+  }]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState(null);
   const [editingSectionIndex, setEditingSectionIndex] = useState(null);
   const [editingLectureIndex, setEditingLectureIndex] = useState(null);
   const [currentContentType, setCurrentContentType] = useState(null); // "Video", "Attach File", "Description"
-  const [tempName, setTempName] = useState(formData.tempName || '');
+  const [tempName, setTempName] = useState('');
   const [dropdownVisibility, setDropdownVisibility] = useState({});
-  const [recordedLectureThumb, setRecordedLectureThumb] = useState(formData.recordedLectureThumb || '');
-  const [recordedLectureFileName, setRecordedFileName] = useState(formData. recordedLectureFileName || '');
-  const [attachedFileName, setAttachedFileName] = useState(formData.attachedFileName || '');
-  const [lectureDescription, setLectureDescription] = useState(formData.lectureDescription || '');
+  const [recordedLectureThumb, setRecordedLectureThumb] = useState('');
+  const [recordedLectureFileName, setRecordedFileName] = useState('');
+  const [attachedFileName, setAttachedFileName] = useState('');
+  const [lectureDescription, setLectureDescription] = useState('');
   const [currentSectionIndex, setCurrentSectionIndex] = useState(null);
   const [currentLectureIndex, setCurrentLectureIndex] = useState(null);
   const recordedLectureRef = useRef(null);
-
 
   // Function to toggle dropdown
   const toggleDropdown = (sectionIndex, lectureIndex) => {
@@ -768,31 +761,93 @@ function Curriculum({ onNext, onPrevious, formData }) {
     setCurrentContentType(null);
   };
 
+  // const addVideoToLecture = (sectionIndex, lectureIndex, video) => {
+  //   setSections(prevSections => {
+  //     return prevSections.map((section, idx) => {
+  //       if (idx === sectionIndex) {
+  //         return {
+  //           ...section,
+  //           lectures: section.lectures.map((lecture, lIdx) => {
+  //             if (lIdx === lectureIndex) {
+  //               // Check if the content object exists, if not create it
+  //               let updatedContent = lecture.content || {};
+  //               // Check if the videos array exists, if not create it
+  //               let updatedVideos = updatedContent.videos || [];
+  //               // Add the new video
+  //               updatedVideos.push(video);
+  //               // Return the updated lecture with the new video
+  //               return {
+  //                 ...lecture,
+  //                 content: {
+  //                   ...updatedContent,
+  //                   videos: updatedVideos
+  //                 }
+  //               };
+  //             }
+  //             return lecture;
+  //           })
+  //         };
+  //       }
+  //       return section;
+  //     });
+  //   });
+  // };
+
+  // const addVideoToLecture = (sectionIndex, lectureIndex, video) => {
+  //   setSections(prevSections => {
+  //     return prevSections.map((section, idx) => {
+  //       if (idx === sectionIndex) {
+  //         return {
+  //           ...section,
+  //           lectures: section.lectures.map((lecture, lIdx) => {
+  //             if (lIdx === lectureIndex) {
+  //               // Update the content object to reflect the video type, url, and an empty description
+  //               const updatedContent = {
+  //                 type: 'Video', // Set the type to Video
+  //                 url: video.url, // Set the URL from the video object passed to the function
+  //                 description: '' // Description is empty
+  //               };
+
+  //               // Return the updated lecture with the new content
+  //               return {
+  //                 ...lecture,
+  //                 content: updatedContent
+  //               };
+  //             }
+  //             return lecture;
+  //           })
+  //         };
+  //       }
+  //       return section;
+  //     });
+  //   });
+  // };
+
   const addVideoToLecture = (sectionIndex, lectureIndex, video) => {
     setSections(prevSections => {
-      const updatedSections = [...prevSections];
-      const targetSection = updatedSections[sectionIndex];
-      if (!targetSection) {
-        console.error(`Section at index ${sectionIndex} not found.`);
-        return prevSections;
-      }
+      return prevSections.map((section, sIndex) => {
+        if (sIndex === sectionIndex) {
+          return {
+            ...section,
+            lectures: section.lectures.map((lecture, lIndex) => {
+              if (lIndex === lectureIndex) {
+                // Ensuring that the content object is initialized correctly
+                const updatedContent = lecture.content || {};
+                updatedContent.type = 'Video';
+                updatedContent.url = video.url;
+                updatedContent.description = updatedContent.description || '';
 
-      const targetLecture = targetSection.lectures[lectureIndex];
-      if (!targetLecture) {
-        console.error(`Lecture at index ${lectureIndex} not found in section ${sectionIndex}.`);
-        return prevSections;
-      }
-
-      if (!targetLecture.content) {
-        targetLecture.content = {
-          videos: [],
-        };
-      }
-
-      targetLecture.content.videos.push(video);
-      console.log(`Video added to section ${sectionIndex} lecture ${lectureIndex}:`, video);
-
-      return updatedSections;
+                return {
+                  ...lecture,
+                  content: updatedContent
+                };
+              }
+              return lecture;
+            })
+          };
+        }
+        return section;
+      });
     });
   };
 
@@ -817,7 +872,7 @@ function Curriculum({ onNext, onPrevious, formData }) {
         };
         addVideoToLecture(currentSectionIndex, currentLectureIndex, video);
       }
-      catch(error) {
+      catch (error) {
         console.log('error uploading recorded lecture', error);
       }
     }
@@ -1027,12 +1082,14 @@ function Curriculum({ onNext, onPrevious, formData }) {
   };
 
   const addSection = () => {
-    const newSectionNumber = sections.length + 1;
-    const newSections = [
-      ...sections,
-      { name: `Section ${newSectionNumber}: Section Name`, lectures: [{ name: 'Lecture Name' }] }
-    ];
-    setSections(newSections);
+    setSections(prevSections => {
+      const newSectionNumber = prevSections.length + 1;
+      const newSection = {
+        name: `Section ${newSectionNumber}: Section Name`,
+        lectures: [{ name: 'Lecture 1', content: { type: '', url: '', description: '' } }]
+      };
+      return [...prevSections, newSection];
+    });
   };
 
   const deleteSection = (sectionIndex) => {
@@ -1052,24 +1109,102 @@ function Curriculum({ onNext, onPrevious, formData }) {
     }
   };
 
+  // const addLecture = (sectionIndex) => {
+  //   const newSections = [...sections];
+  //   newSections[sectionIndex].lectures.push({
+  //     name: `Lecture ${newSections[sectionIndex].lectures.length + 1}`,
+  //     content: { type: '', url: '', description: '' }
+  //   });
+  //   setSections(newSections);
+  // };
+
+  // const addLecture = (sectionIndex) => {
+  //   setSections(prevSections => {
+  //     const newSections = [...prevSections];
+  //     newSections[sectionIndex].lectures.push({
+  //       name: `Lecture ${newSections[sectionIndex].lectures.length + 1}`,
+  //       content: { type: '', url: '', description: '' },
+  //     });
+  //     return newSections;
+  //   });
+  // };
+
   const addLecture = (sectionIndex) => {
-    const newSections = sections.map((section, index) => {
-      if (index === sectionIndex) {
-        return {
-          ...section,
-          lectures: [...section.lectures, { name: 'Lecture Name' }]
-        };
+    setSections(prevSections => {
+      // Create a deep copy to prevent direct mutations
+      const newSections = JSON.parse(JSON.stringify(prevSections));
+  
+      // Determine the new lecture's name
+      const newLectureName = `Lecture ${newSections[sectionIndex].lectures.length + 1}`;
+  
+      // Check if this lecture name already exists to avoid duplicate names
+      const doesLectureExist = newSections[sectionIndex].lectures.some(lecture => lecture.name === newLectureName);
+  
+      if (!doesLectureExist) {
+        // Push the new lecture only if it doesn't exist
+        newSections[sectionIndex].lectures.push({
+          name: newLectureName,
+          content: { type: '', url: '', description: '' },
+        });
       }
-      return section;
+  
+      return newSections;
     });
-    setSections(newSections);
   };
 
+  const deleteLecture = (sectionIndex, lectureIndex) => {
+    setSections(prevSections => {
+      return prevSections.map((section, sIndex) => {
+        if (sIndex === sectionIndex) {
+          // Check if there's more than one lecture to allow deletion
+          if (section.lectures.length <= 1) {
+            alert("You cannot delete the last lecture in a section.");
+            return section;
+          }
+  
+          const updatedLectures = section.lectures
+            .filter((_, lIndex) => lIndex !== lectureIndex)
+            .map((lecture, index) => {
+              // Preserve custom names, but adjust the numbering for default named lectures
+              const defaultLectureName = `Lecture ${index + 1}`;
+              if (lecture.name.startsWith("Lecture ")) {
+                return {
+                  ...lecture,
+                  name: defaultLectureName,
+                };
+              }
+              return lecture;
+            });
+  
+          return {
+            ...section,
+            lectures: updatedLectures,
+          };
+        }
+        return section;
+      });
+    });
+  };
+  
+   
 
   const handleCurriculum = () => {
-    onNext(sections);
-    console.log(sections);
+    // Preparing the sections data to be passed to the parent component
+    const curriculamDetails = {
+      sections: sections.map(section => ({
+        name: section.name,
+        lectures: section.lectures.map(lecture => ({
+          name: lecture.name,
+          content: lecture.content || { type: '', url: '', description: '' }, // Ensure content is initialized
+        }))
+      })),
+    };
+
+    // Calling the onNext prop with the new sections data
+    onNext(curriculamDetails);
+    console.log('this is consoled data of sections', sections);
   };
+
 
   return (
     <div className="bg-[#f4f7fe] w-full min-h-full">
@@ -1113,7 +1248,7 @@ function Curriculum({ onNext, onPrevious, formData }) {
                           </div>
                         )}
                         <button type="button" onClick={() => openEditModal(sectionIndex, lectureIndex)}><img src="/PencilLine.svg" alt="Pencil-svg-icon" className='action-btn' /></button>
-                        <button type="button"><img src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
+                        <button type="button" onClick={() => deleteLecture(sectionIndex, lectureIndex)}><img src="/Trash.svg" alt="Trash-svg-icon" className='action-btn' /></button>
                       </div>
                     </div>
                   ))}
@@ -1138,7 +1273,7 @@ function Curriculum({ onNext, onPrevious, formData }) {
   )
 }
 
-function PublishCourse({ onNext, onPrevious }) {
+function PublishCourse({ onPrevious, onSubmit }) {
 
 
   const [welcomeMessage, setWelcomeMessage] = useState('');
@@ -1201,10 +1336,17 @@ function PublishCourse({ onNext, onPrevious }) {
     setSelectedInstructors(prev => prev.filter(instructor => instructor.name !== instructorName));
   };
 
-  const handlePublishCourse = () => {
-    //onNext(handlePublishCourse);
-    console.log('publish Course data', handlePublishCourse);
-  }
+  const handlePublishClick = (e) => {
+    e.preventDefault();
+    const publishCourseDetails = {
+      welcomeMessage,
+      congratulationsMessage,
+      selectedInstructors: selectedInstructors.map(instructor => instructor.name)
+    };
+
+    onSubmit(publishCourseDetails);
+  };
+
 
   return (
     <div className="bg-[#f4f7fe] w-full min-h-full">
@@ -1270,13 +1412,12 @@ function PublishCourse({ onNext, onPrevious }) {
                   </div>
                 ))}
               </div>
-
             </div>
           </form>
         </div>
         <div className="addcourse-bottom flex justify-between">
-          <button type="button" className='previous-form-btn' onClick={onPrevious}>Previous</button>
-          <button type="button" className='next-form-btn' onClick={handlePublishCourse}>Save & Next</button>
+          <button type="button" className='cancel-form-btn' onClick={onPrevious}>Previous</button>
+          <button type="button" className='next-form-btn' onClick={handlePublishClick}>Submit Course</button>
         </div>
       </div>
     </div>
@@ -1286,30 +1427,11 @@ function PublishCourse({ onNext, onPrevious }) {
 function AddCourse() {
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({ BasicDetails: {}, AdvanceInformation: { courseTopics: [] }, Curriculum: {}, PublishCourse: {} });
-
-  // const nextStep = (stepData) => {
-  //   let key;
-  //   switch (currentStep) {
-  //     case 1:
-  //       key = 'BasicDetails';
-  //       break;
-  //     case 2:
-  //       key = 'AdvanceInformation';
-  //       break;
-  //     case 3:
-  //       key = 'Curriculam';
-  //       break;
-  //   }
-  //   setFormData(prevFormData => ({ ...prevFormData, [key]: { ...prevFormData[key], ...stepData } }));
-  //   setCurrentStep(currentStep + 1);
-  //   console.log(`Data after ${key}:`, newFormData); // This will log the updated formData to the console
-  //   return newFormData;
-  // };
+  const [formData, setFormData] = useState({ BasicDetails: {}, AdvanceInformation: {}, Curriculum: {}, PublishCourse: {} });
 
   // Inside AddCourse component
   const nextStep = (stepData) => {
-    let key;
+    let key = '';
     switch (currentStep) {
       case 1:
         key = 'BasicDetails';
@@ -1318,17 +1440,19 @@ function AddCourse() {
         key = 'AdvanceInformation';
         break;
       case 3:
-        key = 'Curriculam';
+        key = 'Curriculum';
         break;
       case 4:
-        Key = 'PublishCourse'
-      default:
-        key = '';
+        key = 'PublishCourse';
         break;
+      default:
+        console.warn('Unknown step');
+        return;
     }
 
     setFormData(prevFormData => {
-      const newFormData = { ...prevFormData, [key]: { ...prevFormData[key], ...stepData } };
+      const updatedStepData = { ...prevFormData[key], ...stepData };
+      const newFormData = { ...prevFormData, [key]: updatedStepData };
       console.log(`Data after ${key}:`, newFormData);
       return newFormData;
     });
@@ -1350,16 +1474,56 @@ function AddCourse() {
     }
   };
 
+  const handleSubmit = async (publishCourseDetails) => {
+    // Format the formData to match the backend schema
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      PublishCourse: publishCourseDetails
+    }));
+    const formattedData = {
+      courseName: formData.BasicDetails.courseName || "",
+      courseSubtitle: formData.BasicDetails.courseSubtitle || "",
+      courseCategory: formData.BasicDetails.category || "",
+      courseSubcategory: formData.BasicDetails.subCategory || "",
+      courseTopic: formData.BasicDetails.courseTopic || "",
+      courseLanguage: formData.BasicDetails.courseLanguage || "",
+      courseLevel: formData.BasicDetails.courseLevel || "",
+      courseDuration: formData.BasicDetails.courseDuration || "",
+      courseThumbnail: formData.AdvanceInformation.thumbnailSrc || "",
+      videoThumbnail: formData.AdvanceInformation.vidThumbnailSrc || "",
+      courseDescription: formData.AdvanceInformation.richEditor || "",
+      courseTopics: formData.AdvanceInformation.courseTopics || [],
+      targetAudience: formData.AdvanceInformation.targetAudience || [],
+      courseRequirements: formData.AdvanceInformation.courseRequirements || [],
+      sections: formData.Curriculum.sections || [],
+      welcomeMessage: publishCourseDetails.welcomeMessage || "",
+      congratulationsMessage: publishCourseDetails.congratulationsMessage || "",
+      instructors: publishCourseDetails.selectedInstructors || [],
+    };
+    const hasAllRequiredData = Object.values(formattedData).every(value => value !== undefined && value !== null);
+    console.log('before if')
+    if (hasAllRequiredData) {
+      console.log("Some required fields are missing:", formattedData);
+      return;
+    }
+    try {
+      const response = await addcoursefunction(formattedData);
+      console.log("Course submitted successfully:", response);
+    } catch (error) {
+      console.error("Error submitting course:", error);
+    }
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <BasicDetails onNext={nextStep} formData={formData.BasicDetails} />;
+        return <BasicDetails onNext={nextStep} />;
       case 2:
-        return <AdvanceInformation onNext={nextStep} onPrevious={previousStep} formData={formData.AdvanceInformation} setFormData={setFormData} />;
+        return <AdvanceInformation onNext={nextStep} onPrevious={previousStep} />;
       case 3:
         return <Curriculum onNext={nextStep} onPrevious={previousStep} formData={formData.Curriculum} />;
       case 4:
-        return <PublishCourse onNext={nextStep} onPrevious={previousStep} />;
+        return <PublishCourse onNext={nextStep} formData={formData.PublishCourse} onPrevious={previousStep} onSubmit={handleSubmit} />;
       default:
         return <div>Unknow step</div>
     }

@@ -84,6 +84,7 @@ exports.adminlogin = async (req, res) => {
 };
 
 exports.addCourse = async (req, res) => {
+    console.log('entering the api data')
     const { courseName,
         courseSubtitle,
         courseCategory,
@@ -101,9 +102,9 @@ exports.addCourse = async (req, res) => {
         sections,
         welcomeMessage,
         congratsMessage,
-        instructors, } = req.body;
-        
+        instructors, } = req.body;     
     const adminId = req.adminId;
+    console.log(req.body);
 
     try {
         const newCourse = new courses({

@@ -5,7 +5,7 @@ const lectureContentSchema = new mongoose.Schema({
     type: {
       type: String,
       enum: ['Video', 'Attach File', 'Description'],
-      required: true
+    //   required: true
     },
     url: {
       type: String,
@@ -20,7 +20,7 @@ const lectureContentSchema = new mongoose.Schema({
   const lectureSchema = new mongoose.Schema({
     name: {
       type: String,
-      required: true
+    //   required: true
     },
     content: lectureContentSchema
   }, { _id: false });
@@ -28,7 +28,7 @@ const lectureContentSchema = new mongoose.Schema({
   const sectionSchema = new mongoose.Schema({
     name: {
       type: String,
-      required: true
+    //   required: true
     },
     lectures: [lectureSchema]
   });
