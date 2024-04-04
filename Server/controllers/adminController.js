@@ -3,7 +3,7 @@ const users = require("../models/userSchema");
 const courses = require("../models/courseSchema");
 const checkouts = require("../models/checkoutSchema");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const SECRET_KEY = process.env.key;
 
 exports.adminregister = async (req, res) => {
