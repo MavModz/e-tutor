@@ -2,7 +2,7 @@ const superAdmin = require('../models/superAdminSchema');
 const category = require('../models/categorySchema');
 const admins = require('../models/adminSchema');
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const SECRET_KEY = process.env.key;
 
 exports.superadminregister = async (req, res) => {
