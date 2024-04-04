@@ -20,6 +20,12 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+app.use((req, res, next) => {
+    console.log("Origin header:", req.headers.origin);
+    next();
+});
+
+
 app.use("/", router);
 
 // app.listen(PORT, () => {
