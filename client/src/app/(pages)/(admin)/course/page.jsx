@@ -45,7 +45,7 @@ function Course() {
                                 key={course._id}
                                 courseName={course.courseName}
                                 courseCode={course.courseCode}
-                                teacherName={course.teacherName}
+                                teacherName={course.instructors}
                                 coursePrice={course.coursePrice}
                                 rating={course.rating}
                             />

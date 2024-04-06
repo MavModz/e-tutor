@@ -84,7 +84,6 @@ exports.adminlogin = async (req, res) => {
 };
 
 exports.addCourse = async (req, res) => {
-    console.log('entering the api data')
     const { courseName,
         courseSubtitle,
         courseCategory,
@@ -104,7 +103,7 @@ exports.addCourse = async (req, res) => {
         congratsMessage,
         instructors, } = req.body;     
     const adminId = req.adminId;
-    console.log(req.body);
+
 
     try {
         const newCourse = new courses({
@@ -134,11 +133,10 @@ exports.addCourse = async (req, res) => {
     }
 
     catch (error) {
+        console.error("Error saving course to database:", error);
         res.status(500).json({ error: 'internal server error', error })
     }
 }
-
-
 
 exports.totalenrollments = async (req, res) => {
     try {
