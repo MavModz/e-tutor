@@ -1,4 +1,4 @@
-.modal {
+.submission-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -10,7 +10,7 @@
     align-items: center;
 }
 
-.modal-content {
+.submission-modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;

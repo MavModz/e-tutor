@@ -4,17 +4,15 @@ require("dotenv").config();
 import React, { useState } from 'react';
 import './add-course.css';
 import { addcoursefunction } from '@/app/lib/Services/api';
-// import BasicDetails from '@/components/admin/addcourseform/BasicDetails/BasicDetails';
-// import AdvanceInformation from '@/components/admin/addcourseform/AdvanceInformation/AdvanceInformation';
-// import Curriculum from '@/components/admin/addcourseform/Curriculum/Curriculum';
-// import PublishCourse from '@/components/admin/addcourseform/PublishCourse/PublishCourse';
 
 import dynamic from 'next/dynamic';
 
-const BasicDetails = dynamic(() => import('@/components/admin/addcourseform/BasicDetails/BasicDetails'), {ssr: false});
-const AdvanceInformation = dynamic(() => import('@/components/admin/addcourseform/AdvanceInformation/AdvanceInformation'), {ssr:false});
-const Curriculum = dynamic(() => import('@/components/admin/addcourseform/Curriculum/Curriculum'), {ssr: false});
-const PublishCourse = dynamic(() => import('@/components/admin/addcourseform/PublishCourse/PublishCourse'), {ssr: false});
+const Success = dynamic(() => import('@/components/Modals/Success/Success'), { ssr: false });
+const Error = dynamic(() => import('@/components/Modals/Error/Error'), { ssr: false });
+const BasicDetails = dynamic(() => import('@/components/admin/addcourseform/BasicDetails/BasicDetails'), { ssr: false });
+const AdvanceInformation = dynamic(() => import('@/components/admin/addcourseform/AdvanceInformation/AdvanceInformation'), { ssr: false });
+const Curriculum = dynamic(() => import('@/components/admin/addcourseform/Curriculum/Curriculum'), { ssr: false });
+const PublishCourse = dynamic(() => import('@/components/admin/addcourseform/PublishCourse/PublishCourse'), { ssr: false });
 
 // async function uploadFileToS3(file, key) {
 //   const bucket_name = process.env.NEXT_PUBLIC_AWS_BUCKET_NAME;
@@ -1137,13 +1135,13 @@ const PublishCourse = dynamic(() => import('@/components/admin/addcourseform/Pub
 //     setSections(prevSections => {
 //       // Create a deep copy to prevent direct mutations
 //       const newSections = JSON.parse(JSON.stringify(prevSections));
-  
+
 //       // Determine the new lecture's name
 //       const newLectureName = `Lecture ${newSections[sectionIndex].lectures.length + 1}`;
-  
+
 //       // Check if this lecture name already exists to avoid duplicate names
 //       const doesLectureExist = newSections[sectionIndex].lectures.some(lecture => lecture.name === newLectureName);
-  
+
 //       if (!doesLectureExist) {
 //         // Push the new lecture only if it doesn't exist
 //         newSections[sectionIndex].lectures.push({
@@ -1151,7 +1149,7 @@ const PublishCourse = dynamic(() => import('@/components/admin/addcourseform/Pub
 //           content: { type: '', url: '', description: '' },
 //         });
 //       }
-  
+
 //       return newSections;
 //     });
 //   };
@@ -1165,7 +1163,7 @@ const PublishCourse = dynamic(() => import('@/components/admin/addcourseform/Pub
 //             alert("You cannot delete the last lecture in a section.");
 //             return section;
 //           }
-  
+
 //           const updatedLectures = section.lectures
 //             .filter((_, lIndex) => lIndex !== lectureIndex)
 //             .map((lecture, index) => {
@@ -1179,7 +1177,7 @@ const PublishCourse = dynamic(() => import('@/components/admin/addcourseform/Pub
 //               }
 //               return lecture;
 //             });
-  
+
 //           return {
 //             ...section,
 //             lectures: updatedLectures,
@@ -1189,8 +1187,8 @@ const PublishCourse = dynamic(() => import('@/components/admin/addcourseform/Pub
 //       });
 //     });
 //   };
-  
-   
+
+
 
 //   const handleCurriculum = () => {
 //     // Preparing the sections data to be passed to the parent component
@@ -1432,6 +1430,9 @@ function AddCourse() {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({ BasicDetails: {}, AdvanceInformation: {}, Curriculum: {}, PublishCourse: {} });
+  const [isSubmissionSuccessful, setIsSubmissionSuccessful] = useState(false);
+  const [isSubmissionUnSuccessful, setIsSubmissionUnSuccessful] = useState(false);
+
 
   // Inside AddCourse component
   const nextStep = (stepData) => {
@@ -1479,11 +1480,13 @@ function AddCourse() {
   };
 
   const handleSubmit = async (publishCourseDetails) => {
+
     // Format the formData to match the backend schema
     setFormData(prevFormData => ({
       ...prevFormData,
       PublishCourse: publishCourseDetails
     }));
+
     const formattedData = {
       courseName: formData.BasicDetails.courseName || "",
       courseSubtitle: formData.BasicDetails.courseSubtitle || "",
@@ -1501,20 +1504,27 @@ function AddCourse() {
       courseRequirements: formData.AdvanceInformation.courseRequirements || [],
       sections: formData.Curriculum.sections || [],
       welcomeMessage: publishCourseDetails.welcomeMessage || "",
-      congratulationsMessage: publishCourseDetails.congratulationsMessage || "",
+      congratsMessage: publishCourseDetails.congratulationsMessage || "",
       instructors: publishCourseDetails.selectedInstructors || [],
     };
-    const hasAllRequiredData = Object.values(formattedData).every(value => value !== undefined && value !== null);
-    console.log('before if')
+
+    const hasAllRequiredData = Object.values(formattedData).every(value => value !== undefined && value !== null && value !== "");
+    console.log(hasAllRequiredData);
     if (hasAllRequiredData) {
       console.log("Some required fields are missing:", formattedData);
+      setIsSubmissionUnSuccessful(true);
       return;
     }
-    try {
-      const response = await addcoursefunction(formattedData);
-      console.log("Course submitted successfully:", response);
-    } catch (error) {
-      console.error("Error submitting course:", error);
+    else {
+      try {
+        const response = await addcoursefunction(formattedData);
+        console.log("Course submitted successfully:", response);
+        sessionStorage.removeItem("video-thumbnail");
+        sessionStorage.removeItem("uploadedThumbnail");
+        setIsSubmissionSuccessful(true);
+      } catch (error) {
+        console.error("Error submitting course:", error);
+      }
     }
   };
 
@@ -1527,14 +1537,26 @@ function AddCourse() {
       case 3:
         return <Curriculum onNext={nextStep} onPrevious={previousStep} formData={formData.Curriculum} />;
       case 4:
-        return <PublishCourse onNext={nextStep} formData={formData.PublishCourse} onPrevious={previousStep} onSubmit={handleSubmit} />;
+        return <PublishCourse onNext={nextStep} onPrevious={previousStep} onSubmit={handleSubmit} />;
       default:
         return <div>Unknow step</div>
     }
   }
 
   return (
-    <div>{renderStep()}</div>
+    <div>
+      {renderStep()}
+      <Success
+        show={isSubmissionSuccessful}
+        onClose={() => setIsSubmissionSuccessful(false)}
+        message="addCourse"
+      />
+      <Error
+        show={isSubmissionUnSuccessful}
+        onClose={() => setIsSubmissionUnSuccessful(false)}
+        message="addCourse"
+      />
+    </div>
   )
 }
 

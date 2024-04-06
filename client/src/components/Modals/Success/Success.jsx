@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import successPopup from '../../../assets/images/success.gif';
 import './sucess.css';
 
 function Success({ show, onClose, message }) {
@@ -17,9 +16,9 @@ function Success({ show, onClose, message }) {
     
 
     return (
-        <div className="modal">
-            <div className="modal-content">
-                <Image src={successPopup} width={180} height={180} alt="success popup" />
+        <div className="submission-modal">
+            <div className="submission-modal-content">
+                <Image src= "/success.gif" width={180} height={180} unoptimized alt="success popup" />
                 <h2 className='popup-title-success'>Success!</h2>
                 <p className='popup-message'>{defaultMessage}</p>
                 <button

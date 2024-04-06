@@ -20,17 +20,17 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use((req, res, next) => {
-    console.log("Origin header:", req.headers.origin);
-    next();
-});
+// app.use((req, res, next) => {
+//     console.log("Origin header:", req.headers.origin);
+//     next();
+// });
 
 
 app.use("/", router);
 
-// app.listen(PORT, () => {
-//     console.log("server listening on port: " + PORT);
-// });
+app.listen(PORT, () => {
+    console.log("server listening on port: " + PORT);
+});
 
 // MODULE EXPORT FOR PRODUCTION SERVER
-module.exports = app;
+// module.exports = app;

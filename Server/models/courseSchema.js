@@ -3,35 +3,35 @@ const adminId = require('../models/adminSchema');
 
 const lectureContentSchema = new mongoose.Schema({
     type: {
-      type: String,
-      enum: ['Video', 'Attach File', 'Description'],
-    //   required: true
+        type: String,
+        enum: ['Video', 'Attach File', 'Description'],
+        //   required: true
     },
     url: {
-      type: String,
-      required: function() { return this.type !== 'Description'; }
+        type: String,
+        required: function () { return this.type !== 'Description'; }
     },
     description: {
-      type: String,
-      required: function() { return this.type === 'Description'; }
+        type: String,
+        required: function () { return this.type === 'Description'; }
     }
-  }, { _id: false });
-  
-  const lectureSchema = new mongoose.Schema({
+}, { _id: false });
+
+const lectureSchema = new mongoose.Schema({
     name: {
-      type: String,
-    //   required: true
+        type: String,
+        //   required: true
     },
     content: lectureContentSchema
-  }, { _id: false });
-  
-  const sectionSchema = new mongoose.Schema({
+}, { _id: false });
+
+const sectionSchema = new mongoose.Schema({
     name: {
-      type: String,
-    //   required: true
+        type: String,
+        //   required: true
     },
     lectures: [lectureSchema]
-  });
+});
 
 const courseSchema = new mongoose.Schema({
     courseName: {
@@ -97,16 +97,15 @@ const courseSchema = new mongoose.Schema({
         type: [String],
         required: true
     },
-    sections: {
-        sections: [sectionSchema],
-    },
+    sections: [sectionSchema],
+
     welcomeMessage: {
         type: String,
         required: true,
     },
     congratsMessage: {
         type: String,
-        required: true,
+        // required: true,
     },
     instructors: {
         type: [String],

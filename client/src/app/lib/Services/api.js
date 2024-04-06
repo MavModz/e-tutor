@@ -50,12 +50,10 @@ export const userchartfunction = async () => {
 }
 
 // ADD NEW COURSE
-export const addcoursefunction = async (submitData) => {
-    console.log('api data in api.js', submitData)
+export const addcoursefunction = async (formattedData) => {
+    console.log('api data in api.js', formattedData);
     try {
-        const response = await commonrequest("POST", `${backend_url}/admin/add-course`, {
-            submitData
-        });
+        const response = await commonrequest("POST", `${backend_url}/admin/add-course`, formattedData);
         console.log(response);
         return response.data;
     }

@@ -557,7 +557,7 @@ function Curriculum({ onNext, onPrevious }) {
           name: section.name,
           lectures: section.lectures.map(lecture => ({
             name: lecture.name,
-            content: lecture.content || { type: '', url: '', description: '' }, // Ensure content is initialized
+            content: { ...lecture.content }, // Ensure content is initialized
           }))
         })),
       };
