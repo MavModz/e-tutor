@@ -42,6 +42,43 @@
     justify-content: center;
 }
 
+.search-container {
+    width: 100%;
+    height: 72px;
+    display: flex;
+    position: relative;
+}
+
+.search-container svg {
+    position: absolute;
+    right: 10px;
+    top: 42%;
+    width: 25px;
+    height: 25px;
+    transform: translateY(0%);
+}
+
+.search-container input {
+    background-color: var(--background-white);
+    color: var(--secondary-text);
+    font-size: 17px;
+    font-weight: 500;
+    max-width: 100%;
+    width: 100%;
+    border: 1px solid var(--secondary-text);
+    height: 40px;
+    letter-spacing: .03rem;
+    outline: none;
+    transition: .25s;
+    border-radius: 4px;
+    text-indent: 20px;
+}
+
+.search-container input:focus,
+textarea:focus {
+    border: 1px solid var(--primary-new);
+}
+
 @media screen and (max-width: 1600px) {
     .course-list-cards {
         grid-template-columns: repeat(4, 1fr);

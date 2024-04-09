@@ -5,6 +5,7 @@ import aws_s3 from '@/app/lib/Services/aws_s3';
 import { Trash2, Upload } from 'lucide-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Header from '../../header/header';
 
 async function uploadFileToS3(file, key) {
   const bucket_name = process.env.NEXT_PUBLIC_AWS_BUCKET_NAME;
@@ -228,6 +229,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
 
   return (
     <div className="bg-[#f4f7fe] w-full min-h-full">
+      <Header />
       <div className="addcourse-container">
         <div className="addcourse-top flex gap-6">
           <h2 className='form-wizard-heading'><Image src="/Stack.svg" width={24} height={24} alt="Stack icon" />Advance Information</h2>

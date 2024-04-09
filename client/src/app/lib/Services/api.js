@@ -62,18 +62,6 @@ export const addcoursefunction = async (formattedData) => {
     }
 }
 
-// LISTING OF ALL COURSES
-export const allcoursesfunction = async () => {
-    try {
-        const response = await commonrequest("GET", `${backend_url}/user/all-courses`)
-        console.log(response.data);
-        return response.data;
-    }
-    catch (error) {
-        throw error;
-    }
-}
-
 // CATEGORIES FOR COURSES
 
 export const allcategoriesfunction = async () => {
@@ -103,6 +91,31 @@ export const allsubcategoriesfunction = async (categoryName) => {
 export const allinstructorsfunction = async () => {
     try {
         const response = await commonrequest("GET", `${backend_url}/superadmin/instructor-list`);
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+
+// LISTING OF ALL COURSES
+export const allcoursesfunction = async () => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/user/all-courses`)
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+
+// COURSE DETAILS
+
+export const coursedetailsfunction = async (courseId) => {
+    try{
+        const response = await commonrequest("GET", `${backend_url}/user/course-details/${courseId}`);
         return response.data;
     }
     catch (error) {

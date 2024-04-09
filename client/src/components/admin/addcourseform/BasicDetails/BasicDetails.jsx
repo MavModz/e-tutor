@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
 import { allcategoriesfunction, allsubcategoriesfunction } from '@/app/lib/Services/api';
+import Header from '../../header/header';
 
 function BasicDetails({ onNext }) {
     const router = useRouter();
@@ -174,6 +175,7 @@ function BasicDetails({ onNext }) {
 
     return (
         <div className="bg-[#f4f7fe] w-full min-h-full">
+            <Header />
             <div className="addcourse-container">
                 <div className="addcourse-top flex gap-6">
                     <h2 className='form-wizard-heading'><Image src="/Stack.svg" width={24} height={24} alt="Stack png icom" />Basic Details</h2>
