@@ -11,7 +11,7 @@ function CourseDetails({ course }) {
                     <h1>{course.courseName}</h1>
                 </div>
                 <div className="courseinfo-container">
-                    <h2>price</h2>
+                    <h2>{course.instructors}</h2>
                 </div>
             </div>
         </div>
@@ -20,9 +20,10 @@ function CourseDetails({ course }) {
 
 export async function getStaticPaths() {
     const courses = await allcoursesfunction();
-    const paths = courses
-    .filter(course => course && course.courseCode)
-    .map(course => ({
+    if (!courses) {
+        return { paths: [], fallback: 'blocking' };
+    }
+    const paths = courses.filter(course => course.courseCode).map(course => ({
         params: { courseId: course.courseCode.toString() },
     }));
     return { paths, fallback: 'blocking' };
