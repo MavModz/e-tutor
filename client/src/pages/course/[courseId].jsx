@@ -11,7 +11,7 @@ function CourseDetails({ course }) {
                     <h1>{course.courseName}</h1>
                 </div>
                 <div className="courseinfo-container">
-                    <h2>price</h2>
+                    <h2>{course.instructors}</h2>
                 </div>
             </div>
         </div>
