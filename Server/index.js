@@ -28,9 +28,9 @@ app.use(cors(corsOptions));
 
 app.use("/", router);
 
-// app.listen(PORT, () => {
-//     console.log("server listening on port: " + PORT);
-// });
+app.listen(PORT, () => {
+    console.log("server listening on port: " + PORT);
+});
 
 // MODULE EXPORT FOR PRODUCTION SERVER
-module.exports = app;
+// module.exports = app;

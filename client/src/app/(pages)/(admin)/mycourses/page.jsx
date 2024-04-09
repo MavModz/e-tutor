@@ -7,13 +7,33 @@ import { allcoursesfunction } from '@/app/lib/Services/api';
 import Header from '@/components/admin/header/header';
 import Card from '@/components/cards/Card';
 import './courses.css';
+import Auth from '../../(auth)/middleware/auth';
+import Loader from '@/components/loader/Loader';
 import Searchbar from '@/components/Searchbar/Searchbar';
 
-function Course() {
+function MyCourses() {
+    const { isLoading } = Auth();
+    const [showLoader, setShowLoader] = useState(true);
     const [courses, setCourses] = useState([]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (!isLoading) {
+                setShowLoader(false);
+            }
+        }, 1000);
+
+        if (!isLoading) {
+            setShowLoader(false);
+        }
+
+        return () => clearTimeout(timer);
+    }, [isLoading]);
+
     useEffect(() => {
         fetchAllCourses();
     }, [])
+
 
     const fetchAllCourses = async () => {
         try {
@@ -24,31 +44,44 @@ function Course() {
         }
     };
 
+    if (showLoader) {
+        return <div><Loader /></div>;
+    }
+
+
     return (
         <div className='bg-[#f4f7fe] w-full min-h-full'>
             <Header />
             <div className="course-card-container">
-                <Searchbar />
                 <div className="course-top-header flex justify-between mt-8 items-center">
                     <h4>My Courses</h4>
-                    <Link href= "/add-course">
+                    <Link href="/add-course">
                         <button className='course-action-btn flex items-center gap-2'>
                             <Image src="/Create-course.svg" alt="add course svg icon" width={20} height={20} />
                             Create Course
                         </button>
                     </Link>
                 </div>
+                <div className="course-filter-container">
+                    <div className="search-container">
+                        <Searchbar
+                            label='Search:'
+                            placeholder='Search in your Courses...'
+                        />
+                    </div>
+                </div>
                 <div className="course-list-card-wrapper">
                     <div className="course-list-cards">
                         {courses.map(course => (
-                            <Card
-                                key={course._id}
-                                courseName={course.courseName}
-                                courseCode={course.courseCode}
-                                teacherName={course.instructors}
-                                coursePrice={course.coursePrice}
-                                rating={course.rating}
-                            />
+                            <Link href={`/course/${course.courseCode}`}  key={course.courseCode}>
+                                <Card
+                                    courseName={course.courseName}
+                                    courseCode={course.courseCode}
+                                    teacherName={course.instructors}
+                                    coursePrice={course.coursePrice}
+                                    rating={course.rating}
+                                />
+                            </Link>
                         ))}
                     </div>
                 </div>
@@ -57,4 +90,5 @@ function Course() {
     )
 }
 
-export default Course
+
+export default MyCourses

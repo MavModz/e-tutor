@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { X } from 'lucide-react';
 import aws_s3 from '@/app/lib/Services/aws_s3';
+import Header from '../../header/header';
 
 async function uploadFileToS3(file, key) {
     const bucket_name = process.env.NEXT_PUBLIC_AWS_BUCKET_NAME;
@@ -570,6 +571,7 @@ function Curriculum({ onNext, onPrevious }) {
   
     return (
       <div className="bg-[#f4f7fe] w-full min-h-full">
+        <Header />
         <div className="addcourse-container">
           <div className="addcourse-top flex gap-6">
             <h2 className='form-wizard-heading'><Image src="/Stack.svg" width={24} height={24} alt="Stack png icom" />Curriculam</h2>

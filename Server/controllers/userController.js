@@ -149,8 +149,8 @@ exports.allcategories = async (req, res) => {
     res.status(200).json(allcategories);
   }
 
-  catch(error) {
-    res.status(500).json({error: 'Internal server error', error})
+  catch (error) {
+    res.status(500).json({ error: 'Internal server error', error })
   }
 }
 
@@ -159,14 +159,31 @@ exports.allsubcategories = async (req, res) => {
     const categoryName = req.params.categoryName;
     const category = await Categories.findOne({ categoryName });
 
-    if(!category) {
-      res.status(404).json({error: 'Category not found'});
+    if (!category) {
+      res.status(404).json({ error: 'Category not found' });
       return;
     }
     const allsubcategories = category.subCategories
     res.status(200).json(allsubcategories);
   }
-  catch(error) {
-    res.status(500).json({error: 'Internal server error', error})
+  catch (error) {
+    res.status(500).json({ error: 'Internal server error', error })
+  }
+}
+
+exports.coursedetails = async (req, res) => {
+  try {
+    const courseCode = req.params.courseId;
+    const course = await Course.findOne({ courseCode });
+
+    if (!courseCode) {
+      res.status(404).json({ error: 'Course not found' });
+      return;
+    }
+
+    res.status(200).json(course);
+  }
+  catch (error) {
+    res.status(500).json({ error: "Internal server Error", error });
   }
 }

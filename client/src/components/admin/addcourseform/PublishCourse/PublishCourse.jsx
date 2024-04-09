@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
 import { allinstructorsfunction } from '@/app/lib/Services/api';
+import Header from '../../header/header';
 ;
 
 function PublishCourse({ onPrevious, onSubmit }) {
@@ -84,6 +85,7 @@ function PublishCourse({ onPrevious, onSubmit }) {
   
     return (
       <div className="bg-[#f4f7fe] w-full min-h-full">
+        <Header />
         <div className="addcourse-container">
           <div className="addcourse-top flex gap-6">
             <h2 className='form-wizard-heading'><Image src="/Stack.svg" width={24} height={24} alt="Stack png icom" />Publish Course</h2>

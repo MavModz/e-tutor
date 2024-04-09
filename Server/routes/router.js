@@ -23,4 +23,5 @@ router.get("/user/total-courses", userAuth, userControllers.totalenrolledcourses
 router.get("/user/all-courses", userControllers.allcourses);
 router.get("/user/all-categories", userControllers.allcategories);
 router.get("/user/all-subcategories/:categoryName", userControllers.allsubcategories);
+router.get("/user/course-details/:courseId", userControllers.coursedetails);
 module.exports = router;

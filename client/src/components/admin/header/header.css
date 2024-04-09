@@ -9,6 +9,7 @@
     height: 5rem;
     width: 100%;
     background-color: var(--background-white);
+    padding: 0 calc(1% + 10px);
 }
 
 p {
@@ -60,12 +61,12 @@ p {
     width: 20px;
     height: 20px;
     filter: grayscale(100%);
-    transition: filter 0.2s ease; 
-  }
-  
-  .nav-menu-items.active .image-state {
+    transition: filter 0.2s ease;
+}
+
+.nav-menu-items.active .image-state {
     filter: none;
-  }
+}
 
 .nav-item-content {
     display: flex;
@@ -80,6 +81,7 @@ p {
     display: flex;
     align-items: center;
     gap: 1rem;
+    height: 50px;
 }
 
 .nav-button-list {
@@ -92,26 +94,8 @@ p {
 }
 
 .nav-button-items {
-    background: var(--secondary-white);
-    height: 40px;
-    width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50px;
-    transition: background-color 0.3s;
 }
 
-.nav-button-items:hover {
-    background-color: var(--background-variant);
-}
-
-.nav-button-items-active {
-    background: var(--background-variant);
-    height: 40px;
-    width: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50px;
-}

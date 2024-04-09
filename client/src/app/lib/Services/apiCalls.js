@@ -13,11 +13,19 @@ export const commonrequest = async (method, url, body, header) => {
         data: body
     };
 
-    if(url !== `${backend_url}/admin/login`) {
+    // if(url !== `${backend_url}/admin/login`) {
+    //     const authtoken = sessionStorage.getItem('auth_token');
+    //     const token = authtoken.slice(0,-1);
+
+    //     config.headers['Authorization']= `Bearer ${token}`;
+    // }
+
+    if (url !== `${backend_url}/admin/login` && typeof window !== "undefined") {
         const authtoken = sessionStorage.getItem('auth_token');
         const token = authtoken.slice(0,-1);
-
-        config.headers['Authorization']= `Bearer ${token}`;
+        if (token) {
+           config. headers['Authorization'] = `Bearer ${token}`;
+        }
     }
 
     //AXIOS INSTANCE
