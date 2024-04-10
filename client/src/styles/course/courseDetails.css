@@ -1,0 +1,69 @@
+.coursedata-container {
+    min-height: 100vh;
+}
+
+.top-details-wrapper>h1 {
+    font-family: var(--secondary-font);
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+    color: var(--text-dark);
+}
+
+.top-details-wrapper>h3 {
+    font-family: var(--secondary-font);
+    font-size: 20px;
+    line-height: 32px;
+    font-weight: 400px;
+    color: var(--secondary-text);
+}
+
+.course-ratings-wrapper h4,
+h6 {
+    font-family: var(--secondary-font);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-dark);
+    line-height: 22px;
+}
+
+.course-instructor-wrapper p {
+    font-family: var(--secondary-font);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    color: var(--secondary-text);
+}
+
+.couresedetails-wrapper-right {
+    background-color: var(--background-white);
+    box-shadow: var(--box-shadow);
+    min-height: 1064px;
+    padding: 12px;
+}
+
+.course-price-wrapper h2 {
+    font-family: var(--secondary-text);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32px;
+}
+
+.discount-ribbon {
+    height: 100%;
+    padding: 8px 12px;
+    background-color: #FFEEE8;
+    color: #FF6636;
+    font-family: var(--secondary-text);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.alarm-wrapper {
+    color: #E34444;
+    font-family: var(--secondary-font);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+}
