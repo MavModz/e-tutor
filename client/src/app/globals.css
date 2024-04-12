@@ -44,6 +44,8 @@ body {
   --background-white: #ffff;
   --background-variant: #2684fc;
   --secondary-white: #f2f2f2;
+  --btn-primary: #FF6636;
+  --btn-secondary: #FFEEE8;
 
   --primary-font: 'Montserrat', sans-serif;
   --secondary-font: 'Inter', sans-serif;

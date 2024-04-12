@@ -18,8 +18,7 @@
     color: var(--secondary-text);
 }
 
-.course-ratings-wrapper h4,
-h6 {
+.course-ratings-wrapper h4 {
     font-family: var(--secondary-font);
     font-size: 16px;
     font-weight: 500;
@@ -38,7 +37,7 @@ h6 {
 .couresedetails-wrapper-right {
     background-color: var(--background-white);
     box-shadow: var(--box-shadow);
-    min-height: 1064px;
+    min-height: 950px;
     padding: 12px;
 }
 
@@ -52,8 +51,8 @@ h6 {
 .discount-ribbon {
     height: 100%;
     padding: 8px 12px;
-    background-color: #FFEEE8;
-    color: #FF6636;
+    background-color: var(--btn-secondary);
+    color: var(--btn-primary);
     font-family: var(--secondary-text);
     font-weight: 500;
     font-size: 14px;
@@ -66,4 +65,143 @@ h6 {
     font-weight: 500;
     line-height: 20px;
     letter-spacing: -0.01em;
+}
+
+.course-basic-info-container h6 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+}
+
+.course-basic-info-container p {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+}
+
+.purchase-button p {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+}
+
+.purchase-button span {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
+
+}
+
+.add-to-cart-btn {
+    color: var(--background-white);
+    background-color: var(--btn-primary);
+    border: 1px solid var(--btn-primary);
+    padding: 0px 32px;
+    font-family: var(--secondary-font);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 50px;
+    letter-spacing: -0.01em;
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.buy-now-btn {
+    color: var(--btn-primary);
+    background-color: var(--btn-secondary);
+    border: 1px solid var(--btn-secondary);
+    padding: 0px 32px;
+    font-family: var(--secondary-font);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 50px;
+    letter-spacing: -0.01em;
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.whishlist-btn {
+    width: 182px;
+    color: var(--secondary-text);
+    background-color: var(--background-white);
+    border: 1px solid var(--secondary-white);
+    padding: 0px 16px;
+    font-family: var(--secondary-font);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: -0.01em;
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.course-include-container h6 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+}
+
+.course-include-container p {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+}
+
+.share-btn-container h6 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+}
+
+.copy-btn {
+    width: 137px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 12px;
+    background-color: #F5F7FA;
+}
+
+.copy-btn button {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    text-align: left;
+
 }
