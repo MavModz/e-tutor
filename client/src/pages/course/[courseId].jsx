@@ -1,14 +1,39 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Overview from '@/components/course/courseOverview/Overview';
+import Curriculum from '@/components/course/courseCurriculum/Curriculum';
+import Instructor from '@/components/course/courseInstructor/Instructor';
+import Review from '@/components/course/courseReview/Review';
 import { allcoursesfunction, coursedetailsfunction } from '@/app/lib/Services/api';
 import Header from '@/components/admin/header/header';
 
 function CourseDetails({ course }) {
+
+    const [activeTab, setActiveTab] = useState('Overview');
+    const navItems = [
+        { text: 'Overview', component: <Overview courseDescription={course.courseDescription} /> },
+        { text: 'Curriculum', component: <Curriculum course={course} /> },
+        { text: 'Instructor', component: <Instructor course={course} /> },
+        { text: 'Review', component: <Review course={course} /> },
+    ];
+    const activeComponent = navItems.find(item => item.text === activeTab)?.component;
+
+    const handlePlayVideo = () => {
+        const video = document.getElementById('courseVideo');
+        video.play();
+        video.setAttribute('controls', '');
+        video.style.display = 'block';
+        const playButton = document.querySelector('.course-video-thumb-container .play-button');
+        playButton.style.display = 'none';
+    };
+
     return (
         <div className='bg-[#f4f7fe] w-full min-h-full'>
             <Header />
+            <div className="background-breadcrumb">
+            </div>
             <div className="coursedata-container">
                 <div className="coursedetails-container flex gap-6 px-[150px] py-[80px]">
-                    <div className="coursedetails-wrapper-left w-full">
+                    <div className="coursedetails-wrapper-left w-full flex flex-col gap-10 mt-[-240px]">
                         <div className="top-details-wrapper flex flex-col gap-3">
                             <h1>{course.courseName}</h1>
                             <h3>{course.courseSubtitle}</h3>
@@ -25,14 +50,31 @@ function CourseDetails({ course }) {
                         </div>
                         <div className="course-video-thumb-container">
                             {course.videoThumbnail && (
-                                <video width="100%" controls>
-                                    <source src={course.videoThumbnail} type="video/mp4" />
-                                    Your browser does not support the video tag.
-                                </video>
+                                <div className="video-wrapper">
+                                    <video id="courseVideo" width="100%" height="auto" preload="metadata">
+                                        <source src={course.videoThumbnail} type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <div className="play-button" onClick={handlePlayVideo}></div>
+                                </div>
                             )}
                         </div>
+                        <div className="course-overview-nav h-10 flex border-b">
+                            {navItems.map((item, index) => (
+                                <button
+                                    key={index}
+                                    className={`course-nav-btn ${activeTab === item.text ? 'active' : ''}`}
+                                    onClick={() => setActiveTab(item.text)}
+                                >
+                                    {item.text}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="course-overview-container flex flex-col gap-5">
+                            {activeComponent}
+                        </div>
                     </div>
-                    <div className="couresedetails-wrapper-right w-2/5">
+                    <div className="couresedetails-wrapper-right w-2/5 mt-[-240px]">
                         <div className="course-price-info-container flex flex-col gap-3 mb-3">
                             <div className="price-container flex justify-between items-center h-8">
                                 <div className="course-price-wrapper">
