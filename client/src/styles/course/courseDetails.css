@@ -92,12 +92,13 @@
 
 .course-nav-btn.active {
     border-bottom: 2px solid var(--btn-primary);
-  }
+}
 
-.couresedetails-wrapper-right {
+.coursedetails-wrapper-right {
     background-color: var(--background-white);
     box-shadow: var(--box-shadow);
     min-height: 950px;
+    height: 100%;
     padding: 12px;
 }
 
@@ -274,10 +275,123 @@
 }
 
 .course-overview-container p {
-font-family: var(--secondary-font);
-color: var(--secondary-text);
-font-size: 14px;
-font-weight: 400;
-line-height: 22px;
-letter-spacing: -0.01em;
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+}
+
+.course-points-list {
+    background: #E1F7E366;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.course-topic-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 20px;
+}
+
+.topics-list {
+    display: flex;
+    align-items: flex-start;
+    word-break: break-word;
+    margin-bottom: 10px;
+    max-width: 384px;
+    width: 100%;
+}
+
+.topics-list,
+.target-audience span {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+}
+
+.curriculum-stats span {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.course-data {
+    min-height: 250px;
+    border: 1px solid #e5e7eb;
+}
+
+.section {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.section-title {
+    display: block;
+    /* width: 90%; */
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 15px 20px;
+    cursor: pointer;
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+}
+
+.unique-section-count {
+    /* width: 10%; */
+    padding: 15px 20px;
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
+    cursor: default;
+}
+
+.section-title.active {
+    color: var(--btn-primary);
+    font-family: var(--secondary-font);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: left;
+
+}
+
+.lectures-list {
+    list-style-type: none;
+}
+
+.lecture {
+    padding: 8px 20px;
+}
+
+.lecture a,
+span {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
 }

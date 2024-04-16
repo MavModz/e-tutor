@@ -10,8 +10,8 @@ function CourseDetails({ course }) {
 
     const [activeTab, setActiveTab] = useState('Overview');
     const navItems = [
-        { text: 'Overview', component: <Overview courseDescription={course.courseDescription} /> },
-        { text: 'Curriculum', component: <Curriculum course={course} /> },
+        { text: 'Overview', component: <Overview courseDescription={course.courseDescription} courseTopics={course.courseTopics} targetAudience={course.targetAudience} courseRequirements={course.courseRequirements} /> },
+        { text: 'Curriculum', component: <Curriculum sections={course.sections} /> },
         { text: 'Instructor', component: <Instructor course={course} /> },
         { text: 'Review', component: <Review course={course} /> },
     ];
@@ -70,11 +70,11 @@ function CourseDetails({ course }) {
                                 </button>
                             ))}
                         </div>
-                        <div className="course-overview-container flex flex-col gap-5">
+                        <div className="course-overview-container flex flex-col gap-10">
                             {activeComponent}
                         </div>
                     </div>
-                    <div className="couresedetails-wrapper-right w-2/5 mt-[-240px]">
+                    <div className="coursedetails-wrapper-right w-2/5 mt-[-240px]">
                         <div className="course-price-info-container flex flex-col gap-3 mb-3">
                             <div className="price-container flex justify-between items-center h-8">
                                 <div className="course-price-wrapper">
