@@ -56,12 +56,17 @@ function Curriculum(course) {
                 <ul className='lectures-list'>
                   {section.lectures && section.lectures.map((lecture, lectureIndex) => (
                     <li key={lectureIndex} className="lecture">
-                      {lecture.type === 'Video' ? (
-                        <a href={`/course/video/${lecture.content.url}`}>
+                      {lecture.content && lecture.content.type === 'Video' ? (
+                        // <a href={`/course/video/${lecture.content.url}`}>
+                        //   {lecture.name}
+                        // </a>
+                        <span className='flex gap-2'>
+                          <img src="/PlayBlack.svg" width={16} height={16} alt="Play svg" />
                           {lecture.name}
-                        </a>
+                          </span>
                       ) : (
-                        <span>
+                        <span className='flex gap-2'>
+                          <img src="/File.svg" width={16} height={16} alt="file svg icon" />
                           {lecture.name}
                         </span>
                       )}

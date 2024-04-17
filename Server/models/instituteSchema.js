@@ -1,8 +1,6 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const institutes = require('./instituteSchema');
+const mongoose = require('mongoose');
 
-const adminSchema = new mongoose.Schema({
+const instituteSchema = new mongoose.Schema({
     name: {
         type: String,
         trim: true,
@@ -22,28 +20,13 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    birth: {
-        type: String,
-        unique: true,
-        required: true,
-    },
-    gender: {
-        type: String,
-        required: true,
-    },
     role: {
         type: String,
-        default: 'admin',
+        default: 'institute admin',
     },
-    enrolledInstitute: {
-        type: [{ type: String, ref:institutes}]
-    }
-
 });
 
-// HASH PASSWORD
-
-adminSchema.pre("save", async function (next) {
+instituteSchema.pre("save", async function (next) {
     if (!this.isModified("password"))
         return next();
 
@@ -56,8 +39,7 @@ adminSchema.pre("save", async function (next) {
     catch (error) {
         next(error);
     }
-})
+});
 
-const admins = new mongoose.model("admins", adminSchema);
-
-module.exports = admins;
+const instituteaadmins = new mongoose.model("instituteadmins", instituteSchema);
+module.exports = instituteaadmins;

@@ -5,11 +5,14 @@ const userAuth = require("../middleware/userAuth");
 const userControllers = require("../controllers/userController");
 const adminControllers = require("../controllers/adminController");
 const superAdminControllers = require("../controllers/superAdminController");
+const instituteAdminControllers = require("../controllers/instituteController");
 
 //Routes
 router.post("/superadmin/add-category", superAdminControllers.addCategory);
 router.post("/superadmin/add-subcategory", superAdminControllers.addSubCategory);
-router.get("/superadmin/instructor-list", superAdminControllers.allinstructors)
+router.get("/superadmin/instructor-list", superAdminControllers.allinstructors);
+
+router.post("/institute/register", instituteAdminControllers.instituteadminregister);
 
 router.post("/admin/register", adminControllers.adminregister);
 router.post("/admin/login", adminControllers.adminlogin);
