@@ -8,7 +8,7 @@ import Header from '@/components/admin/header/header';
 
 function CourseDetails({ course }) {
 
-    const [activeTab, setActiveTab] = useState('Overview');
+    const [activeTab, setActiveTab] = useState('Curriculum');
     const navItems = [
         { text: 'Overview', component: <Overview courseDescription={course.courseDescription} courseTopics={course.courseTopics} targetAudience={course.targetAudience} courseRequirements={course.courseRequirements} /> },
         { text: 'Curriculum', component: <Curriculum sections={course.sections} /> },

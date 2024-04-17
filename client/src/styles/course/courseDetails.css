@@ -328,17 +328,20 @@
 }
 
 .course-data {
-    min-height: 250px;
-    border: 1px solid #e5e7eb;
+    min-height: 104px;
 }
 
 .section {
+    border: 1px solid #e5e7eb;
+    border-bottom: none;
+}
+
+.section:last-child {
     border-bottom: 1px solid #e5e7eb;
 }
 
 .section-title {
     display: block;
-    /* width: 90%; */
     background: none;
     border: none;
     text-align: left;
@@ -355,7 +358,6 @@
 }
 
 .unique-section-count {
-    /* width: 10%; */
     padding: 15px 20px;
     font-family: var(--secondary-font);
     color: var(--text-dark);
