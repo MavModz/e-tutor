@@ -115,6 +115,7 @@ exports.addCourse = async (req, res) => {
         congratsMessage,
         instructors, } = req.body;
     const adminId = req.adminId;
+    const instituteadminId = req.instituteadminId;
 
 
     try {
@@ -137,8 +138,13 @@ exports.addCourse = async (req, res) => {
             welcomeMessage,
             congratsMessage,
             instructors,
-            adminId,
         });
+        if(adminId) {
+            newCourse.adminId = adminId;
+        }
+        else if(instituteadminId){
+            newCourse.instituteId = instituteadminId;
+        }
 
         const storeData = await newCourse.save();
         res.status(200).json(storeData);

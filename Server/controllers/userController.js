@@ -82,7 +82,7 @@ exports.enrollCourse = async (req, res) => {
       return res.status(404).json({ message: 'user not found' });
     }
     if (user.enrolledCourses.includes(courseCode)) {
-      return res.status(400).json({ message: 'user already enrolled' });
+      return res.status(201).json({ message: 'user already enrolled' });
     }
 
     user.enrolledCourses.push(courseCode);
