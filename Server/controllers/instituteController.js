@@ -1,14 +1,9 @@
 const instituteadmins = require("../models/instituteSchema");
-// const users = require("../models/userSchema");
-// const courses = require("../models/courseSchema");
-// const checkouts = require("../models/checkoutSchema");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const SECRET_KEY = process.env.key;
+const admins = require("../models/adminSchema");
 
 exports.instituteadminregister = async (req, res) => {
     const { name, phone, email, password } = req.body;
-    if (!name || !phone || !email || !password ) {
+    if (!name || !phone || !email || !password) {
         return res.status(401).json({ message: "Fill all fields" })
     }
     try {
@@ -28,6 +23,45 @@ exports.instituteadminregister = async (req, res) => {
             res.status(200).json(storeData);
         }
     } catch (error) {
-        res.status(400).json({ error: "Invalid Details", error });
+        res.status(500).json({ error: "Invalid Details", error });
     }
 };
+
+exports.subadminregister = async (req, res) => {
+    const { name, phone, email, password, birth, gender } = req.body;
+    if (!name || !phone || !email || !password || !birth || !gender) {
+        return res.status(401).json({ message: "Fill all fields" })
+    }
+
+    try {
+        const instituteadminId = req.instituteadminId;
+        const preadmin = await admins.findOne({ phone: phone });
+        console.log(preadmin);
+        if (!preadmin) {
+            const newadmin = new admins({
+                name,
+                phone,
+                email,
+                password,
+                birth,
+                gender,
+                enrolledInstitute: [instituteadminId],
+            })
+            const storeData = await newadmin.save();
+            return res.status(200).json({ message: 'Admin registered in Institute Successfully' });
+        }
+        else if (preadmin) {
+            const enrolledInstitutes = preadmin.enrolledInstitute.includes(instituteadminId);
+            if (enrolledInstitutes) {
+                console.log('Enrolled institute is true');
+                return res.status(201).json({ message: 'Admin already enrolled in the Institute' })
+            }
+            preadmin.enrolledInstitute.push(instituteadminId);
+            const storeData = await preadmin.save();
+            return res.status(200).json({ message: ' Institute Enrollment successfull', preadmin: preadmin });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ error: "Internal server error", error })
+    }
+}

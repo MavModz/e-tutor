@@ -36,7 +36,8 @@ const adminSchema = new mongoose.Schema({
         default: 'admin',
     },
     enrolledInstitute: {
-        type: [{ type: String, ref:institutes}]
+        type: [{ type: String, ref:institutes}],
+        default: []
     }
 
 });

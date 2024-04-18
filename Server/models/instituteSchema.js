@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require("bcryptjs");
 
 const instituteSchema = new mongoose.Schema({
     name: {
@@ -41,5 +42,5 @@ instituteSchema.pre("save", async function (next) {
     }
 });
 
-const instituteaadmins = new mongoose.model("instituteadmins", instituteSchema);
-module.exports = instituteaadmins;
+const instituteadmins = new mongoose.model("instituteadmins", instituteSchema);
+module.exports = instituteadmins;
