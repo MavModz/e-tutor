@@ -88,9 +88,9 @@ export const allsubcategoriesfunction = async (categoryName) => {
 
 // INSTRUCTUTORS DATA
 
-export const allinstructorsfunction = async () => {
+export const courseinstructorsfunction = async () => {
     try {
-        const response = await commonrequest("GET", `${backend_url}/superadmin/instructor-list`);
+        const response = await commonrequest("GET", `${backend_url}/admin/course-instructors`);
         return response.data;
     }
     catch (error) {

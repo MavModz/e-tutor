@@ -4,9 +4,8 @@ import Image from 'next/image';
 import { X } from 'lucide-react';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
-import { allinstructorsfunction } from '@/app/lib/Services/api';
+import { courseinstructorsfunction } from '@/app/lib/Services/api';
 import Header from '../../header/header';
-;
 
 function PublishCourse({ onPrevious, onSubmit }) {
 
@@ -20,7 +19,7 @@ function PublishCourse({ onPrevious, onSubmit }) {
   
     const fetchInstructorData = async (value = '') => {
       try {
-        const response = await allinstructorsfunction(value);
+        const response = await courseinstructorsfunction(value);
         if (Array.isArray(response)) {
           let filteredResult;
           if (value.trim() === '') {

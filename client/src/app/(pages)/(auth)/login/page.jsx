@@ -76,7 +76,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter Your Password"
-                maxLength={6}
+                maxLength={10}
               />
               <Fingerprint color="#1D3A70" strokeWidth={1.5} />
             </div>
