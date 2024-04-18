@@ -53,7 +53,6 @@ exports.subadminregister = async (req, res) => {
         else if (preadmin) {
             const enrolledInstitutes = preadmin.enrolledInstitute.includes(instituteadminId);
             if (enrolledInstitutes) {
-                console.log('Enrolled institute is true');
                 return res.status(201).json({ message: 'Admin already enrolled in the Institute' })
             }
             preadmin.enrolledInstitute.push(instituteadminId);

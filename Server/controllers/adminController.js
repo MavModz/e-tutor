@@ -91,7 +91,7 @@ exports.adminlogin = async (req, res) => {
 
     catch (error) {
         console.error("Error during password comparison:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error", error });
     }
 };
 
@@ -153,6 +153,27 @@ exports.addCourse = async (req, res) => {
     catch (error) {
         console.error("Error saving course to database:", error);
         res.status(500).json({ error: 'internal server error', error })
+    }
+}
+
+exports.courseinstructors = async (req, res) => {
+    try {
+        const adminId = req.adminId;
+        const instituteadminId = req.instituteadminId;
+        let teacherQuery = {};
+        
+        if(adminId){
+            teacherQuery = {_id: adminId}
+        }
+        else if(instituteadminId){
+            teacherQuery = {enrolledInstitute: instituteadminId}
+        }
+        const courseTeachers = await admins.find(teacherQuery).select("-password");
+        res.status(200).json(courseTeachers);
+    }
+    catch(error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal server error", error})
     }
 }
 
