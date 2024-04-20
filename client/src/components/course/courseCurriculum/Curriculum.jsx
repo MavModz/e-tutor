@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import Image from 'next/image';
 
 function Curriculum(course) {
 
@@ -29,11 +30,11 @@ function Curriculum(course) {
         </div>
         <div className="curriculum-stats flex gap-4">
           <div className="section-count flex gap-1.5 items-center">
-            <img src="/FolderNotchOpen.svg" width={20} height={20} alt="Folder svg icon" />
+            <Image src="/FolderNotchOpen.svg" width={20} height={20} alt="Folder svg icon" />
             <span>{sectionCount} Sections</span>
           </div>
           <div className="lecture-count flex gap-1.5 items-center">
-            <img src="/PlayCircle.svg" width={20} height={20} alt="Lecture svg icon" />
+            <Image src="/PlayCircle.svg" width={20} height={20} alt="Lecture svg icon" />
             <span>{lecturesCount} lectures</span>
           </div>
         </div>
@@ -48,7 +49,7 @@ function Curriculum(course) {
                   {section.name}
                 </button>
                 <button className='unique-section-count flex gap-1.5'>
-                  <img src="/PlayCircle.svg" width={20} height={20} alt="Lecture svg icon" />
+                  <Image src="/PlayCircle.svg" width={20} height={20} alt="Lecture svg icon" />
                   {sectionLecturesCount} lectures
                 </button>
               </div>
@@ -61,12 +62,12 @@ function Curriculum(course) {
                         //   {lecture.name}
                         // </a>
                         <span className='flex gap-2'>
-                          <img src="/PlayBlack.svg" width={16} height={16} alt="Play svg" />
+                          <Image src="/PlayBlack.svg" width={16} height={16} alt="Play svg" />
                           {lecture.name}
                           </span>
                       ) : (
                         <span className='flex gap-2'>
-                          <img src="/File.svg" width={16} height={16} alt="file svg icon" />
+                          <Image src="/File.svg" width={16} height={16} alt="file svg icon" />
                           {lecture.name}
                         </span>
                       )}
