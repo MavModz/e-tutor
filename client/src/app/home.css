@@ -1,0 +1,107 @@
+.main-wrapper {
+    width: 100%;
+    min-height: 100%;
+}
+
+.hero-area {
+    padding-top: 124px;
+    padding-bottom: 60px;
+    width: 100%;
+    min-height: calc(100vh - 140.25px);
+}
+
+.hero-section {
+    margin-left: calc(20% - 194px);
+    margin-right: calc(20% - 194px);
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+}
+
+
+.section-title h2 {
+    font-family: var(--secondary-font);
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 56px;
+    margin-bottom: 8px;
+}
+
+.hero-left-content p {
+    font-family: var(--secondary-font);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--secondary-text);
+    margin-bottom: 20px;
+    line-height: 1.5rem;
+}
+
+.hero-input input {
+    color: var(--secondary-text);
+    font-size: 17px;
+    font-weight: 500;
+    max-width: 100%;
+    width: 80%;
+    border: 1px solid var(--primary-new);
+    height: 60px;
+    letter-spacing: .03rem;
+    background-color: transparent;
+    outline: none;
+    transition: .25s;
+    border-radius: 50px;
+    text-indent: 20px;
+    margin-top: 8px;
+}
+
+.hero-form {
+    position: relative;
+}
+
+.hero-btn {
+    width: 18%;
+    padding: 14px;
+    border-radius: 50px;
+    background-color: var(--primary-new);
+    font-family: var(--secondary-font);
+    color: var(--background-white);
+    position: absolute;
+    top: 23%;
+    right: 22%;
+    font-weight: 500;
+    font-size: 16px;
+    white-space: nowrap;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    outline: none;
+    font-size: 16px;
+    letter-spacing: .025em;
+    overflow: hidden;
+}
+
+.hero-btn:after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: 0%;
+    width: 20%;
+    height: 200%;
+    opacity: 0;
+    transform: rotate(30deg);
+    background: rgba(255, 255, 255, 0.13);
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0.13) 0%,
+            rgba(255, 255, 255, 0.13) 50%,
+            rgba(255, 255, 255, 0.5) 95%,
+            rgba(255, 255, 255, 0.0) 100%);
+}
+
+.hero-btn:hover:after {
+    opacity: 1;
+    left: 130%;
+    transition-property: left, top, opacity;
+    transition-duration: 0.6s, 0.6s, 0.10s;
+    transition-timing-function: ease;
+}

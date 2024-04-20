@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import Image from 'next/image';
 import Overview from '@/components/course/courseOverview/Overview';
 import Curriculum from '@/components/course/courseCurriculum/Curriculum';
 import Instructor from '@/components/course/courseInstructor/Instructor';
@@ -43,7 +44,7 @@ function CourseDetails({ course }) {
                                     <h4>{course.instructors}</h4>
                                 </div>
                                 <div className="course-details-ratings flex gap-2 items-center">
-                                    <img src="/Star.svg" width={20} height={20} alt="course ratings" />
+                                    <Image src="/Star.svg" width={20} height={20} alt="course ratings" />
                                     <h4>{course.rating}</h4>
                                 </div>
                             </div>
@@ -85,29 +86,29 @@ function CourseDetails({ course }) {
                                 </div>
                             </div>
                             <div className="alarm-wrapper">
-                                <p className='flex gap-2'><img src="/Alarm.svg" width={20} height={20} alt="alarm-svg" /> 2 days left at this price</p>
+                                <p className='flex gap-2'><Image src="/Alarm.svg" width={20} height={20} alt="alarm-svg" /> 2 days left at this price</p>
                             </div>
                         </div>
                         <hr />
                         <div className="course-basic-info-container flex flex-col gap-4 my-3">
                             <div className="course-duration-wrapper flex justify-between items-center">
-                                <h6 className='flex gap-2'><img src="/Clock.svg" width={24} height={24} alt="clock svg" />Course Duration</h6>
+                                <h6 className='flex gap-2'><Image src="/Clock.svg" width={24} height={24} alt="clock svg" />Course Duration</h6>
                                 <p>{course.courseDuration}</p>
                             </div>
                             <div className="course-level-wrapper flex justify-between items-center">
-                                <h6 className='flex gap-2'><img src="/bar-chart.svg" width={24} height={24} alt="bar-chart svg" />Course Level</h6>
+                                <h6 className='flex gap-2'><Image src="/bar-chart.svg" width={24} height={24} alt="bar-chart svg" />Course Level</h6>
                                 <p>{course.courseLevel}</p>
                             </div>
                             <div className="student-enrolled-wrapper flex justify-between items-center">
-                                <h6 className='flex gap-2'><img src="/Users.svg" width={24} height={24} alt="users svg" />Students Enrolled</h6>
+                                <h6 className='flex gap-2'><Image src="/Users.svg" width={24} height={24} alt="users svg" />Students Enrolled</h6>
                                 <p>69,419,618</p>
                             </div>
                             <div className="language-wrapper flex justify-between items-center">
-                                <h6 className='flex gap-2'><img src="/Notebook.svg" width={24} height={24} alt="notebook svg" />Language</h6>
+                                <h6 className='flex gap-2'><Image src="/Notebook.svg" width={24} height={24} alt="notebook svg" />Language</h6>
                                 <p>{course.courseLanguage}</p>
                             </div>
                             <div className="subtitle-language-wrapper flex justify-between items-center">
-                                <h6 className='flex gap-2'><img src="/Notepad.svg" width={24} height={24} alt="notepad svg" />Subtitle Language</h6>
+                                <h6 className='flex gap-2'><Image src="/Notepad.svg" width={24} height={24} alt="notepad svg" />Subtitle Language</h6>
                                 <p>{course.optionalLanguage}</p>
                             </div>
                         </div>
@@ -125,13 +126,13 @@ function CourseDetails({ course }) {
                         <div className="course-include-container flex flex-col gap-4 my-3">
                             <h6>This course includes:</h6>
                             <div className="course-include-list flex flex-col gap-3">
-                                <p className='flex gap-3'><img src="/Clock-color.svg" width={24} height={24} alt="clock svg" />Lifetime access</p>
-                                <p className='flex gap-3'><img src="/CurrencyDollarSimple.svg" width={24} height={24} alt="CurrencyDollarSimplesvg" />30-days money-back guarantee</p>
-                                <p className='flex gap-3'><img src="/Notebook-color.svg" width={24} height={24} alt="Notebook-color svg" />Free exercises file & downloadable resources</p>
-                                <p className='flex gap-3'><img src="/Trophy.svg" width={24} height={24} alt="Trophy svg" />Shareable certificate of completion</p>
-                                <p className='flex gap-3'><img src="/Monitor.svg" width={24} height={24} alt="Monitor svg" />Access on mobile , tablet and TV</p>
-                                <p className='flex gap-3'><img src="/Notepad-color.svg" width={24} height={24} alt="Notepad-color svg" />English subtitles</p>
-                                <p className='flex gap-3'><img src="/Stack-color.svg" width={24} height={24} alt="Stack svg" />100% online course</p>
+                                <p className='flex gap-3'><Image src="/Clock-color.svg" width={24} height={24} alt="clock svg" />Lifetime access</p>
+                                <p className='flex gap-3'><Image src="/CurrencyDollarSimple.svg" width={24} height={24} alt="CurrencyDollarSimplesvg" />30-days money-back guarantee</p>
+                                <p className='flex gap-3'><Image src="/Notebook-color.svg" width={24} height={24} alt="Notebook-color svg" />Free exercises file & downloadable resources</p>
+                                <p className='flex gap-3'><Image src="/Trophy.svg" width={24} height={24} alt="Trophy svg" />Shareable certificate of completion</p>
+                                <p className='flex gap-3'><Image src="/Monitor.svg" width={24} height={24} alt="Monitor svg" />Access on mobile , tablet and TV</p>
+                                <p className='flex gap-3'><Image src="/Notepad-color.svg" width={24} height={24} alt="Notepad-color svg" />English subtitles</p>
+                                <p className='flex gap-3'><Image src="/Stack-color.svg" width={24} height={24} alt="Stack svg" />100% online course</p>
                             </div>
                         </div>
                         <hr />
@@ -139,7 +140,7 @@ function CourseDetails({ course }) {
                             <h6>Share this course:</h6>
                             <div className="share-btn-wrapper h-12 gap-2">
                                 <div className="copy-btn">
-                                    <button className='flex gap-3'><img src="/Copy.svg" width={24} height={24} alt="Copy svg" />Copy link</button>
+                                    <button className='flex gap-3'><Image src="/Copy.svg" width={24} height={24} alt="Copy svg" />Copy link</button>
                                 </div>
                             </div>
                         </div>
