@@ -22,7 +22,7 @@ function Header() {
   }, []);
 
   // Add 'header-scrolled' class to the header container if the page is scrolled
-  const headerClass = isScrolled ? 'header-container header-scrolled' : 'header-container';
+  const headerClass = isScrolled ? 'header-area-container header-scrolled' : 'header-area-container';
 
     return (
         <div className={headerClass}>

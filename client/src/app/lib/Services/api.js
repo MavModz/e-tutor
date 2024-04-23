@@ -4,7 +4,7 @@ import { backend_url } from "./helper";
 // ALL USER AND ADMIN LOGIN
 export const loginfunction = async (email, password) => {
     try {
-        const response = await commonrequest("POST", `${backend_url}/admin/login`, { email: email, password: password });
+        const response = await commonrequest("POST", `${backend_url}/admin/login`, { email: email, password: password }, null, null, false);
         return response.data;
     }
     catch (error) {
@@ -15,7 +15,7 @@ export const loginfunction = async (email, password) => {
 // USER REGISTER
 export const registerfunction = async (name, phone, email, password, birth, gender) => {
     try {
-        const response = await commonrequest("POST", `${backend_url}/user/register`, { name: name, phone: phone, email: email, birth: birth, gender: gender, password: password });
+        const response = await commonrequest("POST", `${backend_url}/user/register`, { name: name, phone: phone, email: email, birth: birth, gender: gender, password: password }, null, null, false);
         return response.data;
     }
     catch (error) {
@@ -26,7 +26,7 @@ export const registerfunction = async (name, phone, email, password, birth, gend
 //ADMIN CHART DATA
 export const adminchartfunction = async () => {
     try {
-        const response = await commonrequest("GET", `${backend_url}/admin/total-enrollments`);
+        const response = await commonrequest("GET", `${backend_url}/admin/total-enrollments`, null, null, false);
         console.log(response);
         return response.data;
     }
@@ -66,7 +66,7 @@ export const addcoursefunction = async (formattedData) => {
 
 export const allcategoriesfunction = async () => {
     try {
-        const response = await commonrequest("GET", `${backend_url}/user/all-categories`)
+        const response = await commonrequest("GET", `${backend_url}/user/all-categories`, null, null, false)
         return response.data;
     }
     catch (error) {
@@ -78,7 +78,7 @@ export const allcategoriesfunction = async () => {
 
 export const allsubcategoriesfunction = async (categoryName) => {
     try {
-        const response = await commonrequest("GET", `${backend_url}/user/all-subcategories/${categoryName}`)
+        const response = await commonrequest("GET", `${backend_url}/user/all-subcategories/${categoryName}`, null, null, false)
         return response.data;
     }
     catch (error) {
@@ -102,7 +102,7 @@ export const courseinstructorsfunction = async () => {
 // LISTING OF ALL COURSES
 export const allcoursesfunction = async () => {
     try {
-        const response = await commonrequest("GET", `${backend_url}/user/all-courses`)
+        const response = await commonrequest("GET", `${backend_url}/user/all-courses`, null, null, false)
         return response.data;
     }
     catch (error) {
@@ -115,10 +115,22 @@ export const allcoursesfunction = async () => {
 
 export const coursedetailsfunction = async (courseId) => {
     try{
-        const response = await commonrequest("GET", `${backend_url}/user/course-details/${courseId}`);
+        const response = await commonrequest("GET", `${backend_url}/user/course-details/${courseId}`, null, null, false);
         return response.data;
     }
     catch (error) {
+        throw error;
+    }
+}
+
+// COURSE IN CATEGORIES COUNT
+
+export const coursecategorycountfunction = async (courseCategory) => {
+    try {
+     const response = await commonrequest("GET", `${backend_url}/user/total-courses-in-category/${courseCategory}`, null, null, false);
+     return response.data;    
+    }
+    catch(error) {
         throw error;
     }
 }
