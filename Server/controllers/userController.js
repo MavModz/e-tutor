@@ -187,3 +187,18 @@ exports.coursedetails = async (req, res) => {
     res.status(500).json({ error: "Internal server Error", error });
   }
 }
+
+exports.coursecategorycount = async (req, res) => {
+  try {
+    const courseCategory = req.params.courseCategory;
+    const category = await Course.find({ courseCategory: courseCategory });
+    if (!category) {
+      res.status(404).json([]);
+    }
+    res.status(200).json(category.length);
+  }
+  catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server Error", error });
+  }
+}
