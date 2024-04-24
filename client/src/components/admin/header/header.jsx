@@ -30,7 +30,10 @@ function Header() {
     <div className='header-container'>
       <div className="header-wrapper">
         <div className="logo-container">
-          <Image src='/astronaut.jpg' width={60} height={60} className="header-logo" alt="main logo img" priority />
+          <Image src="/Logo.svg" width={120} height={54}
+            alt="logo svg"
+            onError={(e) => e.target.src = '/LOGO.png'}
+          />
         </div>
         <div className="nav-menu">
           <ul className='nav-menu-list'>

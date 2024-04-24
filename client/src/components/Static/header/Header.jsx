@@ -29,7 +29,10 @@ function Header() {
             <div className="header-wrapper">
                 <div className="header-area flex justify-between items-center">
                     <div className="logo-container w-1/5 flex items-center">
-                        <Image src="/Logo.svg" width={120} height={54} alt="logo svg" />
+                        <Image src="/Logo.svg" width={120} height={54}
+                        alt="logo svg"
+                        onError={(e) => e.target.src = '/LOGO.png'}
+                        />
                     </div>
                     <div className="header-button-container w-4/5 flex justify-end">
                         <Link href='/login' passHref>
