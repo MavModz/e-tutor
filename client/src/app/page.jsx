@@ -2,20 +2,33 @@
 import React, { useState, useEffect } from 'react';
 import "./home.css";
 import Image from 'next/image';
+import Card from '@/components/cards/Card';
+import Link from 'next/link';
 import Header from '@/components/Static/header/Header';
-import { coursecategorycountfunction } from './lib/Services/api';
+import { coursecategorycountfunction, allcoursesfunction } from './lib/Services/api';
 
 
 export default function Home() {
   const [categoryCounts, setCategoryCounts] = useState({});
+  const [bestSellingCourses, setBestSellingCourse] = useState([]);
+
   const categories = [
-    { text: 'Marketing', icon: <img src="/business.svg" width={64} height={64} alt="business caregory svg" /> },
-    { text: 'IT & Software', icon: <img src="/business.svg" width={64} height={64} alt="business caregory svg" /> },
-    { text: 'Business', icon: <img src="/business.svg" width={64} height={64} alt="business caregory svg" /> },
-    { text: 'Design', icon: <img src="/business.svg" width={64} height={64} alt="business caregory svg" /> }
+    { text: 'K-12', color: '#EBEBFF', icon: <img src="/Label.svg" width={64} height={64} alt="business caregory svg" /> },
+    { text: 'Business', color: '#E1F7E3', icon: <img src="/business.svg" width={64} height={64} alt="business caregory svg" /> },
+    { text: 'Finance & Accounting', color: '#FFF2E5', icon: <img src="/Finance.svg" width={64} height={64} alt="business caregory svg" /> },
+    { text: 'IT & Software', color: '#FFF0F0', icon: <img src="/IT-Software.svg" width={64} height={64} alt="business caregory svg" /> },
+    { text: 'Office Productivity', color: '#F5F7FA', icon: <img src="/Office-Productivity.svg" width={64} height={64} alt="business caregory svg" /> },
+    { text: 'Marketing', color: '#EBEBFF', icon: <img src="/Marketing.svg" width={64} height={64} alt="business caregory svg" /> },
+    { text: 'Personal Development', color: '#FFEEE8', icon: <img src="/Personal-Development.svg" width={64} height={64} alt="business caregory svg" /> },
+    { text: 'Photography & Video', color: '#F5F7FA', icon: <img src="/Photography.svg" width={64} height={64} alt="business caregory svg" /> },
+    { text: 'Lifestyle', color: '#FFF2E5', icon: <img src="/Lifestyle.svg" width={64} height={64} alt="business caregory svg" /> },
+    { text: 'Design', color: '#FFEEE8', icon: <img src="/Design.svg" width={64} height={64} alt="business caregory svg" /> },
+    { text: 'Health & Fitness', color: '#E1F7E3', icon: <img src="/Health.svg" width={64} height={64} alt="business caregory svg" /> },
+    { text: 'Music', color: '#FFF2E5', icon: <img src="/Music.svg" width={64} height={64} alt="business caregory svg" /> },
   ]
 
   useEffect(() => {
+    fetchBestSellerCourses();
     categories.forEach((category) => {
       fetchCourseCategoryCount(category.text);
     });
@@ -29,6 +42,7 @@ export default function Home() {
           ...prevCounts,
           [courseCategory]: response
         };
+        console.log(newCounts)
         return newCounts;
       });
     }
@@ -36,6 +50,17 @@ export default function Home() {
       console.log('error while getting the course category count', error);
     }
   };
+
+  const fetchBestSellerCourses = async () => {
+    try {
+      const response = await allcoursesfunction();
+      const bestCourses = response.slice(-8);
+      setBestSellingCourse(bestCourses);
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <main className="min-h-screen">
@@ -78,7 +103,7 @@ export default function Home() {
             <h2>Browse Top Category</h2>
             <div className="course-category-cards">
               {categories.map((item, index) => (
-                <div className="category-cards" key={index}>
+                <div className="category-cards" key={index} style={{ backgroundColor: item.color }}>
                   {item.icon}
                   <div className="category-sub-info flex flex-col gap-2">
                     <h2>
@@ -89,6 +114,31 @@ export default function Home() {
                     </span>
                   </div>
                 </div>
+              ))}
+            </div>
+            <div className="browse-category-cta flex gap-3  items-center">
+              <p>We have more category & subcategory.</p>
+              <Link href='/categories' passHref>
+                <button className='flex gap-2  items-center'>Browse All <img src="/ArrowRight.svg" width={24} height={24} alt="Right arrow" /></button>
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="best-selling-container">
+          <div className="best-selling-area">
+            <h2>Best selling courses</h2>
+            <div className="best-selling-wrapper">
+              {bestSellingCourses.map(course => (
+                <Link href={`/course/${course.courseCode}`} key={course.courseCode}>
+                  <Card
+                    courseThumbnail={course.courseThumbnail}
+                    courseName={course.courseName}
+                    courseCode={course.courseCode}
+                    teacherName={course.instructors}
+                    coursePrice={course.coursePrice}
+                    rating={course.rating}
+                  />
+                </Link>
               ))}
             </div>
           </div>

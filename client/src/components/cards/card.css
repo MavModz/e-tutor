@@ -1,5 +1,5 @@
 .card-container {
-    width: 335px;
+    width: 312px;
     box-shadow: var(--box-shadow-variant);
     border-radius: 12px 12px 0 0;
 }
@@ -9,7 +9,7 @@
 }
 
 .card-thumbnail {
-    border-radius: 12px 12px 0 0;
+    /* border-radius: 12px 12px 0 0; */
     height: 100%;
     width: 100%;
 }
@@ -23,10 +23,14 @@
 
 .card-course-title>h4 {
     font-family: var(--secondary-font);
+    color: var(--text-dark);
     font-size: 16px;
     font-weight: 500;
     line-height: 22px;
-    color: var(--text-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 175px;
 }
 
 .card-course-title>p {
