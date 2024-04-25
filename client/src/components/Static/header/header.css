@@ -16,6 +16,11 @@
     padding: 0 30px;
 }
 
+.img-static-header-logo {
+    width: 120px;
+    height: 54px;
+}
+
 .header-button-area {
     background-color: var(--primary-new);
     color: var(--background);

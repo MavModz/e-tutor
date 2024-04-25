@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import "./home.css";
 import Image from 'next/image';
-import Card from '@/components/cards/Card';
+import Coursecard from '@/components/cards/courseCard/Coursecard';
 import Link from 'next/link';
 import Header from '@/components/Static/header/Header';
 import { coursecategorycountfunction, allcoursesfunction } from './lib/Services/api';
@@ -93,7 +93,7 @@ export default function Home() {
                 </form>
               </div>
               <div className='hero-right-content flex justify-center w-1/2'>
-                <Image src="/hero-image.svg" width={494} height={494} alt='hero-section' />
+                <Image src="/hero-image.svg" width={494} height={494} priority={false} className='hero-img' alt='hero-section' />
               </div>
             </div>
           </div>
@@ -130,11 +130,10 @@ export default function Home() {
             <div className="best-selling-wrapper">
               {bestSellingCourses.map(course => (
                 <Link href={`/course/${course.courseCode}`} key={course.courseCode}>
-                  <Card
+                  <Coursecard
                     courseThumbnail={course.courseThumbnail}
+                    courseCategory={course.courseCategory}
                     courseName={course.courseName}
-                    courseCode={course.courseCode}
-                    teacherName={course.instructors}
                     coursePrice={course.coursePrice}
                     rating={course.rating}
                   />
