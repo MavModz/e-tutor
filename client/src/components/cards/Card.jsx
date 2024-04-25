@@ -9,9 +9,11 @@ function Card({ courseThumbnail, courseName, courseCode, teacherName, coursePric
                 <div className="card-wrapper">
                     <div className="card-image">
                         <Image src={courseThumbnail} width={312} height={178}
-                        alt="courses thumbnail"
-                        className='card-thumbnail'
-                        onError={(e) => e.target.src='/course-img.png'}
+                            alt="courses thumbnail"
+                            className='card-thumbnail'
+                            priority={false}
+                            quality={80}
+                            onError={(e) => e.target.src = '/course-img.png'}
                         />
                     </div>
                     <div className="card-data">
@@ -21,8 +23,14 @@ function Card({ courseThumbnail, courseName, courseCode, teacherName, coursePric
                         </div>
                         <hr />
                         <div className="course-card-info">
-                            <Image src='/Star.svg' width={20} height={20} alt="course rating" />
-                            <span>{rating}</span>
+                            <div className="course-rating">
+                                <Image src='/Star.svg' width={20} height={20} alt="course rating" />
+                                <span>{rating}</span>
+                            </div>
+                            <div className="total-students">
+                                <Image src='/User.svg' width={20} height={20} alt='user svg' />
+                                <span className='total-students-data'>265.7K <p>students</p></span>
+                            </div>
                         </div>
                         <hr />
                         <div className="card-course-detail flex justify-between items-end">

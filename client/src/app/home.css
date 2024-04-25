@@ -18,6 +18,11 @@
     align-items: center;
 }
 
+.hero-img {
+    width: auto;
+    height: auto;
+}
+
 
 .section-title h2 {
     font-family: var(--secondary-font);
