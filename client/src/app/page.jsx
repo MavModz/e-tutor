@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import "./home.css";
 import Image from 'next/image';
 import Coursecard from '@/components/cards/courseCard/Coursecard';
+import FeaturedCourse from '@/components/cards/featuredCard/FeaturedCourse';
 import Link from 'next/link';
 import Header from '@/components/Static/header/Header';
 import { coursecategorycountfunction, allcoursesfunction } from './lib/Services/api';
@@ -11,6 +12,7 @@ import { coursecategorycountfunction, allcoursesfunction } from './lib/Services/
 export default function Home() {
   const [categoryCounts, setCategoryCounts] = useState({});
   const [bestSellingCourses, setBestSellingCourse] = useState([]);
+  const [featuredCourses, setFeaturedCourses] = useState([]);
 
   const categories = [
     { text: 'K-12', color: '#EBEBFF', icon: <img src="/Label.svg" width={64} height={64} alt="business caregory svg" /> },
@@ -55,7 +57,11 @@ export default function Home() {
     try {
       const response = await allcoursesfunction();
       const bestCourses = response.slice(-8);
+      const featuredCourses = response.slice(-4);
       setBestSellingCourse(bestCourses);
+      //need to make new API for Best Selling courses
+      setFeaturedCourses(featuredCourses);
+      //need to make new API for Feature courses
     }
     catch (error) {
       console.log(error);
@@ -129,13 +135,37 @@ export default function Home() {
             <h2>Best selling courses</h2>
             <div className="best-selling-wrapper">
               {bestSellingCourses.map(course => (
-                <Link href={`/course/${course.courseCode}`} key={course.courseCode}>
+                <Link href={`/course/${course.courseCode}`} key={course.courseCode} passHref>
                   <Coursecard
                     courseThumbnail={course.courseThumbnail}
                     courseCategory={course.courseCategory}
                     courseName={course.courseName}
                     coursePrice={course.coursePrice}
                     rating={course.rating}
+                  />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="featured-course-container">
+          <div className="featured-course-area">
+            <div className="featured-heading flex justify-between">
+              <h2 className='max-w-[380px]'>Our feature courses</h2>
+              <p className='max-w-[424px]'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat adipisci doloribus blanditiis numquam natus?</p>
+            </div>
+            <div className="featured-course-card-area">
+
+              {featuredCourses.map(course => (
+                <Link href={`/course/${course.courseCode}`} key={course.courseCode} passHref>
+                  <FeaturedCourse
+                    courseThumbnail={course.courseThumbnail}
+                    courseCategory={course.courseCategory}
+                    courseName={course.courseName}
+                    coursePrice={course.coursePrice}
+                    rating={course.rating}
+                    courseLevel={course.courseLevel}
+                    courseDuration={course.courseDuration}
                   />
                 </Link>
               ))}

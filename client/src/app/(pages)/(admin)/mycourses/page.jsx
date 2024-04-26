@@ -73,8 +73,9 @@ function MyCourses() {
                 <div className="course-list-card-wrapper">
                     <div className="course-list-cards">
                         {courses.map(course => (
-                            <Link href={`/course/${course.courseCode}`}  key={course.courseCode}>
+                            <Link href={`/course/${course.courseCode}`} key={course.courseCode}>
                                 <Card
+                                    courseThumbnail={course.courseThumbnail}
                                     courseName={course.courseName}
                                     courseCode={course.courseCode}
                                     teacherName={course.instructors}

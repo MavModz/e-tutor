@@ -1,0 +1,28 @@
+.featured-card-container {
+    display: flex;
+    width: 648px;
+    height: 170px;
+    border: 1px solid #E9EAF0;
+}
+
+.featured-card-container:hover {
+    box-shadow: var(--box-shadow);
+}
+
+.featured-card-thumbnail {
+    width: 240px;
+    min-height: 170px;
+}
+
+.featured-course-card-data {
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.featured-course-card-info {
+    display: flex;
+    justify-content: space-between;
+}

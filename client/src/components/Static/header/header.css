@@ -19,6 +19,7 @@
 .img-static-header-logo {
     width: 120px;
     height: 54px;
+    object-fit: contain;
 }
 
 .header-button-area {
