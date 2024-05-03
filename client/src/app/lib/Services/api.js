@@ -98,6 +98,18 @@ export const courseinstructorsfunction = async () => {
     }
 }
 
+// TOP INSTRUCTORS OF THE MONTH
+
+export const topinstructorsfunction = async () => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/superadmin/instructor-list`, null, null, false);
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
 
 // LISTING OF ALL COURSES
 export const allcoursesfunction = async () => {

@@ -33,7 +33,7 @@ function Card({ courseThumbnail, courseName, courseCode, teacherName, coursePric
                             </div>
                         </div>
                         <hr />
-                        <div className="card-course-detail flex justify-between items-end">
+                        <div className="card-course-details flex justify-between items-end">
                             <h5 className='card-course-instructor flex flex-col'>
                                 <span>Instructor</span>
                                 {teacherNames}

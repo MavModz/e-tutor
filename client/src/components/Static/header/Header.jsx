@@ -37,7 +37,7 @@ function Header() {
           </div>
           <div className="header-button-container w-4/5 flex justify-end">
             <Link href='/login' passHref>
-              <button className='header-button-area flex gap-1.5'><Image src="/login-icon.svg" width={12} height={12} alt="login logo svg" className='static-header-logo' />Login</button>
+              <button className='header-button-area hover-btn-effect flex gap-1.5'><Image src="/login-icon.svg" width={12} height={12} alt="login logo svg" className='static-header-logo' />Login</button>
             </Link>
           </div>
         </div>

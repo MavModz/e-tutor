@@ -62,6 +62,35 @@ body {
   font-family: var(--primary-font);
 }
 
+.hover-btn-effect {
+  position: absolute; 
+}
+
+.hover-btn-effect:after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: 0%;
+  width: 20%;
+  height: 200%;
+  opacity: 0;
+  transform: rotate(30deg);
+  background: rgba(255, 255, 255, 0.13);
+  background: linear-gradient(to right,
+          rgba(255, 255, 255, 0.13) 0%,
+          rgba(255, 255, 255, 0.13) 50%,
+          rgba(255, 255, 255, 0.5) 95%,
+          rgba(255, 255, 255, 0.0) 100%);
+}
+
+.hover-btn-effect:hover:after {
+  opacity: 1;
+  left: 130%;
+  transition-property: left, top, opacity;
+  transition-duration: 0.6s, 0.6s, 0.10s;
+  transition-timing-function: ease;
+}
+
 /* WEBSITE SCROLLBAR */
 ::-webkit-scrollbar {
   width: 10px;

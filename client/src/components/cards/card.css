@@ -1,7 +1,11 @@
 .card-container {
     width: 312px;
+    background-color: var(--background-white);
+    border: 1px solid #E9EAF0;
+}
+
+.card-container:hover {
     box-shadow: var(--box-shadow-variant);
-    border-radius: 12px 12px 0 0;
 }
 
 .card-wrapper {
@@ -26,7 +30,7 @@
     font-family: var(--secondary-font);
     color: var(--text-dark);
     font-size: 16px;
-    font-weight:500;
+    font-weight: 500;
     line-height: 22px;
     white-space: nowrap;
     overflow: hidden;
@@ -34,7 +38,7 @@
     max-width: 175px;
 }
 
-.course-card-title > h4 {
+.course-card-title>h4 {
     font-family: var(--secondary-font);
     color: var(--text-dark);
     font-size: 16px;
@@ -121,4 +125,6 @@
     line-height: 12px;
     text-align: left;
     text-transform: uppercase;
+    display: flex;
+    align-items: center;
 }

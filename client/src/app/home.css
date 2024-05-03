@@ -1,7 +1,3 @@
-* {
-    box-sizing: border-box;
-}
-
 .main-wrapper {
     width: 100%;
     min-height: 100%;
@@ -73,7 +69,6 @@
     background-color: var(--primary-new);
     font-family: var(--secondary-font);
     color: var(--background-white);
-    position: absolute;
     top: 24%;
     right: 12%;
     font-weight: 500;
@@ -88,31 +83,6 @@
     font-size: 16px;
     letter-spacing: .025em;
     overflow: hidden;
-}
-
-.hero-btn:after {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: 0%;
-    width: 20%;
-    height: 200%;
-    opacity: 0;
-    transform: rotate(30deg);
-    background: rgba(255, 255, 255, 0.13);
-    background: linear-gradient(to right,
-            rgba(255, 255, 255, 0.13) 0%,
-            rgba(255, 255, 255, 0.13) 50%,
-            rgba(255, 255, 255, 0.5) 95%,
-            rgba(255, 255, 255, 0.0) 100%);
-}
-
-.hero-btn:hover:after {
-    opacity: 1;
-    left: 130%;
-    transition-property: left, top, opacity;
-    transition-duration: 0.6s, 0.6s, 0.10s;
-    transition-timing-function: ease;
 }
 
 .course-category-container {
@@ -139,7 +109,9 @@
 
 .course-category-area>h2,
 .best-selling-area>h2,
-.featured-heading>h2 {
+.featured-heading>h2,
+.recently-added-heading>h2,
+.top-instructor-area>h2 {
     font-family: var(--secondary-font);
     color: var(--text-dark);
     font-size: 40px;
@@ -246,23 +218,234 @@
 
 .featured-course-container {
     padding: 80px 30px;
-    /* max-width: 1400px; */
     min-height: 350px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 111px;
     gap: 40px;
 }
 
 .featured-course-card-area {
-    /* max-width: 1400px; */
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
     grid-auto-rows: minmax(100px, auto);
 }
 
+.recently-added-container {
+    width: 100%;
+    padding-bottom: 80px;
+}
+
+.recently-added-course-area {
+    margin-left: calc(20% - 194px);
+    margin-right: calc(20% - 194px);
+    padding: 0 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.recently-added-course-card-area {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.browse-course-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 24px;
+    font-family: var(--secondary-font);
+    color: var(--btn-primary);
+    background-color: var(--btn-secondary);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 48px;
+    letter-spacing: -0.008em;
+    text-align: left;
+    overflow: hidden;
+}
+
+.become-instructor-container {
+    background-color: #f6f7fe;
+    min-height: 600px;
+    width: 100%;
+    padding: 80px 0;
+}
+
+.become-instructor-area {
+    margin-left: calc(20% - 194px);
+    margin-right: calc(20% - 194px);
+    padding: 0 100px;
+    display: flex;
+    gap: 24px;
+}
+
+.become-instructor-cta {
+    width: 50%;
+    max-height: 270px;
+    background-color: var(--btn-primary);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.instructor-btn-container {
+    width: 196px;
+    height: 48px;
+    position: relative;
+}
+
+.instructor-cta {
+    gap: 12px;
+    padding: 0 24px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 48px;
+    letter-spacing: -0.008em;
+    text-align: left;
+    width: 196px;
+    font-family: var(--secondary-font);
+    color: var(--btn-primary);
+    background-color: var(--btn-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.instructor-txt h3 {
+    font-family: var(--secondary-font);
+    color: var(--background-white);
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.instructor-txt p {
+    font-family: var(--secondary-font);
+    color: var(--background-white);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
+    width: 60%;
+}
+
+.become-instructor-points {
+    width: 50%;
+    max-height: 270px;
+    background-color: var(--background-white);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 27px;
+}
+
+.become-instructor-points h3 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.instructor-point-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.list-text p {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+}
+
+.top-instructor-container {
+    padding: 80px 30px;
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.top-instructor-area {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: -240px;
+    width: 1400px;
+    min-height: 532px;
+    background-color: var(--background-white);
+    border: 1px solid #E9EAF0;
+    padding: 40px;
+}
+
+.trusted-companies-container {
+    padding: 80px 0;
+}
+
+.trusted-companies-area {
+    /* margin: 0 150px; */
+    margin-left: calc(20% - 194px);
+    margin-right: calc(20% - 194px);
+    padding: 0 100px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-text-container {
+    width: 424px;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.left-text-container h3 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.left-text-container p {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    width: 70%;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.trusted-companies-wrapper {
+    background-color: var(--background-white);
+    box-shadow: var(--box-shadow);
+    width: 200px;
+    height: 100px;
+    padding: 0 50px;
+    display: flex;
+}
 
 /* MEDIA QUERIES */
 

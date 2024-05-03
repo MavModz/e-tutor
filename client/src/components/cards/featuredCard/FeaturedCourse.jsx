@@ -51,13 +51,13 @@ function FeaturedCourse({ courseThumbnail, courseName, courseCode, teacherName, 
                     </div>
                 </div>
                 <hr />
-                <div className="featured-course-level flex justify-between">
+                <div className="featured-course-level flex justify-between items-center">
                     <div className="featured-total-students flex items-center gap-2">
                         <Image src='/User.svg' width={20} height={20} alt='user svg' />
                         <span className='featured-total-students-data flex gap-2'>265.7K <p>students</p></span>
                     </div>
                     <div className="featured-course-level-info flex gap-2">
-                        <Image src='/bar-chart.svg' width={20} height={20} alt='course level svg' />
+                        <Image src='/bar-chart-color.svg' width={20} height={20} alt='course level svg' />
                         <span>{courseLevel}</span>
                     </div>
                     <div className="featured-course-duration flex gap-2">
