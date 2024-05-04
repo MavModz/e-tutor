@@ -80,7 +80,7 @@ exports.addSubCategory = async (req, res) => {
 
 exports.allinstructors = async (req, res) => {
     try {
-        const Teacher = await admins.find({});
+        const Teacher = await admins.find({}).select(`-password`);
         res.status(200).json(Teacher);
     }
     catch(error) {

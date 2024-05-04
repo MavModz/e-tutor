@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const institutes = require('./instituteSchema');
 
 const adminSchema = new mongoose.Schema({
     name: {
@@ -33,6 +34,10 @@ const adminSchema = new mongoose.Schema({
     role: {
         type: String,
         default: 'admin',
+    },
+    enrolledInstitute: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref:institutes}],
+        default: []
     }
 
 });

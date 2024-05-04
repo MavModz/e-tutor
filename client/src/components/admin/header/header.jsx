@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import './header.css';
 
 const navItems = [
@@ -30,7 +31,12 @@ function Header() {
     <div className='header-container'>
       <div className="header-wrapper">
         <div className="logo-container">
-          <Image src='/astronaut.jpg' width={60} height={60} className="header-logo" alt="main logo img" priority />
+          <Link href='/' passHref>
+            <Image src="/Logo.svg" width={120} height={54}
+              alt="logo svg"
+              onError={(e) => e.target.src = '/LOGO.png'}
+            />
+          </Link>
         </div>
         <div className="nav-menu">
           <ul className='nav-menu-list'>

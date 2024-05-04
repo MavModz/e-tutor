@@ -1,0 +1,76 @@
+.featured-card-container {
+    display: flex;
+    width: 648px;
+    height: 170px;
+    border: 1px solid #E9EAF0;
+}
+
+.featured-card-container:hover {
+    box-shadow: var(--box-shadow);
+}
+
+.featured-card-thumbnail {
+    width: 240px;
+    min-height: 170px;
+}
+
+.featured-course-card-data {
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.featured-course-card-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.featured-category-ribbon {
+    max-width: 150px;
+    padding: 4px 6px;
+    font-family: var(--secondary-font);
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 12px;
+    text-align: left;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+}
+
+.featured-total-students-data {
+    display: flex;
+    gap: 6px;
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.featured-total-students-data p {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.featured-course-level-info>span,
+.featured-course-duration>span {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}

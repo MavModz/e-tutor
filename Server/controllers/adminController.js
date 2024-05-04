@@ -1,3 +1,4 @@
+const institutes = require("../models/instituteSchema");
 const admins = require("../models/adminSchema");
 const users = require("../models/userSchema");
 const courses = require("../models/courseSchema");
@@ -41,6 +42,11 @@ exports.adminlogin = async (req, res) => {
     let role = 'admin';
 
     if (!user) {
+        user = await institutes.findOne({ email: email });
+        role = 'institute admin';
+    }
+
+    if (!user) {
         user = await users.findOne({ email: email });
         role = 'user';
     }
@@ -58,6 +64,7 @@ exports.adminlogin = async (req, res) => {
                 {
                     email: user.email,
                     id: user._id,
+                    role: role
                 },
                 SECRET_KEY
             );
@@ -65,21 +72,26 @@ exports.adminlogin = async (req, res) => {
                 login_token += "2";
             }
 
-            if (user?.role === "user") {
+            else if (user?.role === "user") {
                 login_token += "3";
             }
+
+            else if (user?.role === "institute admin") {
+                login_token += "4";
+            }
+
             res.status(200).json({ exists: true, user: user, token: login_token });
             console.log(login_token);
         }
 
         else {
-            return res.status(401).json({ message: "Admin not found" });
+            return res.status(401).json({ message: "User not found" });
         }
     }
 
     catch (error) {
         console.error("Error during password comparison:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error", error });
     }
 };
 
@@ -101,8 +113,9 @@ exports.addCourse = async (req, res) => {
         sections,
         welcomeMessage,
         congratsMessage,
-        instructors, } = req.body;     
+        instructors, } = req.body;
     const adminId = req.adminId;
+    const instituteadminId = req.instituteadminId;
 
 
     try {
@@ -125,8 +138,13 @@ exports.addCourse = async (req, res) => {
             welcomeMessage,
             congratsMessage,
             instructors,
-            adminId,
         });
+        if(adminId) {
+            newCourse.adminId = adminId;
+        }
+        else if(instituteadminId){
+            newCourse.instituteId = instituteadminId;
+        }
 
         const storeData = await newCourse.save();
         res.status(200).json(storeData);
@@ -135,6 +153,27 @@ exports.addCourse = async (req, res) => {
     catch (error) {
         console.error("Error saving course to database:", error);
         res.status(500).json({ error: 'internal server error', error })
+    }
+}
+
+exports.courseinstructors = async (req, res) => {
+    try {
+        const adminId = req.adminId;
+        const instituteadminId = req.instituteadminId;
+        let teacherQuery = {};
+        
+        if(adminId){
+            teacherQuery = {_id: adminId}
+        }
+        else if(instituteadminId){
+            teacherQuery = {enrolledInstitute: instituteadminId}
+        }
+        const courseTeachers = await admins.find(teacherQuery).select("-password");
+        res.status(200).json(courseTeachers);
+    }
+    catch(error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal server error", error})
     }
 }
 

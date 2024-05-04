@@ -82,7 +82,7 @@ exports.enrollCourse = async (req, res) => {
       return res.status(404).json({ message: 'user not found' });
     }
     if (user.enrolledCourses.includes(courseCode)) {
-      return res.status(400).json({ message: 'user already enrolled' });
+      return res.status(201).json({ message: 'user already enrolled' });
     }
 
     user.enrolledCourses.push(courseCode);
@@ -184,6 +184,21 @@ exports.coursedetails = async (req, res) => {
     res.status(200).json(course);
   }
   catch (error) {
+    res.status(500).json({ error: "Internal server Error", error });
+  }
+}
+
+exports.coursecategorycount = async (req, res) => {
+  try {
+    const courseCategory = req.params.courseCategory;
+    const category = await Course.find({ courseCategory: courseCategory });
+    if (!category) {
+      res.status(404).json([]);
+    }
+    res.status(200).json(category.length);
+  }
+  catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal server Error", error });
   }
 }

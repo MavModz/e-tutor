@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const adminId = require('../models/adminSchema');
+const instituteId = require('../models/instituteSchema');
 
 const lectureContentSchema = new mongoose.Schema({
     type: {
@@ -113,8 +114,13 @@ const courseSchema = new mongoose.Schema({
     },
     adminId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'adminId',
-        required: true,
+        ref: adminId,
+        required: function () { return !this.instituteId; }
+    },
+    instituteId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: instituteId,
+        required: function () { return !this.adminId; }
     },
     // coursePrice: {
     //     type: String,
