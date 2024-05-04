@@ -226,7 +226,7 @@ export default function Home() {
               ))}
             </div>
             <div className="all-course-btn flex justify-center">
-              <button className='browse-course-btn hover-btn-effect'>Browse All Course <Image src='/ArrowRight.svg' width={24} height={24} /></button>
+              <button className='browse-course-btn hover-btn-effect'>Browse All Course <Image src='/ArrowRight.svg' width={24} height={24} alt='Right arrow svg' /></button>
             </div>
           </div>
         </div>
@@ -238,18 +238,18 @@ export default function Home() {
                 <p>Instructors from around the world teach millions of students on Udemy. We provide the tools and skills to teach what you love.</p>
               </div>
               <div className="instructor-btn-container">
-                <button className='instructor-cta hover-btn-effect'>Start Teaching <Image src='/ArrowRight.svg' width={24} height={24} /></button>
+                <button className='instructor-cta hover-btn-effect'>Start Teaching <Image src='/ArrowRight.svg' width={24} height={24} alt='Right Arrow svg' /></button>
               </div>
             </div>
             <div className="become-instructor-points">
               <h3>Your teaching & earning steps</h3>
               <div className="instructor-point-list">
                 {instructor_points.map((item, index) => (
-                  <div className="list-wrapper flex gap-4 items-center">
-                    <div className="list-icons" key={index}>
+                  <div className="list-wrapper flex gap-4 items-center" key={index}>
+                    <div className="list-icons">
                       {item.icon}
                     </div>
-                    <div className="list-text" key={index}>
+                    <div className="list-text">
                       <p>{item.text}</p>
                     </div>
                   </div>
