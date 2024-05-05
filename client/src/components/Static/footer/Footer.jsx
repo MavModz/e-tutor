@@ -39,6 +39,8 @@ function Footer() {
         { text: 'Privacy Policy', path: '#' }
     ]
 
+    const year = new Date().getFullYear();
+
     return (
         <div className="footer-container">
             <div className="footer-wrapper-top">
@@ -131,6 +133,13 @@ function Footer() {
                                 <Image src='/Playstore-app.svg' width={163} height={58} alt='Playstore App svg' />
                             </Link>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div className="footer-copywrite-container">
+                <div className="copywrite-area">
+                    <div className="copywrite-left">
+                        <p>© {year} - Designed by <span>DankCoders</span>. All rights reserved</p>
                     </div>
                 </div>
             </div>
