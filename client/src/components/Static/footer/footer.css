@@ -2,10 +2,11 @@
     background-color: var(--text-dark);
     width: 100%;
     min-height: 376px;
-    padding: 50px 0;
+    padding-top: 50px;
 }
 
-.footer-wrapper-top, .footer-wrapper-bottom {
+.footer-wrapper-top,
+.footer-wrapper-bottom {
     border-bottom: 1px solid #363B4780;
 }
 
@@ -123,7 +124,7 @@
     padding: 6px 0;
     text-decoration: none;
     overflow: hidden;
-    transition: color 0.3s ease; 
+    transition: color 0.3s ease;
 }
 
 .footer-nav-list span {
@@ -148,4 +149,23 @@
 
 .footer-nav-list:hover span::after {
     width: 100%;
+}
+
+.copywrite-area {
+    margin-left: calc(20% - 194px);
+    margin-right: calc(20% - 194px);
+    padding: 37px 30px;
+}
+
+.copywrite-left p {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+}
+
+.copywrite-left span {
+    color: var(--background-white);
 }
