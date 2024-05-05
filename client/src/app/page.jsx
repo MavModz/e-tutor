@@ -8,6 +8,7 @@ import FeaturedCourse from '@/components/cards/featuredCard/FeaturedCourse';
 import Link from 'next/link';
 import Header from '@/components/Static/header/Header';
 import { coursecategorycountfunction, allcoursesfunction, topinstructorsfunction } from './lib/Services/api';
+import Footer from '../components/Static/footer/Footer';
 
 
 export default function Home() {
@@ -295,6 +296,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </main>
   )
 }

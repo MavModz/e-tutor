@@ -63,7 +63,7 @@ body {
 }
 
 .hover-btn-effect {
-  position: absolute; 
+  position: relative; 
 }
 
 .hover-btn-effect:after {

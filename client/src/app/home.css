@@ -69,6 +69,7 @@
     background-color: var(--primary-new);
     font-family: var(--secondary-font);
     color: var(--background-white);
+    position: absolute;
     top: 24%;
     right: 12%;
     font-weight: 500;
