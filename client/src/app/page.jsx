@@ -179,6 +179,7 @@ export default function Home() {
                     courseName={course.courseName}
                     coursePrice={course.coursePrice}
                     rating={course.rating}
+                    courseTopics={course.courseTopics}
                   />
                 </Link>
               ))}
@@ -222,6 +223,9 @@ export default function Home() {
                     coursePrice={course.coursePrice}
                     courseName={course.courseName}
                     rating={course.rating}
+                    courseTopics={course.courseTopics}
+                    courseLevel={course.courseLevel}
+                    courseDuration={course.courseDuration}
                   />
                 </Link>
               ))}
