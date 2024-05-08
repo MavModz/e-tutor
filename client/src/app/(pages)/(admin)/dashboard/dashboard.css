@@ -18,25 +18,39 @@
     color: var(--primary-hover);
 }
 
-.course-progress, .schedule {
+.recent-activity-heading h6 {
+    font-family: var(--secondary-font);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: left;
+}
+
+.recent-logs-data p {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.recent-logs-data span {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.course-progress,
+.schedule {
     background-color: var(--background-white);
-    border-radius: 16px;
     box-shadow: var(--box-shadow);
     overflow: hidden;
-    height:420px;
+    height: 420px;
 
-}
-
-.course-details {
-    padding: 12px 16px;
-    max-width: 100%;
-    background-color: var(--background-white);
-    border-radius: 15px;
-    box-shadow: var(--box-shadow-variant);
-}
-
-.course-image {
-    width: 200px;
-    height: 110px;
-    border-radius: 10px;
 }
