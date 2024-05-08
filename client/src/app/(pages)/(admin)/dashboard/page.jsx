@@ -29,6 +29,14 @@ function Dashboard() {
   if (showLoader) {
     return <div><Loader /></div>;
   }
+
+  const recent_logs = [
+    { icon: <Image src='/comment.svg' width={32} height={32} alt='comment svg' />, text: 'Kevin <span>comments on your lecture</span> “What is ux” in “2021 ui/ux design with figma"', time: '5 min ago' },
+    { icon: <Image src='/rating.svg' width={32} height={32} alt='rating svg' />, text: 'John <span>give a 5 star rating on your course</span> “2021 ui/ux design with figma', time: '5 min ago' },
+    { icon: <Image src='/course-purchase.svg' width={32} height={32} alt='course purchase svg' />, text: 'Sraboni <span>purchase your course</span> “2021 ui/ux design with figma', time: '5 min ago' },
+    { icon: <Image src='/course-purchase.svg' width={32} height={32} alt='course purchase svg' />, text: 'Arif <span>purchase your course</span> “2021 ui/ux design with figma', time: '5 min ago' }
+  ]
+
   return (
     <div className='bg-[#f4f7fe] w-full min-h-full'>
       <Header />
@@ -45,25 +53,24 @@ function Dashboard() {
               <Image src='/study.png' alt="student studying on the table" width={393} height={288} />
             </div>
           </div>
-          <div className="stats-wrapper flex gap-8 justify-around mt-5">
-            <div className="course-progress w-5/12 px-8">
-              <div className="course-heading my-4">
-                <h1 className='progress-heading text-2xl'>progress data</h1>
+          <div className="stats-wrapper flex gap-8 justify-around mt-5  max-h-[424px]">
+            <div className="course-progress w-1/3">
+              <div className="recent-activity-heading px-5 py-4">
+                <h6>Recent Activity</h6>
               </div>
-              <div className="course-details">
-                <div className='course-info flex gap-4'>
-                  <div className="course-image flex items-center">
-                    <Image src='/user-2.jpg' width={200} height={110} alt="course thumbnail" className='course-image' />
+              <div className="recent-activity-logs-container">
+                {recent_logs.map((item, index) => (
+                  <div className="recent-activity-logs flex gap-4 px-5 py-3" key={index}>
+                    {item.icon}
+                    <div className="recent-logs-data flex flex-col gap-1.5">
+                      <p dangerouslySetInnerHTML={{ __html: item.text }}></p>
+                      <span>{item.time}</span>
+                    </div>
                   </div>
-                  <div className="course-data">
-                    <p>Coding</p>
-                    <h2>Learn JavaSript</h2>
-                    <h3>Learn how to use JavaScript — a powerful and flexible programming language for adding website interactivity.</h3>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
-            <div className="schedule w-7/12 px-8">
+            <div className="schedule w-2/3 px-8">
               <div className="schedule-heading mt-4">
                 <h1 className='schedule-heading text-2xl'>schedule data</h1>
               </div>

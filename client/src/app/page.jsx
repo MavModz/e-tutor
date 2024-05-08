@@ -57,7 +57,7 @@ export default function Home() {
     categories.forEach((category) => {
       fetchCourseCategoryCount(category.text);
     });
-  }, []);
+  }, [categories]);
 
   const fetchCourseCategoryCount = async (courseCategory) => {
     try {

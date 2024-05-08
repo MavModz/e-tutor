@@ -127,7 +127,7 @@ function courseCard({ courseThumbnail, courseName, coursePrice, rating, courseCa
                     <hr />
                     <div className="course-btn-container flex flex-col gap-3">
                         <div className="add-cart-btn-area">
-                            <button className='add-to-cart-btn hover-btn-effect'><Image src='/ShoppingCartSimple.svg' width={24} height={24} />Add To Cart</button>
+                            <button className='add-to-cart-btn hover-btn-effect'><Image src='/ShoppingCartSimple.svg' width={24} height={24} alt='shopping cart svg'/>Add To Cart</button>
                         </div>
                         <div className="course-details-btn-area">
                             <button className='buy-now-btn hover-btn-effect'>Course Details</button>
