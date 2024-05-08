@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { backend_url } from "./helper";
 
 export const commonrequest = async (method, url, body, header, requiresAuth = true) => {
 
