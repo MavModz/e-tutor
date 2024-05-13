@@ -47,10 +47,12 @@
 }
 
 .course-progress,
-.schedule {
+.schedule,
+.course-rating-container,
+.profile-clicks-container,
+.space-stats-container {
     background-color: var(--background-white);
     box-shadow: var(--box-shadow);
     overflow: hidden;
     height: 420px;
-
 }
