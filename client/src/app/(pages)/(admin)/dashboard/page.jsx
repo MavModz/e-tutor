@@ -41,7 +41,7 @@ function Dashboard() {
     <div className='bg-[#f4f7fe] w-full min-h-full'>
       <Header />
       <div className="dashboard-conatiner">
-        <div className="dashboard-wrapper">
+        <div className="dashboard-wrapper flex flex-col gap-6">
           <div className="banner-container h-80 rounded-2xl flex justify-around items-center">
             <div className="top-banner">
               <h1 className='banner-text text-5xl mb-4'>Welcome to your Dashboard</h1>
@@ -70,13 +70,24 @@ function Dashboard() {
                 ))}
               </div>
             </div>
-            <div className="schedule w-2/3 px-8">
+            <div className="schedule w-2/3 px-5">
               <div className="schedule-heading mt-4">
                 <h1 className='schedule-heading text-2xl'>schedule data</h1>
               </div>
               <div className="schedule-graph">
                 <Graph />
               </div>
+            </div>
+          </div>
+          <div className="profile-view-stats flex gap-6">
+            <div className='course-rating-container w-4/12 px-5 py-4'>
+              <h1>tet</h1>
+            </div>
+            <div className='profile-clicks-container w-5/12 px-5 py-4'>
+              <h1>tet1</h1>
+            </div>
+            <div className='space-stats-container w-4/12 px-5 py-4'>
+              <h1>tet2</h1>
             </div>
           </div>
         </div>

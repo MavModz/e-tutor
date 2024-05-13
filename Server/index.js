@@ -12,7 +12,7 @@ app.use(express.json());
 
 // CORS OPTIONS TO ALLOW ALL ORIGINS
 const corsOptions = {
-    origin: ['*', 'https://e-tutor-gules.vercel.app'],
+    origin: ['*', 'https://e-tutor-gules.vercel.app', 'http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,
