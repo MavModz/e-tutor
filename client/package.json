@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@next/env": "^14.2.3",
+    "@nivo/line": "^0.87.0",
+    "@nivo/pie": "^0.87.0",
     "@vercel/speed-insights": "^1.0.10",
     "aws-sdk": "^2.1579.0",
     "axios": "^1.6.5",
