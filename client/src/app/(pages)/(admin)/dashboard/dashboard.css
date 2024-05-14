@@ -18,7 +18,11 @@
     color: var(--primary-hover);
 }
 
-.recent-activity-heading h6 {
+.recent-activity-heading>h6,
+.course-overview-heading>h6,
+.course-rating-heading>h6,
+.profile-clicks-heading>h6,
+.space-stats-heading>h6 {
     font-family: var(--secondary-font);
     font-size: 16px;
     font-weight: 500;
@@ -46,8 +50,34 @@
     text-align: left;
 }
 
+.course-overview-heading>p,
+.course-rating-heading>p,
+.profile-clicks-heading>p,
+.space-stats-heading>p {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: right;
+}
+
+.course-overview-heading span,
+.course-rating-heading span,
+.profile-clicks-heading span,
+.space-stats-heading span {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: right;
+}
+
 .course-progress,
-.schedule,
+.course-overview-container,
 .course-rating-container,
 .profile-clicks-container,
 .space-stats-container {
@@ -55,4 +85,29 @@
     box-shadow: var(--box-shadow);
     overflow: hidden;
     height: 420px;
+}
+
+.rating-area {
+    width: 150px;
+    padding: 15px 0;
+    background-color: var(--btn-secondary);
+}
+
+.rating-area>h5 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 48px;
+    letter-spacing: -0.01em;
+    text-align: center;
+}
+
+.rating-visual>p {
+    font-family: var(--secondary-font);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    text-align: center;
 }
