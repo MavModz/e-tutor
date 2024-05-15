@@ -30,7 +30,7 @@ async function uploadFileToS3(file, folderPath, key) {
 
 const updateUsedSpace = async (adminId, fileSize) => {
   const response = await updateusedspacefunction(adminId, fileSize);
-  console.log('update successful', response);
+  console.log('update successfull', response);
 }
 
 function captureVideoThumbnail(videoUrl, callback) {
