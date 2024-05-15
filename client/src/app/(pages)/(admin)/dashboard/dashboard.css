@@ -88,9 +88,15 @@
 }
 
 .rating-area {
-    width: 150px;
+    width: 145px;
+    height: 115px;
     padding: 15px 0;
     background-color: var(--btn-secondary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
 }
 
 .rating-area>h5 {

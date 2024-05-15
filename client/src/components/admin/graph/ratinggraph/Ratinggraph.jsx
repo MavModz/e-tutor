@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 
-function Ratinggraph({ data }) {
+function Ratinggraph() {
+
+    const [ratingData, setRatingData] = useState([]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setRatingData([
+                {
+                    id: "test",
+                    data: [
+                        { x: "week1", y: 20 },
+                        { x: "week2", y: 22 },
+                        { x: "week3", y: 18 },
+                        { x: "week4", y: 21 },
+                        { x: "week5", y: 13 }
+                    ]
+                }
+            ]);
+        }, 1000);
+    }, []);
+
     return (
-        <div style={{ height: 152, width: '90%' }}>
+        <div style={{ height: 115, width: '100%' }}>
             <ResponsiveLine
-                data={data}
-                margin={{ top: 25, right: 0, bottom: 0, left: 0 }}
+                data={ratingData}
+                margin={{ top: 25, right: 0, bottom: 50, left: 0 }}
                 xScale={{ type: 'point' }}
                 yScale={{
                     type: 'linear',
@@ -33,10 +53,24 @@ function Ratinggraph({ data }) {
                 enableArea={true}
                 isInteractive={false}
                 enableTouchCrosshair={true}
+                colors="#FC8D1E" // Set the line color
+                fill={[
+                    { match: '*', id: 'gradientA' }
+                ]}
+                defs={[
+                    {
+                        id: 'gradientA',
+                        type: 'linearGradient',
+                        colors: [
+                            { offset: 0, color: '#FFF2E5' },
+                            { offset: 100, color: '#FFF2E5' }
+                        ],
+                    },
+                ]}
                 legends={[]}
             />
         </div>
     )
 }
 
-export default Ratinggraph
+export default Ratinggraph;
