@@ -2,25 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 import { cloudstoragefunction } from '@/app/lib/Services/api';
 
-function Piechart(userId) {
-
-    const [storageData, setStorageData] = useState([]);
-
-    useEffect(() => {
-        setTimeout(() => {
-            const fetchStorageData = async () => {
-                try {
-                    const userId = sessionStorage.getItem("adminId");
-                    const response = await cloudstoragefunction(userId);
-                    setStorageData(response);
-                }
-                catch (error) {
-                    console.error("Error fetching storage data:", error);
-                }
-            }
-            fetchStorageData();
-        }, 500);
-    }, [userId]);
+function Piechart({ storageData }) {
 
     return (
         <div className='px-5 py-2' style={{ height: "360px" }}>
