@@ -38,6 +38,14 @@ const adminSchema = new mongoose.Schema({
     enrolledInstitute: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref:institutes}],
         default: []
+    },
+    allocatedSpace: {
+        type: Number,
+        default: 5 * 1024 * 1024 * 1024,
+    },
+    usedSpace: {
+        type: Number,
+        default:0
     }
 
 });

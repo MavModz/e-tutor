@@ -10,7 +10,7 @@ async function uploadFileToS3(file, key) {
     const bucketName = bucket_name;
     const params = {
       Bucket: bucketName,
-      Key: key,
+      Key: `${folderPath}/${key}`,
       Body: file,
       ACL: 'public-read'
     };
@@ -226,9 +226,11 @@ function Curriculum({ onNext, onPrevious }) {
       if (files && files[0]) {
         const file = files[0];
         // const videoURL = URL.createObjectURL(file);
+        const adminId = sessionStorage.getItem('adminId');
+        const folderPath = `${adminId}`
         const videoName = `videos/${Date.now()}-${file.name}`;
         try {
-          const uploadedVideoURL = await uploadFileToS3(file, videoName);
+          const uploadedVideoURL = await uploadFileToS3(file, folderPath, videoName);
           const video = {
             url: uploadedVideoURL,
             name: file.name,

@@ -5,7 +5,28 @@ const courses = require("../models/courseSchema");
 const checkouts = require("../models/checkoutSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const aws_s3 = require('../lib/Services/aws_s3');
 const SECRET_KEY = process.env.key;
+
+async function createFolderAtS3(key) {
+    const bucket_name = process.env.AWS_BUCKET_NAME;
+    const bucketName = bucket_name;
+    const params = {
+        Bucket: bucketName,
+        Key: key,
+        Body: '',
+        ACL: 'public-read'
+    };
+
+    try {
+        const data = await aws_s3.putObject(params).promise();
+        console.log("Folder Created Successfully", data);
+        return data.Location;
+    } catch (error) {
+        console.log("Error while creating Folder", error);
+        throw error;
+    }
+}
 
 exports.adminregister = async (req, res) => {
     const { name, phone, email, password, birth, gender } = req.body;
@@ -25,16 +46,17 @@ exports.adminregister = async (req, res) => {
                 email,
                 password,
                 birth,
-                gender
+                gender,
             });
             const storeData = await newadmin.save();
+            const folderKey = `${storeData._id}/`;
+            await createFolderAtS3(folderKey);
             res.status(200).json(storeData);
         }
     } catch (error) {
         res.status(400).json({ error: "Invalid Details", error });
     }
 };
-
 
 exports.adminlogin = async (req, res) => {
     const { email, password } = req.body;
@@ -139,10 +161,10 @@ exports.addCourse = async (req, res) => {
             congratsMessage,
             instructors,
         });
-        if(adminId) {
+        if (adminId) {
             newCourse.adminId = adminId;
         }
-        else if(instituteadminId){
+        else if (instituteadminId) {
             newCourse.instituteId = instituteadminId;
         }
 
@@ -161,19 +183,19 @@ exports.courseinstructors = async (req, res) => {
         const adminId = req.adminId;
         const instituteadminId = req.instituteadminId;
         let teacherQuery = {};
-        
-        if(adminId){
-            teacherQuery = {_id: adminId}
+
+        if (adminId) {
+            teacherQuery = { _id: adminId }
         }
-        else if(instituteadminId){
-            teacherQuery = {enrolledInstitute: instituteadminId}
+        else if (instituteadminId) {
+            teacherQuery = { enrolledInstitute: instituteadminId }
         }
         const courseTeachers = await admins.find(teacherQuery).select("-password");
         res.status(200).json(courseTeachers);
     }
-    catch(error) {
+    catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Internal server error", error})
+        res.status(500).json({ message: "Internal server error", error })
     }
 }
 
@@ -210,5 +232,78 @@ exports.totalenrollments = async (req, res) => {
     }
     catch (error) {
         res.status(500).json({ error: "Internal server error", error })
+    }
+}
+
+// AWS CLOUD STORAGE INFO
+
+const bucketName = process.env.AWS_BUCKET_NAME;
+
+const getObjectSize = async (bucket, prefix) => {
+    const params = {
+        Bucket: bucket,
+        Prefix: prefix,
+    };
+
+    const data = await aws_s3.listObjectsV2(params).promise();
+    console.log("This is storage", data)
+    return data.Contents.reduce((acc, item) => acc + item.Size, 0);
+};
+
+exports.cloudstorage = async (req, res) => {
+    const userID = req.params.userId;
+    let user = await admins.findOne({ _id: userID });
+
+    if (!user) {
+        user = await institutes.findOne({ _id: userID });
+    }
+    if (!user) {
+        return res.status(400).json({ error: 'User not found' });
+    }
+
+    const folderPath = user._id.toString();
+
+    try {
+        const [imagesSize, videosSize, filesSize] = await Promise.all([
+            getObjectSize(bucketName, `${folderPath}/images/`),
+            getObjectSize(bucketName, `${folderPath}/videos/`),
+            getObjectSize(bucketName, `${folderPath}/files/`),
+        ]);
+
+        const totalUsedSpace = imagesSize + videosSize + filesSize;
+        const freeSpace = 1000 - totalUsedSpace;
+        res.status(200).json([
+            { id: 'Images', label: 'Images', value: imagesSize, color: 'hsl(233, 70%, 50%)' },
+            { id: 'Videos', label: 'Videos', value: videosSize, color: 'hsl(235, 70%, 50%)' },
+            { id: 'Files', label: 'Files', value: filesSize, color: 'hsl(314, 70%, 50%)' },
+            { id: 'Free Space', label: 'Free Space', value: freeSpace, color: 'hsl(89, 70%, 50%)' },
+        ]);
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'AWS server error', error })
+    }
+}
+
+exports.usedSpace = async (req, res) => {
+    const { adminId, fileSize } = req.body;
+    let user = await admins.findOne({ _id: adminId });
+
+    if (!user) {
+        user = await institutes.findOne({ _id: adminId });
+    }
+    if(!user) {
+        return res.status(400).json({ error: 'User not found' });
+    }
+    try {
+        user.usedSpace += fileSize;
+        if(user.usedSpace > user.allocatedSpace) {
+            return res.status(400).json({ error: 'Storage limit exceeded' });
+        }
+        const storeData = await user.save();
+        res.status(200).json({ message: 'Used space updated successfully', storeData });
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Internal server error', error });
     }
 }
