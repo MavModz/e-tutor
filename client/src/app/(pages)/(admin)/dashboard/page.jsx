@@ -9,12 +9,12 @@ import Piechart from '@/components/admin/piechart/Piechart';
 import Ratinggraph from '@/components/admin/graph/ratinggraph/Ratinggraph';
 import Image from 'next/image';
 import './dashboard.css'
+import Courserating from '@/components/admin/courserating/Courserating';
+import Barchart from '@/components/admin/graph/barchart/Barchart';
 
 function Dashboard() {
   const { isLoading } = Auth();
   const [showLoader, setShowLoader] = useState(true);
-  const [storageData, setStorageData] = useState([]);
-  const [ratingData, setRatingData] = useState([]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -29,54 +29,6 @@ function Dashboard() {
 
     return () => clearTimeout(timer);
   }, [isLoading]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setStorageData([
-        {
-          "id": "Images",
-          "label": "Images",
-          "value": 207,
-          "color": "hsl(233, 70%, 50%)"
-        },
-        {
-          "id": "Videos",
-          "label": "Videos",
-          "value": 120,
-          "color": "hsl(235, 70%, 50%)"
-        },
-        {
-          "id": "Files",
-          "label": "Files",
-          "value": 162,
-          "color": "hsl(314, 70%, 50%)"
-        },
-        {
-          "id": "Free Space",
-          "label": "Free Space",
-          "value": 499,
-          "color": "hsl(89, 70%, 50%)"
-        }
-      ]);
-    }, 1000);
-  }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setRatingData([
-        {
-          id: "test",
-          data: [
-            { x: "week1", y: 20 },
-            { x: "week2", y: 22 },
-            { x: "week3", y: 18 },
-            { x: "week4", y: 21 },
-            { x: "week5", y: 13 }
-          ]
-        }
-      ]);
-    }, 1000);
-  }, []);
 
   if (showLoader) {
     return <div><Loader /></div>;
@@ -153,7 +105,13 @@ function Dashboard() {
                     <p>Overall Rating</p>
                   </div>
                 </div>
-                <Ratinggraph data={ratingData} />
+                <Ratinggraph />
+              </div>
+              <hr />
+              <div className="course-rating-bottom px-5 py-4">
+                <div className="course-rating-wrapper">
+                  <Courserating />
+                </div>
               </div>
               <hr />
             </div>
@@ -163,6 +121,8 @@ function Dashboard() {
                 <p>For Month: <span>{month}</span></p>
               </div>
               <hr />
+              <Barchart />
+              <hr />
             </div>
             <div className='space-stats-container w-[32%]'>
               <div className="space-stats-heading flex justify-between px-5 py-4">
@@ -170,7 +130,7 @@ function Dashboard() {
                 <p>Total Storage: <span>30GB</span></p>
               </div>
               <hr />
-              <Piechart data={storageData} />
+              <Piechart />
             </div>
           </div>
         </div>
