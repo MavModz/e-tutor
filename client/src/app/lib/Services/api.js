@@ -146,3 +146,27 @@ export const coursecategorycountfunction = async (courseCategory) => {
         throw error;
     }
 }
+
+// CLOUD STORAGE INFORMATION
+
+export const cloudstoragefunction = async (userId) => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/admin/cloud-storage/${userId}`);
+        return response.data;
+    }
+    catch(error) {
+        throw error
+    }
+}
+
+// UPDATING USED SPACE
+
+export const updateusedspacefunction = async (adminId, fileSize) => {
+    try {
+        const response = await commonrequest("POST", `${backend_url}/admin/update-usedspace/`, {adminId, fileSize});
+        return response.data;
+    }
+    catch(error) {
+        throw error
+    }
+}

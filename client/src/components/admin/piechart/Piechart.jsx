@@ -1,143 +1,128 @@
-    import React, { useState, useEffect } from 'react';
-    import { ResponsivePie } from '@nivo/pie';
+import React, { useState, useEffect } from 'react';
+import { ResponsivePie } from '@nivo/pie';
+import { cloudstoragefunction } from '@/app/lib/Services/api';
 
+function Piechart(userId) {
 
-    function Piechart() {
+    const [storageData, setStorageData] = useState([]);
 
-        const [storageData, setStorageData] = useState([]);
+    useEffect(() => {
+        setTimeout(() => {
+            const fetchStorageData = async () => {
+                try {
+                    const userId = sessionStorage.getItem("adminId");
+                    const response = await cloudstoragefunction(userId);
+                    setStorageData(response);
+                }
+                catch (error) {
+                    console.error("Error fetching storage data:", error);
+                }
+            }
+            fetchStorageData();
+        }, 500);
+    }, [userId]);
 
-        useEffect(() => {
-            setTimeout(() => {
-                setStorageData([
+    return (
+        <div className='px-5 py-2' style={{ height: "360px" }}>
+            <ResponsivePie
+                data={storageData}
+                margin={{ top: 10, right: 80, bottom: 75, left: 78 }}
+                innerRadius={0.5}
+                padAngle={0.7}
+                cornerRadius={3}
+                activeOuterRadiusOffset={8}
+                borderWidth={1}
+                borderColor={{
+                    from: 'color',
+                    modifiers: [
+                        [
+                            'darker',
+                            0.2
+                        ]
+                    ]
+                }}
+                arcLinkLabelsSkipAngle={10}
+                arcLinkLabelsTextColor="#333333"
+                arcLinkLabelsThickness={2}
+                arcLinkLabelsColor={{ from: 'color' }}
+                arcLabelsSkipAngle={10}
+                arcLabelsTextColor={{
+                    from: 'color',
+                    modifiers: [
+                        [
+                            'darker',
+                            2
+                        ]
+                    ]
+                }}
+                defs={[
                     {
-                        "id": "Images",
-                        "label": "Images",
-                        "value": 207,
-                        "color": "hsl(233, 70%, 50%)"
+                        id: 'dots',
+                        type: 'patternDots',
+                        background: 'inherit',
+                        color: 'rgba(255, 255, 255, 0.3)',
+                        size: 4,
+                        padding: 1,
+                        stagger: true
                     },
                     {
-                        "id": "Videos",
-                        "label": "Videos",
-                        "value": 120,
-                        "color": "hsl(235, 70%, 50%)"
-                    },
-                    {
-                        "id": "Files",
-                        "label": "Files",
-                        "value": 162,
-                        "color": "hsl(314, 70%, 50%)"
-                    },
-                    {
-                        "id": "Free Space",
-                        "label": "Free Space",
-                        "value": 499,
-                        "color": "hsl(89, 70%, 50%)"
+                        id: 'lines',
+                        type: 'patternLines',
+                        background: 'inherit',
+                        color: 'rgba(255, 255, 255, 0.3)',
+                        rotation: -45,
+                        lineWidth: 6,
+                        spacing: 10
                     }
-                ]);
-            }, 1000);
-        }, []);
-
-        return (
-            <div className='px-5 py-2' style={{ height: "360px" }}>
-                <ResponsivePie
-                    data={storageData}
-                    margin={{ top: 10, right: 80, bottom: 75, left: 78 }}
-                    innerRadius={0.5}
-                    padAngle={0.7}
-                    cornerRadius={3}
-                    activeOuterRadiusOffset={8}
-                    borderWidth={1}
-                    borderColor={{
-                        from: 'color',
-                        modifiers: [
-                            [
-                                'darker',
-                                0.2
-                            ]
-                        ]
-                    }}
-                    arcLinkLabelsSkipAngle={10}
-                    arcLinkLabelsTextColor="#333333"
-                    arcLinkLabelsThickness={2}
-                    arcLinkLabelsColor={{ from: 'color' }}
-                    arcLabelsSkipAngle={10}
-                    arcLabelsTextColor={{
-                        from: 'color',
-                        modifiers: [
-                            [
-                                'darker',
-                                2
-                            ]
-                        ]
-                    }}
-                    defs={[
-                        {
-                            id: 'dots',
-                            type: 'patternDots',
-                            background: 'inherit',
-                            color: 'rgba(255, 255, 255, 0.3)',
-                            size: 4,
-                            padding: 1,
-                            stagger: true
+                ]}
+                fill={[
+                    {
+                        match: {
+                            id: 'Files'
                         },
-                        {
-                            id: 'lines',
-                            type: 'patternLines',
-                            background: 'inherit',
-                            color: 'rgba(255, 255, 255, 0.3)',
-                            rotation: -45,
-                            lineWidth: 6,
-                            spacing: 10
-                        }
-                    ]}
-                    fill={[
-                        {
-                            match: {
-                                id: 'Files'
-                            },
-                            id: 'dots'
+                        id: 'dots'
+                    },
+                    {
+                        match: {
+                            id: 'Videos'
                         },
-                        {
-                            match: {
-                                id: 'Videos'
-                            },
-                            id: 'dots'
+                        id: 'dots'
+                    },
+                    {
+                        match: {
+                            id: 'Images'
                         },
-                        {
-                            match: {
-                                id: 'Images'
-                            },
-                            id: 'lines'
-                        },
-                    ]}
-                    legends={[
-                        {
-                            anchor: 'bottom',
-                            direction: 'row',
-                            justify: false,
-                            translateX: 0,
-                            translateY: 56,
-                            itemsSpacing: 0,
-                            itemWidth: 80,
-                            itemHeight: 18,
-                            itemTextColor: '#999',
-                            itemDirection: 'left-to-right',
-                            itemOpacity: 1,
-                            symbolSize: 18,
-                            symbolShape: 'circle',
-                            effects: [
-                                {
-                                    on: 'hover',
-                                    style: {
-                                        itemTextColor: '#241F26'
-                                    }
+                        id: 'lines'
+                    },
+                ]}
+                legends={[
+                    {
+                        anchor: 'bottom',
+                        direction: 'row',
+                        justify: false,
+                        translateX: 0,
+                        translateY: 56,
+                        itemsSpacing: 0,
+                        itemWidth: 80,
+                        itemHeight: 18,
+                        itemTextColor: '#999',
+                        itemDirection: 'left-to-right',
+                        itemOpacity: 1,
+                        symbolSize: 18,
+                        symbolShape: 'circle',
+                        effects: [
+                            {
+                                on: 'hover',
+                                style: {
+                                    itemTextColor: '#241F26'
                                 }
-                            ]
-                        }
-                    ]}
-                />
-            </div>
-        )
-    }
+                            }
+                        ]
+                    }
+                ]}
+            />
+        </div>
+    )
+}
 
-    export default Piechart
+export default Piechart

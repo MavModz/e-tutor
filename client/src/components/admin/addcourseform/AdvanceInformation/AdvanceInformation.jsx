@@ -6,13 +6,14 @@ import { Trash2, Upload } from 'lucide-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Header from '../../header/header';
+import { updateusedspacefunction } from '@/app/lib/Services/api';
 
-async function uploadFileToS3(file, key) {
+async function uploadFileToS3(file, folderPath, key) {
   const bucket_name = process.env.NEXT_PUBLIC_AWS_BUCKET_NAME;
   const bucketName = bucket_name;
   const params = {
     Bucket: bucketName,
-    Key: key,
+    Key: `${folderPath}/${key}`,
     Body: file,
     ACL: 'public-read'
   };
@@ -25,6 +26,11 @@ async function uploadFileToS3(file, key) {
     console.log("Error in file upload", error);
     throw error;
   }
+}
+
+const updateUsedSpace = async (adminId, fileSize) => {
+  const response = await updateusedspacefunction(adminId, fileSize);
+  console.log('update successful', response);
 }
 
 function captureVideoThumbnail(videoUrl, callback) {
@@ -94,13 +100,16 @@ function AdvanceInformation({ onNext, onPrevious }) {
   const handleFileSelect = async (event) => {
     event.preventDefault();
     const file = event.target.files[0];
+    const adminId = sessionStorage.getItem('adminId');
     if (file) {
+      const folderPath = `${adminId}`
       const key = `course-thumbnails/${Date.now()}-${file.name}`;
       try {
-        const uploadedFileURL = await uploadFileToS3(file, key);
+        const uploadedFileURL = await uploadFileToS3(file, folderPath, key);
         setThumbnailSrc(uploadedFileURL);
         sessionStorage.setItem('uploadedThumbnail', uploadedFileURL);
         console.log(uploadedFileURL);
+        await updateUsedSpace( adminId, file.size );
       }
       catch (error) {
         console.log("error uploading the file to S3", error);
@@ -134,11 +143,13 @@ function AdvanceInformation({ onNext, onPrevious }) {
   const handleVideoFileSelect = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const localVideoSrc = URL.createObjectURL(file); // Create a local URL to capture the thumbnail
+      const localVideoSrc = URL.createObjectURL(file);
+      const adminId = sessionStorage.getItem('adminId');
+      const folderPath = `${adminId}`;
       const key = `videos/${Date.now()}-${file.name}`;
 
       try {
-        const uploadedVideoFileURL = await uploadFileToS3(file, key);
+        const uploadedVideoFileURL = await uploadFileToS3(file, folderPath, key);
         console.log(uploadedVideoFileURL);
         setVideoSrcLink(uploadedVideoFileURL);
         captureVideoThumbnail(localVideoSrc, (thumbnailDataUri) => {

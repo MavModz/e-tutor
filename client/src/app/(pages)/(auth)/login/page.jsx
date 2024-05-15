@@ -24,7 +24,9 @@ const Login = () => {
       console.log(response);
       if (response && response.exists) {
         const { token } = response;
+        const { _id } = response.user;
         sessionStorage.setItem("auth_token", token);
+        sessionStorage.setItem("adminId", _id);
 
         setTimeout(() => {
           toast.success("Login Successful");
