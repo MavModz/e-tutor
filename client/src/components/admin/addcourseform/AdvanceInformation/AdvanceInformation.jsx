@@ -30,7 +30,7 @@ async function uploadFileToS3(file, folderPath, key) {
 
 const updateUsedSpace = async (adminId, fileSize) => {
   const response = await updateusedspacefunction(adminId, fileSize);
-  console.log('update successful', response);
+  console.log('update successfull', response);
 }
 
 function captureVideoThumbnail(videoUrl, callback) {
@@ -128,7 +128,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
   //     setVidThumbnailSrc(URL.createObjectURL(file));
   //     const key = `video-thumbnail/${Date.now()}-${file.name}`;
   //     try {
-  //       const uploadedVideoFileURL = await uploadFileToS3(file, key);
+  //       const uploadedVideoFileURL = await (file, key);
   //       setVidThumbnailSrc(uploadedVideoFileURL);
   //     }
   //     catch (error) {

@@ -170,3 +170,15 @@ export const updateusedspacefunction = async (adminId, fileSize) => {
         throw error
     }
 }
+
+// PROFILE VIEWS
+
+export const profileviewfunction = async (userId) => {
+    try {
+        const respose = await commonrequest("GET", `${backend_url}/admin/profile-views/${userId}`);
+        return respose.data;
+    }
+    catch(error) {
+        throw error;
+    }
+}
