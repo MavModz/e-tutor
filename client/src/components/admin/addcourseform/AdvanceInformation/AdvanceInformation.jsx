@@ -128,7 +128,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
   //     setVidThumbnailSrc(URL.createObjectURL(file));
   //     const key = `video-thumbnail/${Date.now()}-${file.name}`;
   //     try {
-  //       const uploadedVideoFileURL = await uploadFileToS3(file, key);
+  //       const uploadedVideoFileURL = await (file, key);
   //       setVidThumbnailSrc(uploadedVideoFileURL);
   //     }
   //     catch (error) {

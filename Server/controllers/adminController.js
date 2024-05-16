@@ -6,6 +6,9 @@ const checkouts = require("../models/checkoutSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const aws_s3 = require('../lib/Services/aws_s3');
+const profileView = require("../models/profileViewSchema");
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 const SECRET_KEY = process.env.key;
 
 async function createFolderAtS3(key) {
@@ -279,12 +282,12 @@ exports.cloudstorage = async (req, res) => {
         res.status(200).json({
             allocatedSpace: bytesToGB(emptySpace),
             usage: [
-              { id: 'Images', label: 'Images', value: bytesToGB(imagesSize), color: 'hsl(233, 70%, 50%)' },
-              { id: 'Videos', label: 'Videos', value: bytesToGB(videosSize), color: 'hsl(235, 70%, 50%)' },
-              { id: 'Files', label: 'Files', value: bytesToGB(filesSize), color: 'hsl(314, 70%, 50%)' },
-              { id: 'Free Space', label: 'Free Space', value: bytesToGB(freeSpace), color: 'hsl(89, 70%, 50%)' },
+                { id: 'Images', label: 'Images', value: bytesToGB(imagesSize), color: 'hsl(233, 70%, 50%)' },
+                { id: 'Videos', label: 'Videos', value: bytesToGB(videosSize), color: 'hsl(235, 70%, 50%)' },
+                { id: 'Files', label: 'Files', value: bytesToGB(filesSize), color: 'hsl(314, 70%, 50%)' },
+                { id: 'Free Space', label: 'Free Space', value: bytesToGB(freeSpace), color: 'hsl(89, 70%, 50%)' },
             ],
-          });
+        });
     }
     catch (error) {
         console.log(error)
@@ -312,5 +315,39 @@ exports.usedSpace = async (req, res) => {
     }
     catch (error) {
         res.status(500).json({ error: 'Internal server error', error });
+    }
+}
+
+// ADMIN PROFILE VIEWS
+exports.profileViews = async (req, res) => {
+    const adminId = req.params.userId;
+    console.log(adminId)
+    try {
+        const views = await profileView.aggregate([
+            { $match: { profileId: new ObjectId(adminId) } },
+            {
+                $group: {
+                    _id: { $dayOfWeek: "$viewDate" },
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { '_id': 1 } }
+        ]);
+
+        if (views.length === 0) {
+            return res.status(404).json({ message: 'No views found for this profile.' });
+        }
+
+        const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const formattedViews = views.map(view => ({
+            day: dayNames[view._id - 1],
+            views: view.count
+        }));
+
+        res.json(formattedViews);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Internal Server Error", error });
     }
 }

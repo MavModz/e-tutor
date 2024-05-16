@@ -2,6 +2,9 @@ const checkouts = require("../models/checkoutSchema");
 const users = require("../models/userSchema");
 const Course = require('../models/courseSchema');
 const Categories = require('../models/categorySchema');
+const admins = require("../models/adminSchema");
+const instituteadmins = require("../models/instituteSchema");
+const profileView = require("../models/profileViewSchema");
 
 exports.userregister = async (req, res) => {
   const { name, phone, email, password, birth, gender } = req.body;
@@ -199,6 +202,32 @@ exports.coursecategorycount = async (req, res) => {
   }
   catch (error) {
     console.log(error);
+    res.status(500).json({ error: "Internal server Error", error });
+  }
+}
+
+// PROFILE CLICK BY USER 
+exports.profileclick = async (req, res) => {
+  console.log('inside profile click')
+  const { profileId, role } = req.body;
+  let user = await admins.findOne({ _id: profileId, role: role });
+
+  if (!user) {
+    user = await instituteadmins.findOne({ _id: profileId, role: role });
+  }
+  if (!user) {
+    res.status(404).json({ message: 'User not found' });
+  }
+
+  try {
+    const newView = new profileView({
+      profileId: user._id,
+      role: user.role
+    });
+    const storeData = await newView.save();
+    res.status(200).json(storeData);
+  }
+  catch (error) {
     res.status(500).json({ error: "Internal server Error", error });
   }
 }
