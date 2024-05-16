@@ -11,12 +11,30 @@ import Image from 'next/image';
 import './dashboard.css'
 import Courserating from '@/components/admin/courserating/Courserating';
 import Barchart from '@/components/admin/graph/barchart/Barchart';
+import { cloudstoragefunction } from '@/app/lib/Services/api';
 
 function Dashboard() {
   const { isLoading } = Auth();
   const [showLoader, setShowLoader] = useState(true);
+  const [storageData, setStorageData] = useState([]);
+  const [allocatedSpace, setAllocatedSpace] = useState('');
+
+  const fetchStorageData = async () => {
+    try {
+      const userId = sessionStorage.getItem("adminId");
+      if (!userId) {
+        throw new Error("No adminId found in sessionStorage");
+      }
+      const response = await cloudstoragefunction(userId);
+      setStorageData(response.usage);
+      setAllocatedSpace(response.allocatedSpace);
+    } catch (error) {
+      console.error("Error fetching storage data:", error);
+    }
+  };
 
   useEffect(() => {
+    fetchStorageData();
     const timer = setTimeout(() => {
       if (!isLoading) {
         setShowLoader(false);
@@ -33,6 +51,8 @@ function Dashboard() {
   if (showLoader) {
     return <div><Loader /></div>;
   }
+
+
 
   const recent_logs = [
     { icon: <Image src='/comment.svg' width={32} height={32} alt='comment svg' />, text: 'Kevin <span>comments on your lecture</span> “What is ux” in “2021 ui/ux design with figma"', time: 'just now' },
@@ -127,10 +147,10 @@ function Dashboard() {
             <div className='space-stats-container w-[32%]'>
               <div className="space-stats-heading flex justify-between px-5 py-4">
                 <h6>Storage Analytics</h6>
-                <p>Total Storage: <span>30GB</span></p>
+                <p>Total Storage: <span>{allocatedSpace}GB</span></p>
               </div>
               <hr />
-              <Piechart />
+              <Piechart storageData={storageData} />
             </div>
           </div>
         </div>

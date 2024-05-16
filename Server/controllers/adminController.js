@@ -246,7 +246,6 @@ const getObjectSize = async (bucket, prefix) => {
     };
 
     const data = await aws_s3.listObjectsV2(params).promise();
-    console.log("This is storage", data)
     return data.Contents.reduce((acc, item) => acc + item.Size, 0);
 };
 
@@ -262,6 +261,7 @@ exports.cloudstorage = async (req, res) => {
     }
 
     const folderPath = user._id.toString();
+    const emptySpace = user.allocatedSpace;
 
     try {
         const [imagesSize, videosSize, filesSize] = await Promise.all([
@@ -271,13 +271,20 @@ exports.cloudstorage = async (req, res) => {
         ]);
 
         const totalUsedSpace = imagesSize + videosSize + filesSize;
-        const freeSpace = 1000 - totalUsedSpace;
-        res.status(200).json([
-            { id: 'Images', label: 'Images', value: imagesSize, color: 'hsl(233, 70%, 50%)' },
-            { id: 'Videos', label: 'Videos', value: videosSize, color: 'hsl(235, 70%, 50%)' },
-            { id: 'Files', label: 'Files', value: filesSize, color: 'hsl(314, 70%, 50%)' },
-            { id: 'Free Space', label: 'Free Space', value: freeSpace, color: 'hsl(89, 70%, 50%)' },
-        ]);
+        const freeSpace = emptySpace - totalUsedSpace;
+
+        // Convert bytes to GB
+        const bytesToGB = (bytes) => (bytes / 1073741824).toFixed(1);
+
+        res.status(200).json({
+            allocatedSpace: bytesToGB(emptySpace),
+            usage: [
+              { id: 'Images', label: 'Images', value: bytesToGB(imagesSize), color: 'hsl(233, 70%, 50%)' },
+              { id: 'Videos', label: 'Videos', value: bytesToGB(videosSize), color: 'hsl(235, 70%, 50%)' },
+              { id: 'Files', label: 'Files', value: bytesToGB(filesSize), color: 'hsl(314, 70%, 50%)' },
+              { id: 'Free Space', label: 'Free Space', value: bytesToGB(freeSpace), color: 'hsl(89, 70%, 50%)' },
+            ],
+          });
     }
     catch (error) {
         console.log(error)
@@ -292,12 +299,12 @@ exports.usedSpace = async (req, res) => {
     if (!user) {
         user = await institutes.findOne({ _id: adminId });
     }
-    if(!user) {
+    if (!user) {
         return res.status(400).json({ error: 'User not found' });
     }
     try {
         user.usedSpace += fileSize;
-        if(user.usedSpace > user.allocatedSpace) {
+        if (user.usedSpace > user.allocatedSpace) {
             return res.status(400).json({ error: 'Storage limit exceeded' });
         }
         const storeData = await user.save();

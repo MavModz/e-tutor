@@ -103,7 +103,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
     const adminId = sessionStorage.getItem('adminId');
     if (file) {
       const folderPath = `${adminId}`
-      const key = `course-thumbnails/${Date.now()}-${file.name}`;
+      const key = `images/${Date.now()}-${file.name}`;
       try {
         const uploadedFileURL = await uploadFileToS3(file, folderPath, key);
         setThumbnailSrc(uploadedFileURL);
