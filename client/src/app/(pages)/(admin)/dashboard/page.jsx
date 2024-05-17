@@ -11,13 +11,14 @@ import Image from 'next/image';
 import './dashboard.css'
 import Courserating from '@/components/admin/courserating/Courserating';
 import Barchart from '@/components/admin/graph/barchart/Barchart';
-import { cloudstoragefunction } from '@/app/lib/Services/api';
+import { cloudstoragefunction, overallcourseratingfunction } from '@/app/lib/Services/api';
 
 function Dashboard() {
   const { isLoading } = Auth();
   const [showLoader, setShowLoader] = useState(true);
   const [storageData, setStorageData] = useState([]);
   const [allocatedSpace, setAllocatedSpace] = useState('');
+  const [overallCourseRatings, setOverallCourseRatings] = useState('');
 
   const fetchStorageData = async () => {
     try {
@@ -33,8 +34,24 @@ function Dashboard() {
     }
   };
 
+  const fetchoverallcourserating = async () => {
+    try {
+      const userId = sessionStorage.getItem('adminId');
+      if (!userId) {
+        throw new Error("No adminId found in sessionStorage");
+      }
+      const response = await overallcourseratingfunction(userId);
+      const averageRatings = response.averageRating.toFixed(1);
+      setOverallCourseRatings(averageRatings);
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     fetchStorageData();
+    fetchoverallcourserating();
     const timer = setTimeout(() => {
       if (!isLoading) {
         setShowLoader(false);
@@ -63,7 +80,6 @@ function Dashboard() {
 
   const year = new Date().getFullYear();
   const month = new Date().toLocaleString('en-US', { month: 'long' });
-  console.log(month)
 
   return (
     <div className='bg-[#f4f7fe] w-full min-h-full'>
@@ -119,7 +135,7 @@ function Dashboard() {
               <hr />
               <div className="course-rating-center flex gap-3 px-5 py-[22px]">
                 <div className="rating-area flex flex-col items-center gap-4">
-                  <h5>4.6</h5>
+                  <h5>{overallCourseRatings}</h5>
                   <div className="rating-visual flex flex-col items-center gap-2">
                     <Image src='/course-rating.svg' width={70} height={20} alt='course rating svg' />
                     <p>Overall Rating</p>
@@ -128,7 +144,7 @@ function Dashboard() {
                 <Ratinggraph />
               </div>
               <hr />
-              <div className="course-rating-bottom px-5 py-4">
+              <div className="course-rating-bottom min-h-[205px] px-5 py-4">
                 <div className="course-rating-wrapper">
                   <Courserating />
                 </div>

@@ -5,6 +5,7 @@ const Categories = require('../models/categorySchema');
 const admins = require("../models/adminSchema");
 const instituteadmins = require("../models/instituteSchema");
 const profileView = require("../models/profileViewSchema");
+const courseRating = require("../models/courseRatingShema");
 
 exports.userregister = async (req, res) => {
   const { name, phone, email, password, birth, gender } = req.body;
@@ -208,7 +209,6 @@ exports.coursecategorycount = async (req, res) => {
 
 // PROFILE CLICK BY USER 
 exports.profileclick = async (req, res) => {
-  console.log('inside profile click')
   const { profileId, role } = req.body;
   let user = await admins.findOne({ _id: profileId, role: role });
 
@@ -229,5 +229,28 @@ exports.profileclick = async (req, res) => {
   }
   catch (error) {
     res.status(500).json({ error: "Internal server Error", error });
+  }
+}
+
+// RATE THE COURSE
+
+exports.ratecourse = async (req, res) => {
+  const { courseId, rating, comment } = req.body
+  try {
+    const course = await Course.findOne({ _id: courseId });
+    if (!course) {
+      return res.status(404).json({ message: "Unable to Rate the course" })
+    }
+    const newRating = new courseRating({
+      courseId,
+      rating,
+      comment
+    });
+    const saveData = await newRating.save();
+    res.status(200).json(saveData);
+  }
+  catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "internal server Error", error })
   }
 }

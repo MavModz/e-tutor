@@ -126,7 +126,6 @@ const courseSchema = new mongoose.Schema({
     //     type: String,
     //     required: true,
     // },
-
 });
 
 const courses = new mongoose.model("courses", courseSchema);
