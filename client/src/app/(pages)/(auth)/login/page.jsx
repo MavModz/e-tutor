@@ -21,12 +21,14 @@ const Login = () => {
 
     try {
       const response = await loginfunction(email, password);
-      console.log(response);
+      console.log('this is the user login', response.user.role);
       if (response && response.exists) {
         const { token } = response;
         const { _id } = response.user;
         sessionStorage.setItem("auth_token", token);
-        sessionStorage.setItem("adminId", _id);
+        if (response.user.role == 'admin' || response.user.role == 'institute admin') {
+          sessionStorage.setItem("adminId", _id);
+        }
 
         setTimeout(() => {
           toast.success("Login Successful");
