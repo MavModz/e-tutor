@@ -126,7 +126,7 @@ export const allcoursesfunction = async () => {
 // COURSE DETAILS
 
 export const coursedetailsfunction = async (courseId) => {
-    try{
+    try {
         const response = await commonrequest("GET", `${backend_url}/user/course-details/${courseId}`, null, null, false);
         return response.data;
     }
@@ -139,10 +139,10 @@ export const coursedetailsfunction = async (courseId) => {
 
 export const coursecategorycountfunction = async (courseCategory) => {
     try {
-     const response = await commonrequest("GET", `${backend_url}/user/total-courses-in-category/${courseCategory}`, null, null, false);
-     return response.data;    
+        const response = await commonrequest("GET", `${backend_url}/user/total-courses-in-category/${courseCategory}`, null, null, false);
+        return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }
@@ -154,7 +154,7 @@ export const cloudstoragefunction = async (userId) => {
         const response = await commonrequest("GET", `${backend_url}/admin/cloud-storage/${userId}`);
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error
     }
 }
@@ -163,10 +163,10 @@ export const cloudstoragefunction = async (userId) => {
 
 export const updateusedspacefunction = async (adminId, fileSize) => {
     try {
-        const response = await commonrequest("POST", `${backend_url}/admin/update-usedspace/`, {adminId, fileSize});
+        const response = await commonrequest("POST", `${backend_url}/admin/update-usedspace/`, { adminId, fileSize });
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error
     }
 }
@@ -178,7 +178,31 @@ export const profileviewfunction = async (userId) => {
         const respose = await commonrequest("GET", `${backend_url}/admin/profile-views/${userId}`);
         return respose.data;
     }
-    catch(error) {
+    catch (error) {
+        throw error;
+    }
+}
+
+// OVERALL COURSE RATING
+
+export const overallcourseratingfunction = async (userId) => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/admin/overall-course-rating/${userId}`);
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// WEEKLY COURSE RATING
+
+export const weeklycourseratingfunction = async (userId) => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/admin/weekly-overall-rating/${userId}`);
+        return response.data;
+    }
+    catch (error) {
         throw error;
     }
 }

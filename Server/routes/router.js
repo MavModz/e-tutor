@@ -24,6 +24,8 @@ router.get("/admin/course-instructors", eitherAuth, adminControllers.courseinstr
 router.get("/admin/cloud-storage/:userId", eitherAuth, adminControllers.cloudstorage);
 router.post("/admin/update-usedspace", eitherAuth, adminControllers.usedSpace);
 router.get("/admin/profile-views/:userId", eitherAuth, adminControllers.profileViews);
+router.get("/admin/overall-course-rating/:userId", eitherAuth, adminControllers.getOverAllCourseRatings);
+router.get("/admin/weekly-overall-rating/:userId", eitherAuth, adminControllers.weeklyOverAllratings);
 
 router.post("/user/register", userControllers.userregister);
 router.post("/user/checkout", userAuth, userControllers.checkout);
@@ -35,4 +37,5 @@ router.get("/user/all-subcategories/:categoryName", userControllers.allsubcatego
 router.get("/user/total-courses-in-category/:courseCategory", userControllers.coursecategorycount);
 router.get("/user/course-details/:courseId", userControllers.coursedetails);
 router.post("/user/profile-click", userControllers.profileclick);
+router.post("/user/rate-course", userAuth, userControllers.ratecourse);
 module.exports = router;

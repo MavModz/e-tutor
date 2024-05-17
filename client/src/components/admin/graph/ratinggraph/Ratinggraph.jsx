@@ -1,24 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsiveLine } from '@nivo/line';
+import { weeklycourseratingfunction } from '@/app/lib/Services/api';
 
 function Ratinggraph() {
 
     const [ratingData, setRatingData] = useState([]);
 
+    const fetchweeklycourserating = async () => {
+        try {
+            const userId = sessionStorage.getItem('adminId');
+            const response = await weeklycourseratingfunction(userId);
+            const formattedData = [
+                {
+                    id: "Ratings Over Time",
+                    data: response.map(week => ({
+                        x: week.id,
+                        y: week.data
+                    }))
+                }
+            ];
+            setRatingData(formattedData);
+        }
+        catch (error) {
+            console.log("Error fetching profile data:", error);
+        }
+    }
+
     useEffect(() => {
         setTimeout(() => {
-            setRatingData([
-                {
-                    id: "test",
-                    data: [
-                        { x: "week1", y: 20 },
-                        { x: "week2", y: 22 },
-                        { x: "week3", y: 18 },
-                        { x: "week4", y: 21 },
-                        { x: "week5", y: 13 }
-                    ]
-                }
-            ]);
+            fetchweeklycourserating();
         }, 1000);
     }, []);
 

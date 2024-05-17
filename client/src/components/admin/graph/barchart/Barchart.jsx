@@ -5,6 +5,17 @@ import { profileviewfunction } from '@/app/lib/Services/api';
 function Barchart() {
     const [profileViews, setProfileViews] = useState([]);
 
+    const defaultProfileViews = [
+        { day: 'Sunday', views: 0 },
+        { day: 'Monday', views: 0 },
+        { day: 'Tuesday', views: 0 },
+        { day: 'Wednesday', views: 0 },
+        { day: 'Thursday', views: 0 },
+        { day: 'Friday', views: 0 },
+        { day: 'Saturday', views: 0 },
+    ];
+
+
     const fetchprofileviews = async () => {
         try {
             const userId = sessionStorage.getItem('adminId');
@@ -12,12 +23,21 @@ function Barchart() {
                 throw new Error("No adminId found in sessionStorage");
             }
             const response = await profileviewfunction(userId);
-            setProfileViews(response);
-        }
-        catch (error) {
+            const responseData = response.map(view => ({ day: view.day, views: view.views }));
+
+            // Merge default data with the response
+            const mergedData = defaultProfileViews.map(defaultDay => {
+                const dayData = responseData.find(d => d.day === defaultDay.day);
+                return dayData ? { ...defaultDay, views: dayData.views } : defaultDay;
+            });
+
+            setProfileViews(mergedData);
+        } catch (error) {
             console.error("Error fetching profile data:", error);
+            setProfileViews(defaultProfileViews); // Set to default if there's an error
         }
     }
+
 
     useEffect(() => {
         fetchprofileviews();
