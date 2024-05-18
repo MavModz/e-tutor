@@ -6,7 +6,7 @@ import Coursecard from '@/components/cards/courseCard/Coursecard';
 import Card from '@/components/cards/Card';
 import FeaturedCourse from '@/components/cards/featuredCard/FeaturedCourse';
 import Link from 'next/link';
-import Header from '@/components/Static/header/Header';
+import NavHeader from '@/components/Static/header/NavHeader';
 import { coursecategorycountfunction, allcoursesfunction, topinstructorsfunction } from './lib/Services/api';
 import Footer from '../components/Static/footer/Footer';
 
@@ -108,7 +108,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <div className='main-wrapper w-full min-h-full'>
-        <Header />
+        <NavHeader />
         <div className='section-cover bg-[#f6f7fe] w-full min-h-full'>
           <div className='hero-area'>
             <div className='hero-section flex gap-3'>

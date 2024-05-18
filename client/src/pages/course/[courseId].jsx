@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Overview from '@/components/course/courseOverview/Overview';
 import Curriculum from '@/components/course/courseCurriculum/Curriculum';
@@ -6,6 +6,7 @@ import Instructor from '@/components/course/courseInstructor/Instructor';
 import Review from '@/components/course/courseReview/Review';
 import { allcoursesfunction, coursedetailsfunction } from '@/app/lib/Services/api';
 import Header from '@/components/admin/header/header';
+import Courserating from '@/components/admin/courserating/Courserating';
 
 function CourseDetails({ course }) {
 
@@ -73,6 +74,23 @@ function CourseDetails({ course }) {
                         </div>
                         <div className="course-overview-container flex flex-col gap-10">
                             {activeComponent}
+                        </div>
+                        <div className="overall-course-rating-container flex flex-col gap-5">
+                            <div className="overall-course-rating-heading">
+                                <h4>Course Rating</h4>
+                            </div>
+                            <div className="overall-course-rating-area flex gap-6">
+                                <div className="average-course-rating">
+                                    <h4>4.8</h4>
+                                    <div className="rating-visual flex flex-col items-center gap-2">
+                                        <Image src='/course-rating.svg' width={108} height={20} alt='course rating svg' />
+                                        <p>Course Rating</p>
+                                    </div>
+                                </div>
+                                <div className="overall-course-rating-progress-bar w-full">
+                                    <Courserating />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="coursedetails-wrapper-right w-2/5 mt-[-240px]">

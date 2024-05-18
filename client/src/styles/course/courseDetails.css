@@ -397,3 +397,43 @@ span {
     letter-spacing: -0.01em;
     text-align: left;
 }
+
+.overall-course-rating-heading h4 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+}
+
+.average-course-rating {
+    width: 200px;
+    height: 170px;
+    border: 1px solid #E9EAF0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.average-course-rating h4 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 52px;
+    letter-spacing: -0.02em;
+    text-align: center;
+}
+
+.rating-visual p {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    text-align: center;
+
+}
