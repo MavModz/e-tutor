@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { loginfunction } from "@/app/lib/Services/api";
 import { Phone, Fingerprint } from 'lucide-react';
@@ -15,13 +15,19 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  useEffect(() => {
+    const authToken = sessionStorage.getItem('auth_token');
+    if (authToken) {
+      router.replace('/dashboard');
+    }
+  }, [router]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
       const response = await loginfunction(email, password);
-      console.log('this is the user login', response.user.role);
       if (response && response.exists) {
         const { token } = response;
         const { _id } = response.user;

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import "./header.css";
 
-function Header() {
+function NavHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -22,22 +22,22 @@ function Header() {
   }, []);
 
   // Add 'header-scrolled' class to the header container if the page is scrolled
-  const headerClass = isScrolled ? 'header-area-container header-scrolled' : 'header-area-container';
+  const headerClass = isScrolled ? 'nav-header-area-container header-scrolled' : 'nav-header-area-container';
 
   return (
     <div className={headerClass}>
-      <div className="header-wrapper">
-        <div className="header-area flex justify-between items-center">
-          <div className="logo-container w-1/5 flex items-center">
+      <div className="nav-header-wrapper">
+        <div className="nav-header-area flex justify-between items-center">
+          <div className="nav-logo-container w-1/5 flex items-center">
             <Image src="/Logo.svg" width={120} height={54}
-              className='img-static-header-logo'
+              className='nav-img-static-header-logo'
               alt="logo svg"
               onError={(e) => e.target.src = '/LOGO.png'}
             />
           </div>
-          <div className="header-button-container w-4/5 flex justify-end">
+          <div className="nav-header-button-container w-4/5 flex justify-end">
             <Link href='/login' passHref>
-              <button className='header-button-area hover-btn-effect flex gap-1.5'><Image src="/login-icon.svg" width={12} height={12} alt="login logo svg" className='static-header-logo' />Login</button>
+              <button className='nav-header-button-area hover-btn-effect flex gap-1.5'><Image src="/login-icon.svg" width={12} height={12} alt="login logo svg" className='static-header-logo' />Login</button>
             </Link>
           </div>
         </div>
@@ -46,4 +46,4 @@ function Header() {
   )
 }
 
-export default Header
+export default NavHeader

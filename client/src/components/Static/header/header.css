@@ -1,4 +1,4 @@
-.header-area-container {
+.nav-header-area-container {
     width: 100%;
     z-index: 1000;
     position: fixed;
@@ -7,19 +7,19 @@
     padding: 40px 0;
 }
 
-.header-area {
+.nav-header-area {
     margin-left: calc(20% - 194px);
     margin-right: calc(20% - 194px);
     padding: 0 30px;
 }
 
-.img-static-header-logo {
+.nav-img-static-header-logo {
     width: 120px;
     height: 54px;
     object-fit: contain;
 }
 
-.header-button-area {
+.nav-header-button-area {
     background-color: var(--primary-new);
     color: var(--background);
     white-space: nowrap;
