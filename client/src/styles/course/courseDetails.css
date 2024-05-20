@@ -398,7 +398,8 @@ span {
     text-align: left;
 }
 
-.overall-course-rating-heading h4 {
+.overall-course-rating-heading h4,
+.student-feedback-heading h4 {
     font-family: var(--secondary-font);
     color: var(--text-dark);
     font-size: 24px;
@@ -435,5 +436,34 @@ span {
     line-height: 20px;
     letter-spacing: -0.01em;
     text-align: center;
+}
 
+.feedback-heading h6 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    text-align: right;
+}
+
+.feedback-heading span,
+p {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    text-align: left;
+}
+
+.comment-container>p {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
 }

@@ -112,6 +112,7 @@ export const topinstructorsfunction = async () => {
 
 
 // LISTING OF ALL COURSES
+
 export const allcoursesfunction = async () => {
     try {
         const response = await commonrequest("GET", `${backend_url}/user/all-courses`, null, null, false)
@@ -200,6 +201,18 @@ export const overallcourseratingfunction = async (userId) => {
 export const weeklycourseratingfunction = async (userId) => {
     try {
         const response = await commonrequest("GET", `${backend_url}/admin/weekly-overall-rating/${userId}`);
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// COURSE COMMENTS
+
+export const coursecommentfunction = async (courseId) => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/user/course-comments/${courseId}`);
         return response.data;
     }
     catch (error) {

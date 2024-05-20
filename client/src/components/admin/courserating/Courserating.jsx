@@ -155,7 +155,6 @@ function Courserating() {
                 throw new Error("No adminId found in sessionStorage");
             }
             const response = await overallcourseratingfunction(userId);
-            // Ensure response structure integrity
             if (!response.ratings) response.ratings = { "1stars": 0, "2stars": 0, "3stars": 0, "4stars": 0, "5stars": 0 };
             setCourseRatings(Array.isArray(response) ? response : [response]);
         } catch (error) {

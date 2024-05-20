@@ -83,6 +83,7 @@ export default function Home() {
       const featuredCourses = response.slice(-4);
       const recentCourses = response.slice(-4);
       setBestSellingCourse(bestCourses);
+      console.log('these are the best selling coureses', bestCourses)
       //need to make new API for Best Selling courses
       setFeaturedCourses(featuredCourses);
       //need to make new API for Feature courses
@@ -172,7 +173,7 @@ export default function Home() {
             <h2>Best selling courses</h2>
             <div className="best-selling-wrapper">
               {bestSellingCourses.map(course => (
-                <Link href={`/course/${course.courseCode}`} key={course.courseCode} passHref>
+                <Link href={`/course/${course.courseName.replace(/\s+/g, '-').toLowerCase()}-${course._id}`} key={course._id} passHref>
                   <Coursecard
                     courseThumbnail={course.courseThumbnail}
                     courseCategory={course.courseCategory}
@@ -194,7 +195,7 @@ export default function Home() {
             </div>
             <div className="featured-course-card-area">
               {featuredCourses.map(course => (
-                <Link href={`/course/${course.courseCode}`} key={course.courseCode} passHref>
+                <Link href={`/course/${course.courseName.replace(/\s+/g, '-').toLowerCase()}-${course._id}`} key={course._id} passHref>
                   <FeaturedCourse
                     courseThumbnail={course.courseThumbnail}
                     courseCategory={course.courseCategory}
@@ -216,7 +217,7 @@ export default function Home() {
             </div>
             <div className="recently-added-course-card-area">
               {recentlyAddedCourses.map(course => (
-                <Link href={`/course/${course.courseCode}`} key={course.courseCode} passHref>
+                <Link href={`/course/${course.courseName.replace(/\s+/g, '-').toLowerCase()}-${course._id}`} key={course._id} passHref>
                   <Coursecard
                     courseThumbnail={course.courseThumbnail}
                     courseCategory={course.courseCategory}

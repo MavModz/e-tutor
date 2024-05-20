@@ -38,4 +38,5 @@ router.get("/user/total-courses-in-category/:courseCategory", userControllers.co
 router.get("/user/course-details/:courseId", userControllers.coursedetails);
 router.post("/user/profile-click", userControllers.profileclick);
 router.post("/user/rate-course", userAuth, userControllers.ratecourse);
+router.get("/user/course-comments/:courseId", userControllers.coursecomments);
 module.exports = router;
