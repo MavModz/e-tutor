@@ -32,14 +32,17 @@ const Login = () => {
         const { token } = response;
         const { _id } = response.user;
         sessionStorage.setItem("auth_token", token);
-        if (response.user.role == 'admin' || response.user.role == 'institute admin') {
+        if (response.user.role === 'admin' || response.user.role === 'institute admin' || response.user.role === 'super admin') {
           sessionStorage.setItem("adminId", _id);
+        }
+        else {
+          sessionStorage.setItem("userId", _id);
         }
 
         setTimeout(() => {
           toast.success("Login Successful");
           router.push('/dashboard');
-        }, 1000);
+        }, 500);
       } else {
         console.log("Fetching error");
         toast.error("Login Failed")

@@ -6,6 +6,15 @@ const courseRatingSchema = new mongoose.Schema({
         ref: 'Course',
         required: true
     },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
     rating: {
         type: Number,
         required: true,

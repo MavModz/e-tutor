@@ -175,12 +175,29 @@ exports.allsubcategories = async (req, res) => {
   }
 }
 
+// exports.coursedetails = async (req, res) => {
+//   try {
+//     const courseCode = req.params.courseId;
+//     const course = await Course.findOne({ courseCode });
+
+//     if (!courseCode) {
+//       res.status(404).json({ error: 'Course not found' });
+//       return;
+//     }
+
+//     res.status(200).json(course);
+//   }
+//   catch (error) {
+//     res.status(500).json({ error: "Internal server Error", error });
+//   }
+// }
+
 exports.coursedetails = async (req, res) => {
   try {
-    const courseCode = req.params.courseId;
-    const course = await Course.findOne({ courseCode });
+    const courseID = req.params.courseId;
+    const course = await Course.findOne({ _id: courseID });
 
-    if (!courseCode) {
+    if (!courseID) {
       res.status(404).json({ error: 'Course not found' });
       return;
     }
@@ -235,14 +252,18 @@ exports.profileclick = async (req, res) => {
 // RATE THE COURSE
 
 exports.ratecourse = async (req, res) => {
-  const { courseId, rating, comment } = req.body
+  const { courseId, rating, userId, comment } = req.body
   try {
     const course = await Course.findOne({ _id: courseId });
     if (!course) {
       return res.status(404).json({ message: "Unable to Rate the course" })
     }
+    const userName = await users.findOne({ _id: userId });
+    const name = userName.name;
     const newRating = new courseRating({
       courseId,
+      userId,
+      name,
       rating,
       comment
     });
@@ -252,5 +273,20 @@ exports.ratecourse = async (req, res) => {
   catch (error) {
     console.log(error);
     res.status(500).json({ error: "internal server Error", error })
+  }
+}
+
+// COURSE COMMENTS
+
+exports.coursecomments = async (req, res) => {
+  const courseId = req.params.courseId.split('-').pop();
+  try {
+    const ratings = await courseRating.find({ courseId: courseId });
+    res.status(200).json({ message: "Ratings fetched successfully", ratings })
+    console.log(ratings)
+  }
+  catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error", error })
   }
 }
