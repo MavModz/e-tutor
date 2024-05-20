@@ -67,7 +67,7 @@ function Review() {
                     <span>.</span>
                     <p>{item.timeAgo}</p>
                   </div>
-                  <Image src={`/images/${item.rating}stars.svg`} alt={`${item.rating} star rating`} width={80} height={16} />
+                  <Image src={`/${item.rating}stars.svg`} alt={`${item.rating} star rating`} width={80} height={16} />
                 </div>
                 <div className="comment-container">
                   <p>{item.comment}</p>

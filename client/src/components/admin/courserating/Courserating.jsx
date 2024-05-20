@@ -174,7 +174,7 @@ function Courserating() {
                 <Box key={index} className={classes.ratingContainer}>
                     {course.ratings && Object.entries(course.ratings).map(([key, value], idx) => (
                         <Box key={index + '-' + idx + '-' + key} className={classes.starAndTextContainer}>
-                            <Image src={`/images/${key.replace('_', '-')}.svg`} alt={`${key} star`} className={classes.starImage} width={70} height={20} />
+                            <Image src={`/${key.replace('_', '-')}.svg`} alt={`${key} star`} className={classes.starImage} width={70} height={20} />
                             <Typography variant="body2" className={classes.ratingText}>
                                 {`${key}`}
                             </Typography>
