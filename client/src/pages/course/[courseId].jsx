@@ -5,7 +5,8 @@ import Curriculum from '@/components/course/courseCurriculum/Curriculum';
 import Instructor from '@/components/course/courseInstructor/Instructor';
 import Review from '@/components/course/courseReview/Review';
 import { allcoursesfunction, coursedetailsfunction } from '@/app/lib/Services/api';
-import Header from '@/components/admin/header/header';
+import Footer from '@/components/Static/footer/Footer';
+import NavHeader from '@/components/Static/header/NavHeader';
 
 function CourseDetails({ course }) {
 
@@ -28,8 +29,8 @@ function CourseDetails({ course }) {
     };
 
     return (
-        <div className='bg-[#f4f7fe] w-full min-h-full'>
-            <Header />
+        <div className='bg-[#f4f7fe] w-full'>
+            <NavHeader />
             <div className="background-breadcrumb">
             </div>
             <div className="coursedata-container">
@@ -147,6 +148,7 @@ function CourseDetails({ course }) {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     )
 }

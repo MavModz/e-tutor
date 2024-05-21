@@ -29,11 +29,13 @@ function NavHeader() {
       <div className="nav-header-wrapper">
         <div className="nav-header-area flex justify-between items-center">
           <div className="nav-logo-container w-1/5 flex items-center">
-            <Image src="/Logo.svg" width={120} height={54}
-              className='nav-img-static-header-logo'
-              alt="logo svg"
-              onError={(e) => e.target.src = '/LOGO.png'}
-            />
+            <Link href='/' passHref>
+              <Image src="/LOGO.svg" width={120} height={54}
+                className='nav-img-static-header-logo'
+                alt="logo svg"
+                onError={(e) => e.target.src = '/LOGO.png'}
+              />
+            </Link>
           </div>
           <div className="nav-header-button-container w-4/5 flex justify-end">
             <Link href='/login' passHref>
