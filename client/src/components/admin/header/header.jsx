@@ -32,7 +32,7 @@ function Header() {
       <div className="header-wrapper">
         <div className="logo-container">
           <Link href='/' passHref>
-            <Image src="/Logo.svg" width={120} height={54}
+            <Image src="/LOGO.svg" width={120} height={54}
               alt="logo svg"
               onError={(e) => e.target.src = '/LOGO.png'}
             />
