@@ -5,6 +5,7 @@ import "./header.css";
 
 function NavHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -12,8 +13,17 @@ function NavHeader() {
       setIsScrolled(window.scrollY > 0);
     };
 
+    // Check session storage for auth token
+    const checkAuthToken = () => {
+      const token = sessionStorage.getItem('auth_token');
+      setIsLoggedIn(!!token);
+    };
+
     // Add scroll event listener
     window.addEventListener('scroll', handleScroll);
+
+    // Check auth token on mount
+    checkAuthToken();
 
     // Clean up the event listener when the component unmounts
     return () => {
@@ -38,9 +48,21 @@ function NavHeader() {
             </Link>
           </div>
           <div className="nav-header-button-container w-4/5 flex justify-end">
-            <Link href='/login' passHref>
-              <button className='nav-header-button-area hover-btn-effect flex gap-1.5'><Image src="/login-icon.svg" width={12} height={12} alt="login logo svg" className='static-header-logo' />Login</button>
-            </Link>
+            {isLoggedIn ? (
+              <Link href='/dashboard' passHref>
+                <button className='nav-header-button-area hover-btn-effect flex gap-1.5'>
+                  <Image src="/login-icon.svg" width={12} height={12} alt="login logo svg" className='static-header-logo' />
+                  Dashboard
+                </button>
+              </Link>
+            ) : (
+              <Link href='/login' passHref>
+                <button className='nav-header-button-area hover-btn-effect flex gap-1.5'>
+                  <Image src="/login-icon.svg" width={12} height={12} alt="login logo svg" className='static-header-logo' />
+                  Login
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -48,4 +70,4 @@ function NavHeader() {
   )
 }
 
-export default NavHeader
+export default NavHeader;

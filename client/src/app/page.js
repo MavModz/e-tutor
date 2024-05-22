@@ -9,6 +9,7 @@ import Link from 'next/link';
 import NavHeader from '@/components/Static/header/NavHeader';
 import { coursecategorycountfunction, allcoursesfunction, topinstructorsfunction } from './lib/Services/api';
 import Footer from '../components/Static/footer/Footer';
+import DraggableMenu from '@/components/Static/draggableMenu/DraggableMenu';
 
 
 export default function Home() {
@@ -107,7 +108,8 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen overflow-hidden" id='main-wrapper'>
+      <DraggableMenu />
       <div className='main-wrapper w-full min-h-full'>
         <NavHeader />
         <div className='section-cover bg-[#f6f7fe] w-full min-h-full'>

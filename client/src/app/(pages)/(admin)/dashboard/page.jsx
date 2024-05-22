@@ -12,6 +12,7 @@ import './dashboard.css'
 import Courserating from '@/components/admin/courserating/Courserating';
 import Barchart from '@/components/admin/graph/barchart/Barchart';
 import { cloudstoragefunction, overallcourseratingfunction } from '@/app/lib/Services/api';
+import Footer from '@/components/admin/footer/Footer';
 
 function Dashboard() {
   const { isLoading } = Auth();
@@ -171,6 +172,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
