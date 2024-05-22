@@ -29,6 +29,8 @@ function Review() {
       console.log("Error while fetching the student feedback", error);
     }
   }
+
+
   useEffect(() => {
     if (router.isReady) {
       fetchstudentfeedback();

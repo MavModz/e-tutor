@@ -45,7 +45,7 @@ function CourseDetails({ course }) {
                                     <h4>{course.instructors}</h4>
                                 </div>
                                 <div className="course-details-ratings flex gap-2 items-center">
-                                    <Image src="/Star.svg" width={20} height={20} alt="course ratings" />
+                                    <Image src="/5stars.svg" width={100} height={22} alt="course ratings" />
                                     <h4>{course.rating}</h4>
                                 </div>
                             </div>
