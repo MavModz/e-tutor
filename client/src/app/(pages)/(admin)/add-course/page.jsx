@@ -3,11 +3,13 @@
 require("dotenv").config();
 import React, { useState, useEffect } from 'react';
 import './add-course.css';
+import Image from 'next/image';
 import Auth from '../../(auth)/middleware/auth';
 import Loader from '@/components/loader/Loader';
 import { addcoursefunction } from '@/app/lib/Services/api';
 
 import dynamic from 'next/dynamic';
+import Header from '@/components/admin/header/header';
 
 const Success = dynamic(() => import('@/components/Modals/Success/Success'), { ssr: false });
 const Error = dynamic(() => import('@/components/Modals/Error/Error'), { ssr: false });
@@ -137,24 +139,60 @@ function AddCourse() {
     }
   };
 
+  // const renderStep = () => {
+  //   switch (currentStep) {
+  //     case 1:
+  //       return <BasicDetails onNext={nextStep} />;
+  //     case 2:
+  //       return <AdvanceInformation onNext={nextStep} onPrevious={previousStep} />;
+  //     case 3:
+  //       return <Curriculum onNext={nextStep} onPrevious={previousStep} formData={formData.Curriculum} />;
+  //     case 4:
+  //       return <PublishCourse onNext={nextStep} onPrevious={previousStep} onSubmit={handleSubmit} />;
+  //     default:
+  //       return <div>Unknow step</div>
+  //   }
+  // }
   const renderStep = () => {
     switch (currentStep) {
-      case 1:
-        return <BasicDetails onNext={nextStep} />;
-      case 2:
-        return <AdvanceInformation onNext={nextStep} onPrevious={previousStep} />;
-      case 3:
-        return <Curriculum onNext={nextStep} onPrevious={previousStep} formData={formData.Curriculum} />;
-      case 4:
-        return <PublishCourse onNext={nextStep} onPrevious={previousStep} onSubmit={handleSubmit} />;
-      default:
-        return <div>Unknow step</div>
+      case 1: return <BasicDetails onNext={() => handleStepChange(2)} />;
+      case 2: return <AdvanceInformation onNext={() => handleStepChange(3)} onPrevious={() => handleStepChange(1)} />;
+      case 3: return <Curriculum onNext={() => handleStepChange(4)} onPrevious={() => handleStepChange(2)} />;
+      case 4: return <PublishCourse onSubmit={() => console.log('Submit Form')} onPrevious={() => handleStepChange(3)} />;
+      default: return <div>Unknown step</div>;
     }
-  }
+  };
+
+  const handleStepChange = (step) => {
+    setCurrentStep(step);
+  };
+
+  const navItems = [
+    { text: 'Basic Details', icon: <Image src="/Stack.svg" width={24} height={24} alt="Stack svg icon" /> },
+    { text: 'Advance Information', icon: <Image src="/Advance-Info.svg" width={24} height={24} alt="Advance-Info svg icon" /> },
+    { text: 'Curriculum', icon: <Image src="/Curriculum.svg" width={24} height={24} alt="Curriculum svg icon" /> },
+    { text: 'Publish Course', icon: <Image src="/Publish-Course.svg" width={24} height={24} alt="Publish-Course svg icon" /> },
+  ]
 
   return (
     <div>
-      {renderStep()}
+      <div className="bg-[#f4f7fe] w-full min-h-full">
+        <Header />
+        <div className="addcourse-container">
+          <div className="addcourse-top flex gap-6">
+            {navItems.map((item, index) => (
+              <button
+                key={index}
+                className={`form-wizard-heading ${currentStep === index + 1 ? 'active' : ''}`}
+                onClick={() => handleStepChange(index + 1)}
+              >
+                {item.icon}{item.text}
+              </button>
+            ))}
+          </div>
+          {renderStep()}
+        </div>
+      </div>
       <Success
         show={isSubmissionSuccessful}
         onClose={() => setIsSubmissionSuccessful(false)}

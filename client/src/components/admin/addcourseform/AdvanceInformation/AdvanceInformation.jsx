@@ -109,7 +109,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
         setThumbnailSrc(uploadedFileURL);
         sessionStorage.setItem('uploadedThumbnail', uploadedFileURL);
         console.log(uploadedFileURL);
-        await updateUsedSpace( adminId, file.size );
+        await updateUsedSpace(adminId, file.size);
       }
       catch (error) {
         console.log("error uploading the file to S3", error);
@@ -239,161 +239,155 @@ function AdvanceInformation({ onNext, onPrevious }) {
   };
 
   return (
-    <div className="bg-[#f4f7fe] w-full min-h-full">
-      <Header />
-      <div className="addcourse-container">
-        <div className="addcourse-top flex gap-6">
-          <h2 className='form-wizard-heading'><Image src="/Stack.svg" width={24} height={24} alt="Stack icon" />Advance Information</h2>
-        </div>
-        <div className="addcourse-middle">
-          <form className='addcourse-form'>
-            <hr />
-            <div className="course-thumbnail-wrapper flex gap-12 w-full">
-              <div className="thumbnail-img-wrapper flex flex-col flex-1 gap-4">
-                <p>Course Thumbnail</p>
-                <div className="thumbnail-img-container">
-                  <div className="image-container w-56 h-40">
-                    <img src={thumbnailSrc} width={124} height={124} alt="course-thumbnail" />
-                  </div>
-                  <div className="thumbnail-image-info">
-                    <p>
-                      Upload your course Thumbnail here. <span>Important guidelines:</span> 1200x800 pixels or 12:8 Ratio.
-                      Supported format: <span>.jpg, .jpeg, or .png</span>
-                    </p>
-                    <div className="upload-button-container">
-                      <input
-                        type="file"
-                        ref={fileInputRef}
-                        id='courseThumbnail'
-                        name='courseThumbnail'
-                        style={{ display: 'none' }}
-                        onChange={handleFileSelect}
-                        accept=".jpg, .jpeg, .png"
-                      />
-                      <button onClick={handleImgButtonClick} className='next-form-btn'>
-                        Upload Image
-                        <Upload />
-                      </button>
-                    </div>
-                  </div>
+    <>
+      <div className="addcourse-middle">
+        <form className='addcourse-form'>
+          <hr />
+          <div className="course-thumbnail-wrapper flex gap-12 w-full">
+            <div className="thumbnail-img-wrapper flex flex-col flex-1 gap-4">
+              <p>Course Thumbnail</p>
+              <div className="thumbnail-img-container">
+                <div className="image-container w-56 h-40">
+                  <img src={thumbnailSrc} width={124} height={124} alt="course-thumbnail" />
                 </div>
-              </div>
-              <div className="thumbnail-video-wrapper flex flex-col flex-1 gap-4">
-                <p>Course Trailer</p>
-                <div className="thumbnail-img-container">
-                  <div className="image-container w-56 h-40">
-                    <Image src={vidThumbnailSrc} width={124} height={124} alt="course-thumbnail" />
-                  </div>
-                  <div className="thumbnail-image-info">
-                    <p>
-                      Students who watch <span> a well-made promo videos</span> can increase
-                      <span>course enrollment</span> by up to 10X.
-                    </p>
-                    <div className="upload-button-container">
-                      <input
-                        type="file"
-                        ref={videoInputRef}
-                        id='videoThumbnail'
-                        name='videoThumbnail'
-                        style={{ display: 'none' }}
-                        onChange={handleVideoFileSelect}
-                        accept="video/*"
-                      />
-                      <button onClick={handleVideoButtonClick} className='next-form-btn'>
-                        Upload Video
-                        <Upload />
-                      </button>
-                    </div>
+                <div className="thumbnail-image-info">
+                  <p>
+                    Upload your course Thumbnail here. <span>Important guidelines:</span> 1200x800 pixels or 12:8 Ratio.
+                    Supported format: <span>.jpg, .jpeg, or .png</span>
+                  </p>
+                  <div className="upload-button-container">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      id='courseThumbnail'
+                      name='courseThumbnail'
+                      style={{ display: 'none' }}
+                      onChange={handleFileSelect}
+                      accept=".jpg, .jpeg, .png"
+                    />
+                    <button onClick={handleImgButtonClick} className='next-form-btn'>
+                      Upload Image
+                      <Upload />
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-            <hr />
-            <div className="course-description-wrapper flex flex-col gap-4">
-              <p>Course Description</p>
-              <ReactQuill
-                theme='snow'
-                value={richEditor}
-                onChange={setRichEditor}
-                modules={quillmodule}
-                id='courseDescription'
-                name='courseDescription'
+            <div className="thumbnail-video-wrapper flex flex-col flex-1 gap-4">
+              <p>Course Trailer</p>
+              <div className="thumbnail-img-container">
+                <div className="image-container w-56 h-40">
+                  <Image src={vidThumbnailSrc} width={124} height={124} alt="course-thumbnail" />
+                </div>
+                <div className="thumbnail-image-info">
+                  <p>
+                    Students who watch <span> a well-made promo videos</span> can increase
+                    <span>course enrollment</span> by up to 10X.
+                  </p>
+                  <div className="upload-button-container">
+                    <input
+                      type="file"
+                      ref={videoInputRef}
+                      id='videoThumbnail'
+                      name='videoThumbnail'
+                      style={{ display: 'none' }}
+                      onChange={handleVideoFileSelect}
+                      accept="video/*"
+                    />
+                    <button onClick={handleVideoButtonClick} className='next-form-btn'>
+                      Upload Video
+                      <Upload />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div className="course-description-wrapper flex flex-col gap-4">
+            <p>Course Description</p>
+            <ReactQuill
+              theme='snow'
+              value={richEditor}
+              onChange={setRichEditor}
+              modules={quillmodule}
+              id='courseDescription'
+              name='courseDescription'
+            />
+          </div>
+          <hr />
+          <div className="course-topics-wrapper flex justify-between">
+            <p>What you will teach in this course</p>
+            <button type="button" onClick={addNewTopic} disabled={courseTopics.length >= 8}>+ Add new</button>
+          </div>
+          {courseTopics.map((topic, index) => (
+            <div key={index} className="course-text-field">
+              <label htmlFor={`courseTopics-${index}`}>Topic {index + 1}</label>
+              <input
+                type="text"
+                id={`courseTopics-${index}`}
+                value={topic}
+                onChange={(e) => handleTopicChange(index, e.target.value)}
+                placeholder="What you will teach in this course"
+                autoComplete="off"
+                required
               />
+              {courseTopics.length > 2 && (
+                <button className='remove-btn' type="button" onClick={() => removeTopic(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button>
+              )}
             </div>
-            <hr />
-            <div className="course-topics-wrapper flex justify-between">
-              <p>What you will teach in this course</p>
-              <button type="button" onClick={addNewTopic} disabled={courseTopics.length >= 8}>+ Add new</button>
+          ))}
+          <hr />
+          <div className="course-topics-wrapper flex justify-between">
+            <p>Target Audience</p>
+            <button type="button" onClick={addNewAudience} disabled={targetAudience.length >= 8}>+ Add new</button>
+          </div>
+          {targetAudience.map((audience, index) => (
+            <div key={index} className="course-text-field">
+              <label htmlFor={`targetAudience-${index}`}>Audience {index + 1}</label>
+              <input
+                type="text"
+                id={`targetAudience-${index}`}
+                value={audience}
+                onChange={(e) => handleAudienceChange(index, e.target.value)}
+                placeholder="Describe your target audience"
+                autoComplete="off"
+                required
+              />
+              {targetAudience.length > 2 && (
+                <button className='remove-btn' type="button" onClick={() => removeAudience(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button> // Adjust styling as needed
+              )}
             </div>
-            {courseTopics.map((topic, index) => (
-              <div key={index} className="course-text-field">
-                <label htmlFor={`courseTopics-${index}`}>Topic {index + 1}</label>
-                <input
-                  type="text"
-                  id={`courseTopics-${index}`}
-                  value={topic}
-                  onChange={(e) => handleTopicChange(index, e.target.value)}
-                  placeholder="What you will teach in this course"
-                  autoComplete="off"
-                  required
-                />
-                {courseTopics.length > 2 && (
-                  <button className='remove-btn' type="button" onClick={() => removeTopic(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button>
-                )}
-              </div>
-            ))}
-            <hr />
-            <div className="course-topics-wrapper flex justify-between">
-              <p>Target Audience</p>
-              <button type="button" onClick={addNewAudience} disabled={targetAudience.length >= 8}>+ Add new</button>
+          ))}
+          <hr />
+          <div className="course-topics-wrapper flex justify-between">
+            <p>Course Requirements</p>
+            <button type="button" onClick={addNewRequirement} disabled={courseRequirements.length >= 8}>+ Add new</button>
+          </div>
+          {courseRequirements.map((requirement, index) => (
+            <div key={index} className="course-text-field">
+              <label htmlFor={`courseRequirements-${index}`}>Requirement {index + 1}</label>
+              <input
+                type="text"
+                id={`courseRequirements-${index}`}
+                value={requirement}
+                onChange={(e) => handleRequirementChange(index, e.target.value)}
+                placeholder="Enter a requirement"
+                autoComplete="off"
+                required
+              />
+              {courseRequirements.length > 2 && (
+                <button className='remove-btn' type="button" onClick={() => removeRequirement(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button>
+              )}
             </div>
-            {targetAudience.map((audience, index) => (
-              <div key={index} className="course-text-field">
-                <label htmlFor={`targetAudience-${index}`}>Audience {index + 1}</label>
-                <input
-                  type="text"
-                  id={`targetAudience-${index}`}
-                  value={audience}
-                  onChange={(e) => handleAudienceChange(index, e.target.value)}
-                  placeholder="Describe your target audience"
-                  autoComplete="off"
-                  required
-                />
-                {targetAudience.length > 2 && (
-                  <button className='remove-btn' type="button" onClick={() => removeAudience(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button> // Adjust styling as needed
-                )}
-              </div>
-            ))}
-            <hr />
-            <div className="course-topics-wrapper flex justify-between">
-              <p>Course Requirements</p>
-              <button type="button" onClick={addNewRequirement} disabled={courseRequirements.length >= 8}>+ Add new</button>
-            </div>
-            {courseRequirements.map((requirement, index) => (
-              <div key={index} className="course-text-field">
-                <label htmlFor={`courseRequirements-${index}`}>Requirement {index + 1}</label>
-                <input
-                  type="text"
-                  id={`courseRequirements-${index}`}
-                  value={requirement}
-                  onChange={(e) => handleRequirementChange(index, e.target.value)}
-                  placeholder="Enter a requirement"
-                  autoComplete="off"
-                  required
-                />
-                {courseRequirements.length > 2 && (
-                  <button className='remove-btn' type="button" onClick={() => removeRequirement(index)}><Trash2 color="#FF635F" strokeWidth={1.5} /></button>
-                )}
-              </div>
-            ))}
-          </form>
-        </div>
-        <div className="addcourse-bottom flex justify-between">
-          <button type="button" className='cancel-form-btn' onClick={onPrevious}>Previous</button>
-          <button className='next-form-btn' type="button" onClick={handleAdvanceInformation}>Save & Next</button>
-        </div>
+          ))}
+        </form>
       </div>
-    </div>
+      <div className="addcourse-bottom flex justify-between">
+        <button type="button" className='cancel-form-btn' onClick={onPrevious}>Previous</button>
+        <button className='next-form-btn' type="button" onClick={handleAdvanceInformation}>Save & Next</button>
+      </div>
+    </>
   );
 };
 

@@ -14,13 +14,18 @@
 
 .form-wizard-heading {
   font-family: var(--secondary-font);
+  width: 100%;
+  height: 40px;
   font-size: 16px;
   font-weight: 500;
-  line-height: 22px;
-  letter-spacing: 0em;
   display: flex;
   gap: 12px;
   align-items: center;
+  border-bottom: 1px solid #E9EAF0;
+}
+
+.form-wizard-heading.active {
+  border-bottom: 2px solid var(--btn-primary);
 }
 
 .thumbnail-img-wrapper>p,
@@ -42,9 +47,12 @@
 }
 
 .image-container img {
-  max-width: 100%; /* Maximum width of the image is 100% of the container */
-  max-height: 100%; /* Maximum height of the image is 100% of the container */
-  object-fit: contain; /* Ensures the image is scaled to maintain its aspect ratio while fitting within the container's bounds */
+  max-width: 100%;
+  /* Maximum width of the image is 100% of the container */
+  max-height: 100%;
+  /* Maximum height of the image is 100% of the container */
+  object-fit: contain;
+  /* Ensures the image is scaled to maintain its aspect ratio while fitting within the container's bounds */
 }
 
 .thumbnail-image-info {
