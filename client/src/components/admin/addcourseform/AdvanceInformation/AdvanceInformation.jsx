@@ -99,11 +99,15 @@ function AdvanceInformation({ onNext, onPrevious }) {
 
   const handleFileSelect = async (event) => {
     event.preventDefault();
+    console.log('inside the image upload loop');
     const file = event.target.files[0];
+    console.log('file to be uploaded is targetted');
     const adminId = sessionStorage.getItem('adminId');
+    console.log('fetching the admin id', adminId);
     if (file) {
       const folderPath = `${adminId}`
       const key = `images/${Date.now()}-${file.name}`;
+      console.log('inside if loop', folderPath, key);
       try {
         const uploadedFileURL = await uploadFileToS3(file, folderPath, key);
         setThumbnailSrc(uploadedFileURL);
