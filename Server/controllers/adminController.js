@@ -182,6 +182,26 @@ exports.addCourse = async (req, res) => {
     }
 }
 
+// COURSES CREATED BY ADMIN
+exports.mycourses = async (req, res) => {
+    const userID = req.params.userId;
+    let user = await admins.findOne({ _id: userID });
+
+    if (!user) {
+        user = await institutes.findOne({ _id: userID });
+    }
+    if (!user) {
+        return res.status(400).json({ error: 'User not found' });
+    }
+    try {
+        const allcourses = await courses.find({ adminId: userID });
+        res.status(200).json(allcourses);
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Internal Server, error', error })
+    }
+}
+
 exports.courseinstructors = async (req, res) => {
     try {
         const adminId = req.adminId;

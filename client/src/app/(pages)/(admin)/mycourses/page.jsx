@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { allcoursesfunction } from '@/app/lib/Services/api';
+import { admincoursefunction } from '@/app/lib/Services/api';
 import Header from '@/components/admin/header/header';
 import Card from '@/components/cards/Card';
 import './courses.css';
@@ -37,7 +37,11 @@ function MyCourses() {
 
     const fetchAllCourses = async () => {
         try {
-            const response = await allcoursesfunction();
+            const userId = sessionStorage.getItem("adminId");
+            if (!userId) {
+                throw new Error("No adminId found in sessionStorage");
+            }
+            const response = await admincoursefunction(userId);
             setCourses(response);
         } catch (error) {
             console.log(error);

@@ -136,6 +136,18 @@ export const coursedetailsfunction = async (courseId) => {
     }
 }
 
+// SPECIFIC ADMIN COURSES
+
+export const admincoursefunction = async (userId) => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/admin/my-courses/${userId}`);
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
 // COURSE IN CATEGORIES COUNT
 
 export const coursecategorycountfunction = async (courseCategory) => {
