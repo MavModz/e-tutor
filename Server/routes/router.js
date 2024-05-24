@@ -19,6 +19,7 @@ router.post("/institute/admin/register", instituteAdminAuth, instituteAdminContr
 router.post("/admin/register", adminControllers.adminregister);
 router.post("/admin/login", adminControllers.adminlogin);
 router.post("/admin/add-course", eitherAuth, adminControllers.addCourse);
+router.get("/admin/my-courses/:userId", eitherAuth, adminControllers.mycourses);
 router.get("/admin/total-enrollments", adminControllers.totalenrollments);
 router.get("/admin/course-instructors", eitherAuth, adminControllers.courseinstructors);
 router.get("/admin/cloud-storage/:userId", eitherAuth, adminControllers.cloudstorage);
