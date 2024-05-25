@@ -1,0 +1,123 @@
+.chatlist-container {
+    width: 424px;
+    max-height: 83vh;
+    overflow-y: auto;
+    background-color: var(--background-white);
+}
+
+.chatlist-heading>h6 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 26px;
+    text-align: left;
+}
+
+.compose-btn {
+    background-color: #EBEBFF;
+    padding: 0 16px;
+    width: 121px;
+    height: 40px;
+    font-family: var(--secondary-font);
+    color: #2189ff;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: -0.004em;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chatlist-area {
+    width: 100%;
+    display: block;
+}
+
+.chatlist-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: all ease-in-out 0.2s;
+}
+
+.chatlist-wrapper:hover {
+    background-color: var(--btn-secondary);
+}
+
+.image-wrapper img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.messenger-info-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.messenger-info-wrapper>h6 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.messenger-info-wrapper>span {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: right;
+}
+
+.messenger-text>p {
+    font-family: var(--secondary-font);
+    color: #4E5566;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.messenger-container {
+    background-color: var(--background-white);
+    flex-grow: 1;
+}
+
+.messenger-information img {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+}
+
+.messenger-details>h6 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: center;
+}
+
+.messenger-details>span {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    text-align: center;
+}

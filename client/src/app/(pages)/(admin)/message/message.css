@@ -1,0 +1,8 @@
+.message-container {
+  margin: 1rem 2rem;
+  padding: 0.5rem 1rem;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
