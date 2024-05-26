@@ -1,5 +1,6 @@
 import React from 'react';
 import './chat.css';
+import { Search } from 'lucide-react';
 import Image from 'next/image';
 
 function Chat() {
@@ -22,10 +23,18 @@ function Chat() {
                 <div className="chat-list-top flex flex-col gap-4 px-6 py-4">
                     <div className="chatlist-heading flex items-center justify-between">
                         <h6>Chat</h6>
-                        <button className='compose-btn'><Image src='/Plus.svg' width={16} height={16} />Compose</button>
+                        <button className='compose-btn hover-btn-effect'><Image src='/Plus.svg' width={16} height={16} />Compose</button>
                     </div>
                     <div className="chatlist-search">
-                        <p>searchbar</p>
+                        <div className="search-input-wrapper">
+                            <Search color="#737784" strokeWidth={1.5} id='search-icon' />
+                            <input
+                                type='text'
+                                placeholder='Search'
+                                id='contact-search'
+                                name='contact-search'
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className="chatlist-area">
@@ -69,8 +78,15 @@ function Chat() {
                     <h5>Text</h5>
                 </div>
                 <hr />
-                <div className="send-message-area">
-                    <button>Send</button>
+                <div className="send-message-area flex gap-5 justify-between items-center">
+                    <input
+                        type="text"
+                        name="message"
+                        id="message"
+                        placeholder='Type your message'
+                        className='message-text-area'
+                    />
+                    <button className='message-send-btn hover-btn-effect'>Send <Image src='/PaperPlaneRight.svg' width={24} height={24} /></button>
                 </div>
             </div>
         </div>
