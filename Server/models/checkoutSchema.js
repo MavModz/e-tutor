@@ -25,7 +25,7 @@ const checkoutSchema = new mongoose.Schema({
 
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'userId',
+        ref: userId,
         required: true,
     }
 })

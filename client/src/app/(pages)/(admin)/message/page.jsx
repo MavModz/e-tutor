@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import './message.css';
 import Header from '@/components/admin/header/header';

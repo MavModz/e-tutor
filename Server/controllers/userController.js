@@ -73,9 +73,9 @@ exports.checkout = async (req, res) => {
 exports.enrollCourse = async (req, res) => {
   try {
     const userId = req.userId;
-    const { courseCode } = req.body;
+    const { courseId } = req.body;
 
-    const course = await Course.findOne({ courseCode: courseCode })
+    const course = await Course.findOne({ _id: courseId })
     if (!course) {
       return res.status(404).json({ message: 'course not found' });
     }
@@ -85,12 +85,12 @@ exports.enrollCourse = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'user not found' });
     }
-    if (user.enrolledCourses.includes(courseCode)) {
+    if (user.enrolledCourses.includes(courseId)) {
       return res.status(201).json({ message: 'user already enrolled' });
     }
 
-    user.enrolledCourses.push(courseCode);
-    const storeData = await user.save();
+    user.enrolledCourses.push({ courseId: courseId, adminId: course.adminId });
+    await user.save();
     return res.status(200).json({ message: ' Course Enrollment successful', user: user });
   }
 

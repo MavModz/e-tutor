@@ -536,3 +536,23 @@ exports.weeklyOverAllratings = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error', error });
     }
 }
+
+// LIST OF USERS ENROLLED WITH SPECIFIC ADMIN
+
+exports.userlist = async (req, res) => {
+    const adminId = req.adminId;
+    
+    try {
+        const user = await users.find({ 'enrolledCourses.adminId': adminId });
+
+        if (!users || users.length === 0) {
+            return res.status(404).json({ message: 'No users found for this admin.' });
+        }
+
+        res.status(200).json({ message: 'Users retrieved successfully', user });
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'Internal Server Error', error });
+    }
+}
