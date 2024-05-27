@@ -1,22 +1,77 @@
-import React from 'react';
+import React, { useEffect, useId, useState } from 'react';
 import './chat.css';
+import io from 'socket.io-client';
 import { Search } from 'lucide-react';
 import Image from 'next/image';
+import { enrolleduserlistfunction } from '@/app/lib/Services/api';
 
 function Chat() {
-    const chat_list = [
-        { image: <Image src='/user-2.jpg' width={48} height={48} alt='user-image.jpg' />, name: 'Jane Cooper', text: 'Yeah sure, tell me zafor', time: 'just now' },
-        { image: <Image src='/user-2.jpg' width={48} height={48} alt='user-image.jpg' />, name: 'Jane Cooper', text: 'Yeah sure, tell me zafor', time: 'just now' },
-        { image: <Image src='/user-2.jpg' width={48} height={48} alt='user-image.jpg' />, name: 'Jane Cooper', text: 'Yeah sure, tell me zafor', time: 'just now' },
-        { image: <Image src='/user-2.jpg' width={48} height={48} alt='user-image.jpg' />, name: 'Jane Cooper', text: 'Yeah sure, tell me zafor', time: 'just now' },
-        { image: <Image src='/user-2.jpg' width={48} height={48} alt='user-image.jpg' />, name: 'Jane Cooper', text: 'Yeah sure, tell me zafor', time: 'just now' },
-        { image: <Image src='/user-2.jpg' width={48} height={48} alt='user-image.jpg' />, name: 'Jane Cooper', text: 'Yeah sure, tell me zafor', time: 'just now' },
-        { image: <Image src='/user-2.jpg' width={48} height={48} alt='user-image.jpg' />, name: 'Jane Cooper', text: 'Yeah sure, tell me zafor', time: 'just now' },
-        { image: <Image src='/user-2.jpg' width={48} height={48} alt='user-image.jpg' />, name: 'Jane Cooper', text: 'Yeah sure, tell me zafor', time: 'just now' },
-        { image: <Image src='/user-2.jpg' width={48} height={48} alt='user-image.jpg' />, name: 'Jane Cooper', text: 'Yeah sure, tell me zafor', time: 'just now' },
-        { image: <Image src='/user-2.jpg' width={48} height={48} alt='user-image.jpg' />, name: 'Jane Cooper', text: 'Yeah sure, tell me zafor', time: 'just now' },
-        { image: <Image src='/user-2.jpg' width={48} height={48} alt='user-image.jpg' />, name: 'Jane Cooper', text: 'Yeah sure, tell me zafor', time: 'just now' },
-    ]
+
+    const [currentChat, setcurrentChat] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [input, setInput] = useState('');
+    const [socket, setSocket] = useState(null);
+    const [chatList, setChatList] = useState([]);
+
+    useEffect(() => {
+        const fetchuserlist = async () => {
+            try {
+                const response = await enrolleduserlistfunction();
+                setChatList(response.user);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+        fetchuserlist();
+    }, [enrolleduserlistfunction]);
+
+    useEffect(() => {
+        const newSocket = io('http://localhost:5000');
+        setSocket(newSocket);
+        return () => newSocket.close();
+    }, []);
+
+    useEffect(() => {
+        if (socket) {
+            socket.on('receiveMessage', message => {
+                if (message.sender === currentChat.id) {
+                    setMessages(prevMessages => [...prevMessages, message]);
+                }
+            });
+        }
+    }, [socket, currentChat]);
+
+    const sendMessage = () => {
+        const auth_token = sessionStorage.getItem('auth_token');
+        const Id = auth_token.slice(-1);
+        let userId;
+        if (Id == '2' || Id == '4') {
+            userId = sessionStorage.getItem('adminId');
+        }
+        else {
+            userId = sessionStorage.getItem('userId');
+        }
+        if (socket && currentChat && userId) {
+            const message = {
+                sender: userId,
+                reciver: currentChat.id,
+                text: input,
+                time: new Date().toISOString()
+            };
+            socket.emit('sendMessage', message);
+            setMessages([...messages, message]);
+            setInput('');
+        }
+    };
+
+    const selectChat = (user) => {
+        setCurrentChat(user);
+        // Here you should fetch the chat history for this user
+        setMessages([]); // Reset or load messages for this user
+    };
+
+
     return (
         <div className='chatbox-area flex gap-6'>
             <div className="chatlist-container">
@@ -39,7 +94,7 @@ function Chat() {
                 </div>
                 <div className="chatlist-area">
                     <ul>
-                        {chat_list.map((item, index) => (
+                        {chatList.map((item, index) => (
                             <div className="chatlist-wrapper" key={index}>
                                 <div className="messenger-id w-full flex items-center gap-4">
                                     <div className="image-wrapper">
@@ -81,12 +136,19 @@ function Chat() {
                 <div className="send-message-area flex gap-5 justify-between items-center">
                     <input
                         type="text"
+                        value={input}
                         name="message"
                         id="message"
                         placeholder='Type your message'
                         className='message-text-area'
+                        onChange={(e) => setInput(e.target.value)}
                     />
-                    <button className='message-send-btn hover-btn-effect'>Send <Image src='/PaperPlaneRight.svg' width={24} height={24} /></button>
+                    <button
+                        className='message-send-btn hover-btn-effect'
+                        onClick={sendMessage}
+                    >
+                        Send <Image src='/PaperPlaneRight.svg' width={24} height={24} />
+                    </button>
                 </div>
             </div>
         </div>

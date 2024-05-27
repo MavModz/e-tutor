@@ -31,7 +31,10 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     enrolledCourses: {
-        type: [{ type: String, ref: courses }],
+        type: [{ 
+            courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
+            adminId: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' }
+         }],
         default: []
     },
     role: {

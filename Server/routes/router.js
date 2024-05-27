@@ -27,6 +27,7 @@ router.post("/admin/update-usedspace", eitherAuth, adminControllers.usedSpace);
 router.get("/admin/profile-views/:userId", eitherAuth, adminControllers.profileViews);
 router.get("/admin/overall-course-rating/:userId", eitherAuth, adminControllers.getOverAllCourseRatings);
 router.get("/admin/weekly-overall-rating/:userId", eitherAuth, adminControllers.weeklyOverAllratings);
+router.get("/admin/user-list/", eitherAuth, adminControllers.userlist);
 
 router.post("/user/register", userControllers.userregister);
 router.post("/user/checkout", userAuth, userControllers.checkout);

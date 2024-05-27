@@ -231,3 +231,15 @@ export const coursecommentfunction = async (courseId) => {
         throw error;
     }
 }
+
+// LIST OF USERS ENROLLED WITH SPECIFIC ADMIN
+
+export const enrolleduserlistfunction = async () => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/admin/user-list/`);
+        return response.data;
+    }
+    catch(error) {
+        throw error;
+    }
+}
