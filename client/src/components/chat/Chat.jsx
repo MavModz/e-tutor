@@ -61,6 +61,12 @@ function Chat() {
             receiverModel = 'admin';
         }
 
+        const trimmedInput = input.trim();
+        if (!trimmedInput) {
+            alert("Cannot send empty message.");
+            return;
+        }
+
         const messageToSend = {
             senderId: userId,
             receiverId: currentChat._id,
@@ -68,8 +74,6 @@ function Chat() {
             receiverModel: receiverModel,
             message: input
         };
-
-        console.log(typeof currentChat._id);
 
         try {
             const sentMessage = await sendmessagefunction(messageToSend);
@@ -148,10 +152,10 @@ function Chat() {
                 </div>
             </div>
             <div className="messenger-container">
-                <div className="message-top-area flex justify-between items-center px-6 py-5">
+                <div className="message-top-area flex justify-between items-center px-6 py-3">
                     <div className="messenger-information flex items-center gap-4">
-                        <Image src='/user-2.jpg' width={68} height={68} alt='user-image.jpg' />
-                        <div className="messenger-details">
+                        <Image src='/user-2.jpg' width={50} height={50} alt='user-image.jpg' />
+                        <div className="messenger-details flex flex-col">
                             <h6>{currentUser ? currentUser.name : 'select user'}</h6>
                             <span>Active Now</span>
                         </div>
@@ -167,7 +171,7 @@ function Chat() {
                         return (
                             <div key={index} className={`message ${isSender ? 'sent' : 'received'}`}>
                                 <p>{msg?.message}</p>
-                                <span>{msg?.time && new Date(msg.time).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</span>
+                                <span>{msg?.time && new Date(msg.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                             </div>
                         );
                     })}
