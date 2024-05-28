@@ -4,6 +4,7 @@ const chat = require('../models/chatSchema');
 
 exports.sendmessage = async (req, res) => {
     const {senderId} = req.body
+    console.log(req.body);
 
     try {
         const newMessage = new chat({
