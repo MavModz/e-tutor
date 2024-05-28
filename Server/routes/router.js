@@ -7,6 +7,7 @@ const userControllers = require("../controllers/userController");
 const adminControllers = require("../controllers/adminController");
 const superAdminControllers = require("../controllers/superAdminController");
 const instituteAdminControllers = require("../controllers/instituteController");
+const chatControllers = require("../controllers/chatController");
 
 //Routes
 router.post("/superadmin/add-category", superAdminControllers.addCategory);
@@ -41,4 +42,7 @@ router.get("/user/course-details/:courseId", userControllers.coursedetails);
 router.post("/user/profile-click", userControllers.profileclick);
 router.post("/user/rate-course", userAuth, userControllers.ratecourse);
 router.get("/user/course-comments/:courseId", userControllers.coursecomments);
+
+router.post("/chat-message/send", chatControllers.sendmessage);
+router.get("/chat-message/receive/:senderId/:receiverId", chatControllers.receivemessage)
 module.exports = router;

@@ -1,5 +1,5 @@
 .chatlist-container {
-    width: 424px;
+    width: 30%;
     min-height: 83vh;
     max-height: 83vh;
     background-color: var(--background-white);
@@ -113,6 +113,9 @@
 .messenger-container {
     background-color: var(--background-white);
     flex-grow: 1;
+    width: 70%;
+    max-height: 83vh;
+    min-height: 83vh;
 }
 
 .messenger-information img {
@@ -127,7 +130,7 @@
     font-size: 18px;
     font-weight: 500;
     line-height: 24px;
-    text-align: center;
+    text-align: left;
 }
 
 .messenger-details>span {
@@ -141,8 +144,14 @@
 }
 
 .messenger-message-area {
-    height: 67%;
-    padding: 24px;
+    min-height: 67%;
+    max-height: 67%;
+    padding: 14px;
+    margin-bottom: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 12px;
 }
 
 .send-message-area {
@@ -183,4 +192,51 @@
     letter-spacing: -0.008em;
     text-align: left;
     overflow: hidden;
+}
+
+.message {
+    padding: 8px 12px;
+    margin: 5px;
+    max-width: 65%;
+    min-width: 7%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    position: relative;
+}
+
+.message span {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    color: var(--text-dark);
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.sent {
+    align-self: flex-end;
+    background-color: var(--btn-primary);
+    color: var(--background-white);
+    text-align: right;
+    font-family: var(--secondary-font);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+}
+
+.received {
+    align-self: flex-start;
+    background-color: var(--btn-secondary);
+    text-align: left;
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+}
+
+.received .message-time {
+    left: 0; 
 }
