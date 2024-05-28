@@ -3,11 +3,12 @@ import './chat.css';
 import io from 'socket.io-client';
 import { Search } from 'lucide-react';
 import Image from 'next/image';
-import { enrolleduserlistfunction } from '@/app/lib/Services/api';
+import { enrolleduserlistfunction, sendmessagefunction, receivemessagefunction } from '@/app/lib/Services/api';
 
 function Chat() {
 
-    const [currentChat, setcurrentChat] = useState(null);
+    const [currentChat, setCurrentChat] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [socket, setSocket] = useState(null);
@@ -27,7 +28,7 @@ function Chat() {
     }, [enrolleduserlistfunction]);
 
     useEffect(() => {
-        const newSocket = io('http://localhost:5000');
+        const newSocket = io('http://localhost:5000' || 'https://e-tutor-backend.vercel.app/');
         setSocket(newSocket);
         return () => newSocket.close();
     }, []);
@@ -42,33 +43,64 @@ function Chat() {
         }
     }, [socket, currentChat]);
 
-    const sendMessage = () => {
+    const getCurrentUserId = () => {
+        return sessionStorage.getItem('adminId') || sessionStorage.getItem('userId');
+    };
+
+    const sendMessage = async () => {
         const auth_token = sessionStorage.getItem('auth_token');
         const Id = auth_token.slice(-1);
-        let userId;
-        if (Id == '2' || Id == '4') {
+        let userId, senderModel, receiverModel;
+        if (Id === '2' || Id === '4') {
             userId = sessionStorage.getItem('adminId');
-        }
-        else {
+            senderModel = Id === '2' ? 'admin' : 'institute admin';
+            receiverModel = 'user';
+        } else {
             userId = sessionStorage.getItem('userId');
+            senderModel = 'user';
+            receiverModel = 'admin';
         }
-        if (socket && currentChat && userId) {
-            const message = {
-                sender: userId,
-                reciver: currentChat.id,
-                text: input,
-                time: new Date().toISOString()
-            };
-            socket.emit('sendMessage', message);
-            setMessages([...messages, message]);
+
+        const messageToSend = {
+            senderId: userId,
+            receiverId: currentChat._id,
+            senderModel: senderModel,
+            receiverModel: receiverModel,
+            message: input
+        };
+
+        console.log(typeof currentChat._id);
+
+        try {
+            const sentMessage = await sendmessagefunction(messageToSend);
+            setMessages(prevMessages => [...prevMessages, sentMessage]);
             setInput('');
+        } catch (error) {
+            console.error('Error sending message:', error);
         }
     };
 
-    const selectChat = (user) => {
+
+    const selectChat = async (user) => {
         setCurrentChat(user);
-        // Here you should fetch the chat history for this user
-        setMessages([]); // Reset or load messages for this user
+        setCurrentUser(user);
+        try {
+            const authToken = sessionStorage.getItem("auth_token");
+            const auth = authToken.slice(-1);
+            const receiverId = user._id;
+            let senderId;
+            if (auth == '2' || auth == '4') {
+                senderId = sessionStorage.getItem('adminId');
+            }
+            else {
+                senderId = sessionStorage.getItem('userId');
+            }
+            const response = await receivemessagefunction(senderId, receiverId)
+            setMessages(Array.isArray(response) ? response : [response]);
+        }
+        catch (error) {
+            console.log('Failed to fetch messages:', error);
+        }
     };
 
 
@@ -95,7 +127,7 @@ function Chat() {
                 <div className="chatlist-area">
                     <ul>
                         {chatList.map((item, index) => (
-                            <div className="chatlist-wrapper" key={index}>
+                            <div className="chatlist-wrapper" key={index} onClick={() => selectChat(item)}>
                                 <div className="messenger-id w-full flex items-center gap-4">
                                     <div className="image-wrapper">
                                         {item.image}
@@ -120,7 +152,7 @@ function Chat() {
                     <div className="messenger-information flex items-center gap-4">
                         <Image src='/user-2.jpg' width={68} height={68} alt='user-image.jpg' />
                         <div className="messenger-details">
-                            <h6>Jane Cooper</h6>
+                            <h6>{currentUser ? currentUser.name : 'select user'}</h6>
                             <span>Active Now</span>
                         </div>
                     </div>
@@ -130,7 +162,15 @@ function Chat() {
                 </div>
                 <hr />
                 <div className="messenger-message-area">
-                    <h5>Text</h5>
+                    {messages.slice().reverse().map((msg, index) => {
+                        const isSender = msg.sender.id === getCurrentUserId();
+                        return (
+                            <div key={index} className={`message ${isSender ? 'sent' : 'received'}`}>
+                                <p>{msg?.message}</p>
+                                <span>{msg?.time && new Date(msg.time).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</span>
+                            </div>
+                        );
+                    })}
                 </div>
                 <hr />
                 <div className="send-message-area flex gap-5 justify-between items-center">
@@ -141,6 +181,7 @@ function Chat() {
                         id="message"
                         placeholder='Type your message'
                         className='message-text-area'
+                        autoComplete='off'
                         onChange={(e) => setInput(e.target.value)}
                     />
                     <button

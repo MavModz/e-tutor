@@ -243,3 +243,28 @@ export const enrolleduserlistfunction = async () => {
         throw error;
     }
 }
+
+
+// SEND THE MESSAGE
+
+export const sendmessagefunction = async (senderId, receiverId, senderModel, receiverModel, message) => {
+    try {
+        const response = await commonrequest("POST", `${backend_url}/chat-message/send`, {senderId, receiverId, senderModel, receiverModel, message}, null, null, false);
+        return response.data;
+    }
+    catch(error) {
+        throw error;
+    }
+}
+
+// RECEIVE THE MESSAGE
+
+export const receivemessagefunction = async (senderId, receiverId) => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/chat-message/receive/${senderId}/${receiverId}`, null, null, false);
+        return response.data;
+    }
+    catch(error) {
+        throw error;
+    }
+}
