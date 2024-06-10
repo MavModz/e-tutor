@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { LogOut } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import './header.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const navItems = [
   { text: 'Dashboard', icon: <Image src='/Dashboard.svg' alt="Dashboard svg icon" width={100} height={24} className='image-state' />, path: '/dashboard' },
@@ -27,42 +29,58 @@ function Header() {
     router.push(path);
   };
 
+  const logout = async () => {
+    sessionStorage.clear();
+    toast.success('Logout Successful');
+    setTimeout(() => {
+      router.push('/login');
+    },1000);
+  }
+
   return (
-    <div className='header-container'>
-      <div className="header-wrapper">
-        <div className="logo-container">
-          <Link href='/' passHref>
-            <Image src="/LOGO.svg" width={120} height={54}
-              alt="logo svg"
-              onError={(e) => e.target.src = '/LOGO.png'}
-            />
-          </Link>
-        </div>
-        <div className="nav-menu">
-          <ul className='nav-menu-list'>
-            {navItems.map((item, index) => (
-              <li
-                key={index}
-                className={`nav-menu-items ${item.path === activePath ? 'active' : ''}`}
-                onClick={() => handleItemClick(item.path)}
-              >
-                <div className="nav-item-content">
-                  {item.icon}
-                  {item.text}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="nav-button-wrapper">
-          <div className="nav-button-list">
-            <div className="nav-button-items">
-              <Image src='/Bell.svg' width={24} height={24} alt="bell svg icon" />
+    <>
+    <ToastContainer />
+      <div className='header-container'>
+        <div className="header-wrapper">
+          <div className="logo-container">
+            <Link href='/' passHref>
+              <Image src="/LOGO.svg" width={120} height={54}
+                alt="logo svg"
+                onError={(e) => e.target.src = '/LOGO.png'}
+              />
+            </Link>
+          </div>
+          <div className="nav-menu">
+            <ul className='nav-menu-list'>
+              {navItems.map((item, index) => (
+                <li
+                  key={index}
+                  className={`nav-menu-items ${item.path === activePath ? 'active' : ''}`}
+                  onClick={() => handleItemClick(item.path)}
+                >
+                  <div className="nav-item-content">
+                    {item.icon}
+                    {item.text}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="nav-button-wrapper">
+            <div className="nav-button-list">
+              <div className="nav-button-items">
+                <Image src='/Bell.svg' width={24} height={24} alt="bell svg icon" />
+              </div>
+              <div className="logout-button-wrapper">
+                <button onClick={logout}>
+                  <LogOut color="#007bff" strokeWidth={1.5} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

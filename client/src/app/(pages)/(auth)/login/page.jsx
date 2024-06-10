@@ -3,10 +3,9 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { loginfunction } from "@/app/lib/Services/api";
-import { Phone, Fingerprint } from 'lucide-react';
+import { CircleUser, Fingerprint } from 'lucide-react';
 import { toast, ToastContainer } from "react-toastify";
 import Image from "next/image";
-import "react-toastify/dist/ReactToastify.css";
 import "./login.css";
 
 const Login = () => {
@@ -78,7 +77,7 @@ const Login = () => {
                 autoComplete="off"
                 required
               />
-              <Phone color="#1D3A70" strokeWidth={1.5} />
+              <CircleUser color="#1D3A70" strokeWidth={1.5} />
             </div>
             <div className="text-field">
               <label htmlFor="password">Enter Password</label>
@@ -89,7 +88,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter Your Password"
-                maxLength={10}
+                required
               />
               <Fingerprint color="#1D3A70" strokeWidth={1.5} />
             </div>
