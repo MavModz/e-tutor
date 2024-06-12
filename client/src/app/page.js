@@ -293,7 +293,7 @@ export default function Home() {
               <h3>6.3k trusted companies</h3>
               <p>Nullam egestas tellus at enim ornare tristique. Class aptent taciti sociosqu ad litora torquent per conubia nostra.</p>
             </div>
-            <div className="right-companies-logo-container grid grid-cols-4 gap-6 items-center">
+            <div className="right-companies-logo-container w-[896px] grid grid-cols-4 gap-6 items-center">
               {trusted_companies.map((item, index) => (
                 <div className="trusted-companies-wrapper" key={index}>
                   {item.icon}

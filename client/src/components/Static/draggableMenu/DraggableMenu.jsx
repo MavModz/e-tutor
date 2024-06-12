@@ -64,7 +64,7 @@ function DraggableMenu() {
 
     const NavLinks = [
         { text: 'HOME', icon: <Image src='/Home.svg' width={22} height={21} alt='Home icon svg' />, path: '/' },
-        { text: 'COURSES', icon: <Image src='/Header-Course.svg' width={22} height={21} alt='Home icon svg' />, path: '/#' },
+        { text: 'COURSES', icon: <Image src='/Header-Course.svg' width={22} height={21} alt='Home icon svg' />, path: '/login' },
         { text: 'EDUCATORS', icon: <Image src='/Educator.svg' width={22} height={21} alt='Home icon svg' />, path: '/#' },
         { text: 'INSTITUTES', icon: <Image src='/Institutes.svg' width={22} height={21} alt='Home icon svg' />, path: '/#' },
         { text: 'EXPLORE', icon: <Image src='/Explore.svg' width={22} height={21} alt='Home icon svg' />, path: '/#' },

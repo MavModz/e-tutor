@@ -8,9 +8,10 @@
 }
 
 .nav-header-area {
-    margin-left: calc(20% - 194px);
-    margin-right: calc(20% - 194px);
+    margin-left: auto;
+    margin-right: auto;
     padding: 0 30px;
+    max-width: 1320px;
 }
 
 .nav-img-static-header-logo {

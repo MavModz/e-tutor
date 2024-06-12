@@ -11,15 +11,16 @@
 }
 
 .hero-section {
-    margin-left: calc(20% - 194px);
-    margin-right: calc(20% - 194px);
+    margin-left: auto;
+    margin-right: auto;
     padding: 0 30px;
     display: flex;
     align-items: center;
+    max-width: 1320px;
 }
 
 .hero-img {
-    width: auto;
+    width: 100%;
     height: auto;
 }
 
@@ -97,9 +98,10 @@
     flex-direction: column;
     gap: 40px;
     align-items: center;
-    margin-left: calc(20% - 194px);
-    margin-right: calc(20% - 194px);
+    margin-left: auto;
+    margin-right: auto;
     padding: 0 30px;
+    max-width: 1320px;
 }
 
 .course-category-cards {
@@ -193,6 +195,10 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
     justify-content: center;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 30px;
 }
 
 .featured-course-area {
@@ -240,9 +246,10 @@
 }
 
 .recently-added-course-area {
-    margin-left: calc(20% - 194px);
-    margin-right: calc(20% - 194px);
-    padding: 0 100px;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 30px;
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -278,9 +285,10 @@
 }
 
 .become-instructor-area {
-    margin-left: calc(20% - 194px);
-    margin-right: calc(20% - 194px);
-    padding: 0 100px;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 30px;
     display: flex;
     gap: 24px;
 }
@@ -401,10 +409,10 @@
 }
 
 .trusted-companies-area {
-    /* margin: 0 150px; */
-    margin-left: calc(20% - 194px);
-    margin-right: calc(20% - 194px);
-    padding: 0 100px;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 30px;
     display: flex;
     gap: 24px;
     align-items: center;
@@ -456,12 +464,6 @@
     .best-selling-wrapper,
     .course-category-cards {
         grid-template-columns: repeat(4, 1fr);
-        margin: 0 220px;
-    }
-
-    .recently-added-course-area {
-        margin-left: 0px;
-        margin-right: 0px;
     }
 }
 
