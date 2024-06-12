@@ -1,0 +1,17 @@
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 1600px) {}
+
+@media screen and (max-width: 1200px) {}
+
+@media screen and (max-width: 900px) {}
+
+@media screen and (max-width: 600px) {
+    .centering {
+        margin: 0 5px;
+    }
+
+    .my-form {
+        width: 90%;
+    }
+}

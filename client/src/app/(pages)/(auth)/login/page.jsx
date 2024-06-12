@@ -8,6 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import "./login.css";
+import "./responsive.css";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -83,7 +84,7 @@ const Login = () => {
                   id="password"
                   name="password"
                   {...register("password", { required: "Password is Required", minLength: { value: 2, message: "Password too short" } })}
-                  placeholder="Enter Your Password"
+                  placeholder="Enter Password"
                   required
                 />
                 <Fingerprint color="#1D3A70" strokeWidth={1.5} />
