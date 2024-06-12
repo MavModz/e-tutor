@@ -483,8 +483,110 @@
 
 @media screen and (max-width: 600px) {
 
+    .hero-section {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .section-title {
+        margin-bottom: 1rem;
+    }
+
+    .section-title h2 {
+        font-size: 28px;
+        line-height: 42px;
+    }
+
+    .hero-input input {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .hero-btn {
+        right: 2%;
+        width: 32%;
+    }
+
+    .hero-right-content {
+        margin-top: 35px;
+    }
+
+    .hero-img {
+        width: 100%;
+        height: auto;
+    }
+
+    .course-category-area>h2,
+    .best-selling-area>h2,
+    .featured-heading>h2,
+    .recently-added-heading>h2,
+    .top-instructor-area>h2 {
+        font-size: 26px;
+    }
+
     .best-selling-wrapper,
     .course-category-cards {
         grid-template-columns: repeat(1, 1fr);
+    }
+
+    .browse-category-cta {
+        flex-direction: column;
+    }
+
+    .featured-course-area {
+        margin-top: 0px;
+    }
+
+    .recently-added-course-area {
+        padding: 0px;
+    }
+
+    .recently-added-course-card-area {
+        flex-direction: column;
+    }
+
+    .become-instructor-area {
+        flex-direction: column;
+    }
+
+    .become-instructor-cta {
+        width: 100%;
+    }
+    
+    .instructor-txt h3 {
+        text-align: justify;
+        font-size: 28px;
+    }
+
+    .instructor-txt p {
+        width: 100%;
+    }
+    
+    .become-instructor-points {
+        width: 100%;
+    }
+
+    .become-instructor-points h3 {
+        font-size: 28px;
+    }
+
+    .list-text p {
+        font-size: 12px;
+    }
+
+    .top-instructor-area {
+        margin-top: 0px;
+    }
+
+    .top-instructor-card {
+        flex-direction: column;
+    }
+
+    .trusted-companies-area {
+        flex-direction: column;
+    }
+    
+    .left-text-container h3 {
+        font-size: 26px;
     }
 }
