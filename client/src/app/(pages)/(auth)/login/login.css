@@ -175,3 +175,9 @@
 .my-form__signup a:hover {
     color: var(--primary-hover);
 }
+
+.validation-error {
+    color: red;
+    font-size: 14px;
+    font-family: var(--secondary-font);
+}

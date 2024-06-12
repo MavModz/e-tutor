@@ -1,32 +1,24 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { loginfunction } from "@/app/lib/Services/api";
 import { CircleUser, Fingerprint } from 'lucide-react';
 import { toast, ToastContainer } from "react-toastify";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
 import "./login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const authToken = sessionStorage.getItem('auth_token');
-    if (authToken) {
-      router.replace('/dashboard');
-    }
-  }, [router]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     setIsLoading(true);
 
     try {
-      const response = await loginfunction(email, password);
+      const response = await loginfunction(data.email, data.password);
       if (response && response.exists) {
         const { token } = response;
         const { _id } = response.user;
@@ -60,43 +52,50 @@ const Login = () => {
       <ToastContainer />
       <div className="container">
         <span className="centering">
-          <form className="my-form">
+          <form className="my-form" onSubmit={handleSubmit(onSubmit)}>
             <span className="login-welcome-row">
               <Image src='/astronaut.jpg' width={80} height={80} className="login-welcome" alt="main logo img" />
               <h1>LogIn</h1>
             </span>
-            <div className="text-field">
-              <label htmlFor="email">User email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter email"
-                autoComplete="off"
-                required
-              />
-              <CircleUser color="#1D3A70" strokeWidth={1.5} />
+            <div>
+              <div className="text-field">
+                <label htmlFor="email">User email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  {...register("email", { required: "Email is Required.", pattern: { value: /\S+@\S+\.\S+/, message: "Email is invalid." } })}
+                  placeholder="Enter email"
+                  autoComplete="off"
+                  required
+                />
+                <CircleUser color="#1D3A70" strokeWidth={1.5} />
+              </div>
+              <div className="validation-wrapper">
+                {errors.email && <p className="validation-error">{errors.email.message}</p>}
+              </div>
             </div>
-            <div className="text-field">
-              <label htmlFor="password">Enter Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter Your Password"
-                required
-              />
-              <Fingerprint color="#1D3A70" strokeWidth={1.5} />
+            <div>
+              <div className="text-field">
+                <label htmlFor="password">Enter Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  {...register("password", { required: "Password is Required", minLength: { value: 2, message: "Password too short" } })}
+                  placeholder="Enter Your Password"
+                  required
+                />
+                <Fingerprint color="#1D3A70" strokeWidth={1.5} />
+              </div>
+              <div className="validation-wrapper">
+                {errors.password && <p className="validation-error">{errors.password.message}</p>}
+              </div>
             </div>
             <div className="Verify_Otp">
               <button
                 type="submit"
                 className="my-form__button"
-                onClick={handleSubmit}
                 disabled={isLoading}
               >
                 {isLoading ? 'Loading...' : 'Verify User'}
