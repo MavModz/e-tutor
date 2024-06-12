@@ -11,8 +11,9 @@
 }
 
 .footer-top-area {
-    margin-left: calc(20% - 194px);
-    margin-right: calc(20% - 194px);
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
     padding: 50px 30px;
     display: flex;
     gap: 136px;
@@ -75,8 +76,9 @@
 }
 
 .footer-bottom-area {
-    margin-left: calc(20% - 194px);
-    margin-right: calc(20% - 194px);
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
     padding: 50px 30px;
     display: flex;
     gap: 24px;
@@ -152,8 +154,9 @@
 }
 
 .copywrite-area {
-    margin-left: calc(20% - 194px);
-    margin-right: calc(20% - 194px);
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
     padding: 37px 30px;
 }
 
