@@ -1,4 +1,4 @@
-.centering {
+.container, .centering {
     display: flex;
     justify-content: center;
     align-items: center;
