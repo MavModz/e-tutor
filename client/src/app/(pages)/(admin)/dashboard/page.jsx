@@ -8,7 +8,8 @@ import Graph from '@/components/admin/graph/Graph';
 import Piechart from '@/components/admin/piechart/Piechart';
 import Ratinggraph from '@/components/admin/graph/ratinggraph/Ratinggraph';
 import Image from 'next/image';
-import './dashboard.css'
+import './dashboard.css';
+import './responsive.css';
 import Courserating from '@/components/admin/courserating/Courserating';
 import Barchart from '@/components/admin/graph/barchart/Barchart';
 import { cloudstoragefunction, overallcourseratingfunction } from '@/app/lib/Services/api';
@@ -85,7 +86,7 @@ function Dashboard() {
   return (
     <div className='bg-[#f4f7fe] w-full min-h-full'>
       <Header />
-      <div className="dashboard-conatiner">
+      <div className="dashboard-container">
         <div className="dashboard-wrapper flex flex-col gap-6">
           <div className="banner-container h-80 rounded-2xl flex justify-around items-center">
             <div className="top-banner">
