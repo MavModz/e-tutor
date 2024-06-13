@@ -1,0 +1,55 @@
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 1600px) {}
+
+@media screen and (max-width: 1200px) {}
+
+@media screen and (max-width: 900px) {}
+
+@media screen and (max-width: 600px) {
+
+    .nav-menu {
+        display: none;
+    }
+
+    .dashboard-container {
+        margin: 0.5rem 1rem;
+        padding: 0.5rem;
+    }
+
+    .banner-container {
+        flex-direction: column;
+        gap: 12px;
+        padding: 8px;
+    }
+
+    .banner-text {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+
+    .top-banner p {
+        font-size: 16px;
+    }
+
+    .banner-svg {
+        width: 60%;
+    }
+
+    .stats-wrapper {
+        flex-direction: column;
+        max-height: max-content;
+    }
+
+    .course-progress,
+    .course-overview-container,
+    .course-rating-container,
+    .profile-clicks-container,
+    .space-stats-container {
+        width: 100%;
+    }
+
+    .profile-stats {
+        flex-direction: column;
+    }
+}
