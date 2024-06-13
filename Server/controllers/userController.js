@@ -66,6 +66,7 @@ exports.checkout = async (req, res) => {
   }
 
   catch (error) {
+    console.log(error);
     res.status(400).json({ error: "Internal Server Error", error })
   }
 }

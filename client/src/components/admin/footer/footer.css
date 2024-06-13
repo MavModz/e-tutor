@@ -59,3 +59,15 @@
 .footer-nav-list:hover span::after {
     width: 100%;
 }
+
+@media screen and (max-width: 600px) {
+    .admin-footer-wrapper {
+        margin: 0.5rem 1rem;
+        padding: 0.5rem;
+        flex-direction: column;
+    }
+
+    .admin-page-links ul {
+        justify-content: center;
+    }
+}
