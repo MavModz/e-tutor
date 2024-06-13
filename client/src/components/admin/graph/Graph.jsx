@@ -45,7 +45,7 @@ function Graph() {
 
   return (
     <div className="bar-charts">
-      <div className="bar-heading flex justify-between">
+      <div className="bar-heading w-full flex justify-between">
         <div className="bar-text flex flex-col justify-center gap-2">
           <h5>Total Courses:</h5>
           <h6>5 Courses</h6>
