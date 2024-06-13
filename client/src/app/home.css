@@ -206,7 +206,7 @@
     flex-direction: column;
     gap: 40px;
     margin-top: -240px;
-    width: 1400px;
+    max-width: 1400px;
     height: 532px;
     background-color: var(--background-white);
     border: 1px solid #E9EAF0;
@@ -384,7 +384,7 @@
 }
 
 .top-instructor-container {
-    padding: 80px 30px;
+    padding: 80px 0;
     min-height: 350px;
     display: flex;
     flex-direction: column;
@@ -397,7 +397,9 @@
     flex-direction: column;
     gap: 40px;
     margin-top: -240px;
-    width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1400px;
     min-height: 532px;
     background-color: var(--background-white);
     border: 1px solid #E9EAF0;
@@ -490,6 +492,10 @@
         gap: 24px;
     }
 
+    .hero-left-content, .hero-right-content {
+        width: 100%;
+    }
+
     .section-title {
         margin-bottom: 1rem;
     }
@@ -539,8 +545,22 @@
         margin-top: 0px;
     }
 
+    .featured-heading {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .featured-heading p {
+        text-align: center;
+    }
+
+    .featured-course-card-area {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
     .recently-added-course-area {
-        padding: 0px;
+        flex-direction: column;
+        align-items: center;
     }
 
     .recently-added-course-card-area {
@@ -553,11 +573,12 @@
 
     .become-instructor-cta {
         width: 100%;
+        padding: 25px;
     }
     
-    .instructor-txt h3 {
-        text-align: justify;
-        font-size: 28px;
+    .instructor-txt h3, .become-instructor-points h3 {
+        text-align: start;
+        font-size: 26px;
     }
 
     .instructor-txt p {
@@ -566,10 +587,7 @@
     
     .become-instructor-points {
         width: 100%;
-    }
-
-    .become-instructor-points h3 {
-        font-size: 28px;
+        padding: 25px;
     }
 
     .list-text p {
@@ -578,6 +596,7 @@
 
     .top-instructor-area {
         margin-top: 0px;
+        padding: 25px;
     }
 
     .top-instructor-card {
@@ -588,7 +607,22 @@
         flex-direction: column;
     }
     
+    .left-text-container {
+        width: 100%;
+    }
+    
     .left-text-container h3 {
         font-size: 26px;
+    }
+
+    .right-companies-logo-container {
+        width: 100%;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .trusted-companies-wrapper {
+        width: 170px;
+        height: 100px;
     }
 }

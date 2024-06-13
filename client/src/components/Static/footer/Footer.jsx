@@ -49,7 +49,7 @@ function Footer() {
                         <h2>Start learning with 67.1k students around the world.</h2>
                         <div className="footer-cta-btn flex gap-4">
                             <Link href='#' passHref>
-                                <button className='join-cta hover-btn-effect'>Join The Family</button>
+                                <button className='join-cta hover-btn-effect' id='join-cta'>Join The Family</button>
                             </Link>
                             <Link href='#' passHref>
                                 <button className='browse-cta hover-btn-effect'>Browse All Courses</button>
