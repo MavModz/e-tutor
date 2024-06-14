@@ -11,7 +11,7 @@ function Review() {
   const [studentFeedback, setStudentFeedback] = useState([]);
 
   const fetchstudentfeedback = async () => {
-    if (!courseId) return;
+    if (!courseId) return console.log('course id notFound'); ;
     try {
       const response = await coursecommentfunction(courseId);
       if (response.ratings) {
@@ -64,7 +64,7 @@ function Review() {
             <div className="feedback-list-container">
               <div className="student-feedback-list flex flex-col gap-3 py-5" key={index}>
                 <div className="feedback-heading-container flex flex-col gap-2">
-                  <div className="feedback-heading flex gap-2">
+                  <div className="feedback-heading flex items-center gap-2">
                     <h6>{item.name}</h6>
                     <span>.</span>
                     <p>{item.timeAgo}</p>

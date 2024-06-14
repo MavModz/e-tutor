@@ -29,12 +29,12 @@ function CourseDetails({ course }) {
     };
 
     return (
-        <div className='bg-[#f4f7fe] w-full'>
+        <div className='w-full'>
             <NavHeader />
-            <div className="background-breadcrumb">
+            <div className="background-breadcrumb bg-[#f4f7fe] ">
             </div>
             <div className="coursedata-container">
-                <div className="coursedetails-container flex gap-6 px-[150px] py-[80px]">
+                <div className="coursedetails-container flex gap-6 py-[80px]">
                     <div className="coursedetails-wrapper-left w-full flex flex-col gap-10 mt-[-240px]">
                         <div className="top-details-wrapper flex flex-col gap-3">
                             <h1>{course.courseName}</h1>
@@ -115,8 +115,8 @@ function CourseDetails({ course }) {
                         </div>
                         <hr />
                         <div className="purchase-button flex flex-col gap-3 my-3">
-                            <button className='add-to-cart-btn'>Add To Cart</button>
-                            <button className='buy-now-btn'>Buy Now</button>
+                            <button className='add-to-cart-btn hover-btn-effect'>Add To Cart</button>
+                            <button className='buy-now-btn hover-btn-effect'>Buy Now</button>
                             <div className="wishlist-container flex justify-between gap-3">
                                 <button className='whishlist-btn'>Add To Whishlist</button>
                                 <button className='whishlist-btn'>Gift Course</button>
