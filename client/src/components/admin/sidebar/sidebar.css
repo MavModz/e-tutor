@@ -26,7 +26,6 @@
 aside .sidebar-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     height: 86vh;
     position: relative;
     top: 1rem;
@@ -77,6 +76,8 @@ aside .sidebar-wrapper {
     display: flex;
     gap: 12px;
     padding-left: 24px;
+    position: absolute;
+    bottom: 1%;
 }
 
 /* MENU BUTTON */
