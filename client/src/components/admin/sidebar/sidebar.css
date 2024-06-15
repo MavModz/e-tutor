@@ -8,6 +8,7 @@
     z-index: 1000;
     background-color: var(--background-white);
     box-shadow: var(--box-shadow);
+    display: none;
     transition: left 0.3s ease;
 }
 
@@ -100,7 +101,7 @@ aside .sidebar-wrapper {
 @media screen and (max-width: 900px) {}
 
 @media screen and (max-width: 600px) {
-    .sidebar-menu-btn {
+    .sidebar-menu-btn, .sidebar-container {
         display: block;
     }
 }
