@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Auth from '../../(auth)/middleware/auth';
 import Header from '@/components/admin/header/header';
 import Loader from '@/components/loader/Loader';
+import Sidebar from '@/components/admin/sidebar/Sidebar';
 import Graph from '@/components/admin/graph/Graph';
 import Piechart from '@/components/admin/piechart/Piechart';
 import Ratinggraph from '@/components/admin/graph/ratinggraph/Ratinggraph';
@@ -84,7 +85,8 @@ function Dashboard() {
   const month = new Date().toLocaleString('en-US', { month: 'long' });
 
   return (
-    <div className='bg-[#f4f7fe] w-full min-h-full'>
+    <div className='bg-[#f4f7fe] w-full min-h-full relative'>
+      <Sidebar />
       <Header />
       <div className="dashboard-container">
         <div className="dashboard-wrapper flex flex-col gap-6">
