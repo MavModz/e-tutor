@@ -72,6 +72,10 @@
     .course-curriculam-topbar-action-btn {
         gap: 12px;
     }
+    
+    .upload-text {
+        text-align: center;
+    }
 
     /* PUBLISH COURSE */
 
@@ -82,4 +86,5 @@
     textarea {
         font-size: 14px;
     }
+
 }

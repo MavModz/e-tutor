@@ -78,27 +78,3 @@
 textarea:focus {
     border: 1px solid var(--primary-new);
 }
-
-@media screen and (max-width: 1600px) {
-    .course-list-cards {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-@media screen and (max-width: 1200px) {
-    .course-list-cards {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media screen and (max-width: 900px) {
-    .course-list-cards {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .course-list-cards {
-        grid-template-columns: repeat(1, 1fr);
-    }
-}

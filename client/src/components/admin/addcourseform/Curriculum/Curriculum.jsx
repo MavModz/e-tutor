@@ -388,7 +388,7 @@ function Curriculum({ onNext, onPrevious }) {
           </div>
           <div className='flex justify-between px-6'>
             <button onClick={closeModal} className='cancel-form-btn'>Cancel</button>
-            <button type='button' onClick={handleRecordedButtonClick} className='next-form-btn'>Upload Video</button>
+            <button type='button' onClick={handleRecordedButtonClick} className='next-form-btn'>Upload</button>
           </div>
         </div>
       );
@@ -414,7 +414,7 @@ function Curriculum({ onNext, onPrevious }) {
           </div>
           <div className='flex justify-between px-6'>
             <button onClick={closeModal} className='cancel-form-btn'>Cancel</button>
-            <button type='button' onClick={handleRecordedButtonClick} className='next-form-btn'>Upload Video</button>
+            <button type='button' onClick={handleRecordedButtonClick} className='next-form-btn'>Upload</button>
           </div>
         </div>
       );
@@ -434,11 +434,11 @@ function Curriculum({ onNext, onPrevious }) {
               value={lectureDescription}
               onChange={handleDescriptionChange}
             />
-            <button className='next-form-btn' onClick={(e) => saveDescription(e)}>Save Description</button>
+            <button className='next-form-btn' onClick={(e) => saveDescription(e)}>Save</button>
           </div>
           <div className='flex justify-between px-6'>
             <button onClick={closeModal} className='cancel-form-btn'>Cancel</button>
-            <button onClick={saveName} className='next-form-btn'>Upload Video</button>
+            <button onClick={saveName} className='next-form-btn'>Upload</button>
           </div>
         </div>
       );
