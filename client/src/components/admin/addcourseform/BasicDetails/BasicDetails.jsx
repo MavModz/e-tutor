@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Searchbar from '@/components/Searchbar/Searchbar';
 import Searchlist from '@/components/Searchbar/SearchList/Searchlist';
 import { allcategoriesfunction, allsubcategoriesfunction } from '@/app/lib/Services/api';
-import Header from '../../header/header';
 
 function BasicDetails({ onNext }) {
     const router = useRouter();
@@ -177,6 +175,8 @@ function BasicDetails({ onNext }) {
         <>
             <div className="addcourse-middle">
                 <form className='addcourse-form'>
+                    <h4 className='addcourse-form-heading'>Basic Details</h4>
+                    <hr />
                     <div className="course-text-field">
                         <label htmlFor="courseName">Course Title</label>
                         <input

@@ -34,12 +34,12 @@ function Header() {
     toast.success('Logout Successful');
     setTimeout(() => {
       router.push('/login');
-    },1000);
+    }, 1000);
   }
 
   return (
     <>
-    <ToastContainer />
+      <ToastContainer />
       <div className='header-container'>
         <div className="header-wrapper">
           <div className="logo-container">
@@ -67,16 +67,10 @@ function Header() {
             </ul>
           </div>
           <div className="nav-button-wrapper">
-            <div className="nav-button-list">
-              <div className="nav-button-items">
-                <Image src='/Bell.svg' width={24} height={24} alt="bell svg icon" />
-              </div>
-              <div className="logout-button-wrapper">
-                <button onClick={logout}>
-                  <LogOut color="#007bff" strokeWidth={1.5} />
-                </button>
-              </div>
-            </div>
+            <Image src='/Bell.svg' width={24} height={24} alt="bell svg icon" />
+            <button onClick={logout}>
+              <LogOut color="#007bff" strokeWidth={1.5} />
+            </button>
           </div>
         </div>
       </div>

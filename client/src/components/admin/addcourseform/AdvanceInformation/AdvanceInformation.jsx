@@ -242,6 +242,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
     <>
       <div className="addcourse-middle">
         <form className='addcourse-form'>
+          <h4 className='addcourse-form-heading'>Advance Information</h4>
           <hr />
           <div className="course-thumbnail-wrapper flex gap-12 w-full">
             <div className="thumbnail-img-wrapper flex flex-col flex-1 gap-4">

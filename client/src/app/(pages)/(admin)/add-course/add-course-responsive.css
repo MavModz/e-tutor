@@ -1,0 +1,85 @@
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 1600px) {}
+
+@media screen and (max-width: 1200px) {}
+
+@media screen and (max-width: 900px) {}
+
+@media screen and (max-width: 600px) {
+    .addcourse-container {
+        margin: 0.5rem 1rem;
+        padding: 0.5rem;
+    }
+    
+    .addcourse-top {
+        padding: 16px;
+        flex-direction: column;
+    }
+
+    .addcourse-form {
+        padding: 0 16px;
+    }
+
+    .course-text-field, .course-overview-wrapper {
+        flex-direction: column;
+    }
+
+    .addcourse-bottom {
+        padding: 0 16px;
+    }
+
+    /* ADVANCE INFORMATION */
+
+    .course-thumbnail-wrapper, .thumbnail-img-container {
+        flex-direction: column;
+    }
+
+    .thumbnail-img-container {
+        width: 100%;
+        height: auto;
+    }
+
+    .course-topics-wrapper p {
+        font-size: 16px;
+    }
+    
+    .course-topics-wrapper button {
+        font-size: 12px;
+    }
+
+    /* COURSE CURRICULUM */
+
+    .addcourse-curriculum-area {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .curriculam-list {
+        padding: 12px;
+    }
+
+    .dynamic-curriculam {
+        font-size: 12px;
+    }
+    
+    .curriculam-content-btn {
+        line-height: 32px;
+        font-size: 14px;
+        padding: 0 12px;
+    }
+
+    .course-curriculam-topbar-action-btn {
+        gap: 12px;
+    }
+
+    /* PUBLISH COURSE */
+
+    .message-container {
+        flex-direction: column;
+    }
+
+    textarea {
+        font-size: 14px;
+    }
+}
