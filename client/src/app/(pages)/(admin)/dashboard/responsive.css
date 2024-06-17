@@ -7,11 +7,7 @@
 @media screen and (max-width: 900px) {}
 
 @media screen and (max-width: 600px) {
-
-    .nav-menu {
-        display: none;
-    }
-
+    
     .dashboard-container {
         margin: 0.5rem 1rem;
         padding: 0.5rem;

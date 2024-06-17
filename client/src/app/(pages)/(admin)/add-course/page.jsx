@@ -3,6 +3,7 @@
 require("dotenv").config();
 import React, { useState, useEffect } from 'react';
 import './add-course.css';
+import './add-course-responsive.css';
 import Image from 'next/image';
 import Auth from '../../(auth)/middleware/auth';
 import Loader from '@/components/loader/Loader';
@@ -10,6 +11,7 @@ import { addcoursefunction } from '@/app/lib/Services/api';
 
 import dynamic from 'next/dynamic';
 import Header from '@/components/admin/header/header';
+import Sidebar from '@/components/admin/sidebar/Sidebar';
 
 const Success = dynamic(() => import('@/components/Modals/Success/Success'), { ssr: false });
 const Error = dynamic(() => import('@/components/Modals/Error/Error'), { ssr: false });
@@ -177,6 +179,7 @@ function AddCourse() {
   return (
     <div>
       <div className="bg-[#f4f7fe] w-full min-h-full">
+        <Sidebar />
         <Header />
         <div className="addcourse-container">
           <div className="addcourse-top flex gap-6">

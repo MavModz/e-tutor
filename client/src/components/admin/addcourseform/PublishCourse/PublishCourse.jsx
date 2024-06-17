@@ -86,6 +86,8 @@ function PublishCourse({ onPrevious, onSubmit }) {
     <>
       <div className="addcourse-middle">
         <form className='addcourse-form'>
+          <h4 className='addcourse-form-heading'>Publish Course</h4>
+          <hr />
           <div className="message-wrapper flex flex-col gap-6">
             <p>Message</p>
             <div className="message-container flex gap-6">
@@ -147,7 +149,7 @@ function PublishCourse({ onPrevious, onSubmit }) {
       </div>
       <div className="addcourse-bottom flex justify-between">
         <button type="button" className='cancel-form-btn' onClick={onPrevious}>Previous</button>
-        <button type="button" className='next-form-btn' onClick={handlePublishClick}>Submit Course</button>
+        <button type="button" className='next-form-btn' onClick={handlePublishClick}>Publish</button>
       </div>
     </>
   )

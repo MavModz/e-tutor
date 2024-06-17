@@ -574,55 +574,59 @@ function Curriculum({ onNext, onPrevious }) {
   return (
     <>
       <div className="addcourse-middle">
-        <form className='addcourse-form course-curriculam-container'>
-          {sections.map((section, sectionIndex) => (
-            <div key={sectionIndex} className="course-curriculam-wrapper">
-              <div className="course-curriculam-topbar flex justify-between">
-                <div className='flex gap-2 items-center h-6'>
-                  <Image src="/Menu.svg" width={20} height={20} alt="menu-image" />
-                  {/* <p className='static-curriculam'>Section {sectionIndex + 1}:</p> */}
-                  <p className='dynamic-curriculam'>{section.name || 'Section Name'}</p>
-                </div>
-                <div className='flex gap-4'>
-                  <button type="button" onClick={() => addLecture(sectionIndex)}>
-                    <Image src="/Plus.svg" width={24} height={24} alt="plus-svg-icon" className='action-btn' />
-                  </button>
-                  <button type="button" onClick={() => openEditModal(sectionIndex)}><Image src="/PencilLine.svg" width={24} height={24} alt="Pencil-svg-icon" className='action-btn' /></button>
-                  <button type="button" onClick={() => deleteSection(sectionIndex)}><Image src="/Trash.svg" width={24} height={24} alt="Trash-svg-icon" className='action-btn' /></button>
-                </div>
-              </div>
-              <div className="curriculam-list-wrapper flex flex-col gap-4">
-                {section.lectures.map((lecture, lectureIndex) => (
-                  <div key={lectureIndex} className="curriculam-list flex justify-between items-center">
-                    <div className='flex gap-2 items-center h-6'>
-                      <Image src="/Menu.svg" width={20} height={20} alt="menu-image" />
-                      <p className='dynamic-curriculam'>{lecture.name || 'Lecture Name'}</p>
-                    </div>
-                    <div className='flex gap-4'>
-                      <button type="button" className='curriculam-content-btn' onClick={() => toggleDropdown(sectionIndex, lectureIndex)}>Content</button>
-                      {/* Dropdown menu for content selection */}
-                      {dropdownVisibility[`section-${sectionIndex}-lecture-${lectureIndex}`] && (
-                        <div className="dropdown-menu">
-                          <div onClick={() => selectContentType(sectionIndex, lectureIndex, 'Video')}>Video</div>
-                          <div onClick={() => selectContentType(sectionIndex, lectureIndex, 'Attach File')}>Attach File</div>
-                          <div onClick={() => selectContentType(sectionIndex, lectureIndex, 'Description')}>Description</div>
-                        </div>
-                      )}
-                      <button type="button" onClick={() => openEditModal(sectionIndex, lectureIndex)}><Image src="/PencilLine.svg" width={24} height={24} alt="Pencil-svg-icon" className='action-btn' /></button>
-                      <button type="button" onClick={() => deleteLecture(sectionIndex, lectureIndex)}><Image src="/Trash.svg" width={24} height={24} alt="Trash-svg-icon" className='action-btn' /></button>
-                    </div>
+        <div className="addcourse-curriculum-area flex flex-col gap-6 px-10">
+          <h4 className='addcourse-form-heading'>Course Curriculum</h4>
+          <hr />
+          <form className='addcourse-form course-curriculam-container'>
+            {sections.map((section, sectionIndex) => (
+              <div key={sectionIndex} className="course-curriculam-wrapper">
+                <div className="course-curriculam-topbar flex justify-between">
+                  <div className='flex gap-2 items-center h-6'>
+                    <Image src="/Menu.svg" width={20} height={20} alt="menu-image" />
+                    {/* <p className='static-curriculam'>Section {sectionIndex + 1}:</p> */}
+                    <p className='dynamic-curriculam'>{section.name || 'Section Name'}</p>
                   </div>
-                ))}
+                  <div className='course-curriculam-topbar-action-btn flex gap-4'>
+                    <button type="button" onClick={() => addLecture(sectionIndex)}>
+                      <Image src="/Plus.svg" width={24} height={24} alt="plus-svg-icon" className='action-btn' />
+                    </button>
+                    <button type="button" onClick={() => openEditModal(sectionIndex)}><Image src="/PencilLine.svg" width={24} height={24} alt="Pencil-svg-icon" className='action-btn' /></button>
+                    <button type="button" onClick={() => deleteSection(sectionIndex)}><Image src="/Trash.svg" width={24} height={24} alt="Trash-svg-icon" className='action-btn' /></button>
+                  </div>
+                </div>
+                <div className="curriculam-list-wrapper flex flex-col gap-4">
+                  {section.lectures.map((lecture, lectureIndex) => (
+                    <div key={lectureIndex} className="curriculam-list flex justify-between items-center">
+                      <div className='flex gap-2 items-center h-6'>
+                        <Image src="/Menu.svg" width={20} height={20} alt="menu-image" />
+                        <p className='dynamic-curriculam'>{lecture.name || 'Lecture Name'}</p>
+                      </div>
+                      <div className='course-curriculam-topbar-action-btn flex gap-4'>
+                        <button type="button" className='curriculam-content-btn' onClick={() => toggleDropdown(sectionIndex, lectureIndex)}>Content</button>
+                        {/* Dropdown menu for content selection */}
+                        {dropdownVisibility[`section-${sectionIndex}-lecture-${lectureIndex}`] && (
+                          <div className="dropdown-menu">
+                            <div onClick={() => selectContentType(sectionIndex, lectureIndex, 'Video')}>Video</div>
+                            <div onClick={() => selectContentType(sectionIndex, lectureIndex, 'Attach File')}>Attach File</div>
+                            <div onClick={() => selectContentType(sectionIndex, lectureIndex, 'Description')}>Description</div>
+                          </div>
+                        )}
+                        <button type="button" onClick={() => openEditModal(sectionIndex, lectureIndex)}><Image src="/PencilLine.svg" width={24} height={24} alt="Pencil-svg-icon" className='action-btn' /></button>
+                        <button type="button" onClick={() => deleteLecture(sectionIndex, lectureIndex)}><Image src="/Trash.svg" width={24} height={24} alt="Trash-svg-icon" className='action-btn' /></button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-          {isModalOpen && (
-            <div className="modal">
-              {renderModalContent()}
-            </div>
-          )}
-          <button type='button' className='curriculam-content-btn' onClick={addSection}>Add Section</button>
-        </form>
+            ))}
+            {isModalOpen && (
+              <div className="modal">
+                {renderModalContent()}
+              </div>
+            )}
+            <button type='button' className='curriculam-content-btn' onClick={addSection}>Add Section</button>
+          </form>
+        </div>
       </div>
       <div className="addcourse-bottom flex justify-between">
         {/* <button type="button" className='cancel-form-btn'>Cancel</button> */}
