@@ -7,6 +7,7 @@ import { admincoursefunction } from '@/app/lib/Services/api';
 import Header from '@/components/admin/header/header';
 import Card from '@/components/cards/Card';
 import './courses.css';
+import './courses-responsive.css';
 import Auth from '../../(auth)/middleware/auth';
 import Loader from '@/components/loader/Loader';
 import Searchbar from '@/components/Searchbar/Searchbar';

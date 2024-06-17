@@ -1,0 +1,36 @@
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 1600px) {
+    .course-list-cards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .course-list-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .course-list-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .course-card-container {
+        margin: 0.5rem 1rem;
+        padding: 0.5rem;
+    }
+
+    .course-action-btn {
+        font-size: 16px;
+        line-height: 48px;
+    }
+
+    .course-list-cards {
+        grid-template-columns: repeat(1, 1fr);
+        justify-items: center;
+    }
+}
