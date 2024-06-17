@@ -11,6 +11,7 @@ import './courses-responsive.css';
 import Auth from '../../(auth)/middleware/auth';
 import Loader from '@/components/loader/Loader';
 import Searchbar from '@/components/Searchbar/Searchbar';
+import Sidebar from '@/components/admin/sidebar/Sidebar';
 
 function MyCourses() {
     const { isLoading } = Auth();
@@ -56,6 +57,7 @@ function MyCourses() {
 
     return (
         <div className='bg-[#f4f7fe] w-full min-h-full'>
+            <Sidebar />
             <Header />
             <div className="course-card-container">
                 <div className="course-top-header flex justify-between mt-8 items-center">
