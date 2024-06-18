@@ -13,6 +13,7 @@ import DraggableMenu from '@/components/Static/draggableMenu/DraggableMenu';
 
 
 export default function Home() {
+  const [courseName, setCourseName] = useState('');
   const [categoryCounts, setCategoryCounts] = useState({});
   const [bestSellingCourses, setBestSellingCourse] = useState([]);
   const [featuredCourses, setFeaturedCourses] = useState([]);
@@ -107,6 +108,24 @@ export default function Home() {
     }
   }
 
+  const fetchfiltercourse = async () => {
+    try {
+      const response = await filtercoursesfunction(courseName);
+      // setCourseName(response);
+      console.log(response);
+    }
+    catch (error) {
+      console.log(error);
+      return;
+    }
+  }
+
+  const search = (e) => {
+    e.preventDefault();
+    console.log('button clicked');
+    fetchfiltercourse();
+  }
+
   return (
     <main className="min-h-screen overflow-hidden" id='main-wrapper'>
       <DraggableMenu />
@@ -123,15 +142,15 @@ export default function Home() {
                 </div>
                 <p>Our mision is to help people to find the best course <br /> online and learn with expert anytime, anywhere.</p>
                 <form className='hero-form'>
-                  <button className='hero-btn hover-btn-effect'>SEARCH</button>
+                  <button className='hero-btn hover-btn-effect' onClick={search}>SEARCH</button>
                   <div className='hero-input'>
                     <input
                       type="text"
                       id='hero-search'
                       name='hero-search'
                       className='hero-input'
-                      // value={filterCourse}
-                      // onChange={(e) => setFilterCourse(e.target.value)}
+                      value={courseName}
+                      onChange={(e) => setCourseName(e.target.value)}
                       placeholder='What Do you Want To Learn ?'
                       autoComplete='off'
                     />
