@@ -22,7 +22,6 @@ function Sidebar() {
 
     const closeDrawer = () => {
         setSidebarOpen(!sidebarOpen);
-        console.log(sidebarOpen)
     }
 
     const logout = async () => {

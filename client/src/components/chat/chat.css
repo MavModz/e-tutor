@@ -160,7 +160,7 @@
 }
 
 .send-message-area input,
-.search-input-wrapper input {
+.search-input-wrapper>input {
     height: 48px;
     border: 1px solid #E9EAF0;
     color: var(--secondary-text);

@@ -5,7 +5,7 @@ import './footer.css';
 
 function Footer() {
     const info_stats = [
-        { stats: '6.3K', text: 'Online coourses' },
+        { stats: '6.3K', text: 'Online courses' },
         { stats: '26K', text: 'Certified Instructor' },
         { stats: '99.9%', text: 'Sucess Rate' }
     ]
