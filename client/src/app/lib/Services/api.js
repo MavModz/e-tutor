@@ -123,6 +123,18 @@ export const allcoursesfunction = async () => {
     }
 }
 
+// FILTER COURSE
+
+export const filtercoursesfunction = async (courseName) => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/user/filter-courses/${courseName}`, null, null, false)
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
 
 // COURSE DETAILS
 
