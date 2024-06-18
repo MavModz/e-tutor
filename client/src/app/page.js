@@ -7,7 +7,7 @@ import Card from '@/components/cards/Card';
 import FeaturedCourse from '@/components/cards/featuredCard/FeaturedCourse';
 import Link from 'next/link';
 import NavHeader from '@/components/Static/header/NavHeader';
-import { coursecategorycountfunction, allcoursesfunction, topinstructorsfunction } from './lib/Services/api';
+import { coursecategorycountfunction, allcoursesfunction, topinstructorsfunction, filtercoursesfunction } from './lib/Services/api';
 import Footer from '../components/Static/footer/Footer';
 import DraggableMenu from '@/components/Static/draggableMenu/DraggableMenu';
 
@@ -130,8 +130,8 @@ export default function Home() {
                       id='hero-search'
                       name='hero-search'
                       className='hero-input'
-                      // value={courseSubtitle}
-                      // onChange={(e) => setCourseSubtitle(e.target.value)}
+                      // value={filterCourse}
+                      // onChange={(e) => setFilterCourse(e.target.value)}
                       placeholder='What Do you Want To Learn ?'
                       autoComplete='off'
                     />

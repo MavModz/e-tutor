@@ -148,6 +148,25 @@ exports.allcourses = async (req, res) => {
   }
 }
 
+// FILTER COURSES
+
+exports.filtercourses = async (req, res) => {
+  try {
+    const courseName = req.params.courseName.trim();
+    const course = await Course.findOne({ courseName: { $regex: new RegExp('^' + courseName + '$', 'i') } });
+
+    if (!course) {
+      res.status(404).json({ error: 'Course Not Found' });
+      return;
+    }
+    res.status(200).json(course);
+  }
+
+  catch {
+    res.status(500).json({ error: "Internal Server error", error })
+  }
+}
+
 exports.allcategories = async (req, res) => {
   try {
     const allcategories = await Categories.find({});

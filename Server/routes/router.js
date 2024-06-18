@@ -35,6 +35,7 @@ router.post("/user/checkout", userAuth, userControllers.checkout);
 router.post("/user/enroll", userAuth, userControllers.enrollCourse);
 router.get("/user/total-courses", userAuth, userControllers.totalenrolledcourses);
 router.get("/user/all-courses", userControllers.allcourses);
+router.get("/user/filter-courses/:courseName", userControllers.filtercourses);
 router.get("/user/all-categories", userControllers.allcategories);
 router.get("/user/all-subcategories/:categoryName", userControllers.allsubcategories);
 router.get("/user/total-courses-in-category/:courseCategory", userControllers.coursecategorycount);
