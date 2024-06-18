@@ -16,9 +16,15 @@ const navItems = [
   { text: 'Profile', icon: <Image src='/Profile.svg' alt="Profile svg icon" width={100} height={24} className='image-state' />, path: '/profile' }
 ];
 
+const dropdownList = [
+  { text: 'Profile', icon: <Image src='/Profile.svg' alt="Profile svg icon" width={20} height={20} /> },
+  { text: 'Logout', icon: <Image src='/Logout.svg' alt='Logout svg icon' width={20} height={20} /> }
+]
+
 function Header() {
   const router = useRouter();
   const [activePath, setActivePath] = useState(router.pathname);
+  const [settingOpen, setSettingOpen] = useState(false);
 
   useEffect(() => {
     setActivePath(location.pathname);
@@ -37,10 +43,23 @@ function Header() {
     }, 1000);
   }
 
+  const OpenSettingDrawer = () => {
+    setSettingOpen(!settingOpen);
+    console.log(settingOpen);
+  }
+  const listclick = async (text) => {
+    if (text === 'Profile') {
+      router.push('./profile');
+    }
+    else if (text === 'Logout') {
+      logout();
+    }
+  }
+
   return (
     <>
       <ToastContainer />
-      <div className='header-container'>
+      <div className='header-container relative'>
         <div className="header-wrapper">
           <div className="logo-container">
             <Link href='/' passHref>
@@ -68,9 +87,21 @@ function Header() {
           </div>
           <div className="nav-button-wrapper">
             <Image src='/Bell.svg' width={24} height={24} alt="bell svg icon" />
-            <button onClick={logout}>
-              <LogOut color="#007bff" strokeWidth={1.5} />
-            </button>
+            <div className="action-dropdown flex">
+              <button type="button" onClick={OpenSettingDrawer}>
+                <Image src='/user-2.jpg' width={48} height={48} alt='user-profile-image' className='header-user-profile' />
+              </button>
+              <div className={`dropdown-list-container ${settingOpen ? 'setting-drawer' : ''}`} >
+                <ul className='dropdown-list-area'>
+                  {dropdownList.map((item, index) => (
+                    <li className='dropdown-list' key={index} onClick={() => listclick(item.text)}>
+                      {item.icon}
+                      <p>{item.text}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
