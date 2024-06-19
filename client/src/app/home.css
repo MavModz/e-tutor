@@ -87,6 +87,47 @@
     overflow: hidden;
 }
 
+.dropdown-course-list-container {
+    position: absolute;
+    max-width: 100%;
+    width: 90%;
+    max-height: 200px;
+    height: 180px;
+    border-radius: 15px;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid var(--primary-new);
+    background-color: var(--background-white);
+}
+
+.dropdown-course-list-heading>h5 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: left;
+}
+
+.view-all-link {
+    font-family: var(--secondary-font);
+    color: var(--primary-new);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    text-align: left;
+}
+
+.dropdown-course-list-items>p {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    margin: 0px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: left;
+}
+
 .course-category-container {
     width: 100%;
     min-height: 500px;

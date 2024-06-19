@@ -14,6 +14,8 @@ import DraggableMenu from '@/components/Static/draggableMenu/DraggableMenu';
 
 export default function Home() {
   const [courseName, setCourseName] = useState('');
+  const [filteredCourse, setFilteredCourse] = useState([]);
+  const [filterDropdown, setFilterDropdown] = useState(false);
   const [categoryCounts, setCategoryCounts] = useState({});
   const [bestSellingCourses, setBestSellingCourse] = useState([]);
   const [featuredCourses, setFeaturedCourses] = useState([]);
@@ -111,19 +113,37 @@ export default function Home() {
   const fetchfiltercourse = async () => {
     try {
       const response = await filtercoursesfunction(courseName);
-      // setCourseName(response);
-      console.log(response);
+      const course = (Array.isArray(response) ? response : [response]);
+      console.log(course.length)
+      if (course[0] !== undefined) {
+        if (course && course.length > 0) {
+          setFilteredCourse(course);
+        } else {
+          setFilteredCourse([]);
+        }
+      }
+      else {
+        setFilteredCourse([]);
+      }
     }
     catch (error) {
-      console.log(error);
-      return;
+      console.log('Error fetching filtered courses:', error);
+      setFilteredCourse([]);
     }
+  };
+
+  const handleFocus = () => {
+    setFilterDropdown(true);
+  }
+
+  const handleBlur = () => {
+    setFilterDropdown(false);
   }
 
   const search = (e) => {
     e.preventDefault();
-    console.log('button clicked');
     fetchfiltercourse();
+    setFilterDropdown(true)
   }
 
   return (
@@ -153,8 +173,33 @@ export default function Home() {
                       onChange={(e) => setCourseName(e.target.value)}
                       placeholder='What Do you Want To Learn ?'
                       autoComplete='off'
+                      onFocus={handleFocus}
+                      onBlur={handleBlur}
                     />
                   </div>
+                  {filterDropdown && (
+                    <div className="dropdown-course-list-container">
+                      <ul className='dropdown-course-list-area'>
+                        <div className="dropdown-course-list-heading flex justify-between">
+                          <h5>Courses</h5>
+                          <Link href='/#' passHref >
+                            <span className='view-all-link'>View All</span>
+                          </Link>
+                        </div>
+                        {filteredCourse.length > 0 ? (
+                          filteredCourse.map((item, index) => (
+                            <li className='dropdown-course-list-items' key={index}>
+                              <p>{item.courseName}</p>
+                            </li>
+                          ))
+                        ) : (
+                          <li className='dropdown-course-list-items'>
+                            <p>No Data</p>
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  )}
                 </form>
               </div>
               <div className='hero-right-content flex justify-center w-1/2'>
