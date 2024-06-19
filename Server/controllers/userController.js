@@ -153,9 +153,9 @@ exports.allcourses = async (req, res) => {
 exports.filtercourses = async (req, res) => {
   try {
     const courseName = req.params.courseName.trim();
-    const course = await Course.findOne({ courseName: { $regex: new RegExp('^' + courseName + '$', 'i') } });
+    const course = await Course.findOne({ courseName: { $regex: new RegExp(courseName, 'i') } });
 
-    if (!course) {
+    if (!course || course.length === 0) {
       res.status(404).json({ error: 'Course Not Found' });
       return;
     }

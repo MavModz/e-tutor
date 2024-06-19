@@ -10,13 +10,21 @@ import './courses.css';
 import './courses-responsive.css';
 import Auth from '../../(auth)/middleware/auth';
 import Loader from '@/components/loader/Loader';
-import Searchbar from '@/components/Searchbar/Searchbar';
 import Sidebar from '@/components/admin/sidebar/Sidebar';
 
 function MyCourses() {
     const { isLoading } = Auth();
     const [showLoader, setShowLoader] = useState(true);
     const [courses, setCourses] = useState([]);
+    const [courseName, setCourseName] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [sortBy, setSortBy] = useState('All');
+    const [sortQuery, setSortQuery] = useState('');
+    const courseType = [
+        { text: "All" },
+        { text: "Popular" },
+        { text: "Latest" }
+    ]
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -50,10 +58,45 @@ function MyCourses() {
         }
     };
 
+    const handleSearch = (e) => {
+        setCourseName(e.target.value);
+        setSearchQuery(e.target.value.toLowerCase());
+    };
+
+    const filterCourses = () => {
+        let filteredCourses = [...courses];
+
+        // Apply search query filter
+        if (searchQuery) {
+            filteredCourses = filteredCourses.filter(course =>
+                course.courseName.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+
+        // Apply type filter
+        if (sortBy === 'Popular') {
+            // Example: Filter courses where more than 5 users have purchased (not implemented here)
+            filteredCourses = filteredCourses.filter(course => course.popularityCriteria); // Replace with actual popularity criteria
+        } else if (sortBy === 'Latest') {
+            // Filter courses created within the last 30 days
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+            filteredCourses = filteredCourses.filter(course => new Date(course.createdAt) >= thirtyDaysAgo);
+        }
+
+        return filteredCourses;
+    };
+
+    const handleSortBy = (selectedType) => {
+        setSortBy(selectedType);
+    };
+
     if (showLoader) {
         return <div><Loader /></div>;
     }
 
+    const filteredCourses = filterCourses();
 
     return (
         <div className='bg-[#f4f7fe] w-full min-h-full'>
@@ -71,15 +114,41 @@ function MyCourses() {
                 </div>
                 <div className="course-filter-container">
                     <div className="search-container">
-                        <Searchbar
-                            label='Search:'
-                            placeholder='Search in your Courses...'
+                        <input
+                            type="text"
+                            id='my-course-search'
+                            name='my-course-search'
+                            value={courseName}
+                            onChange={handleSearch}
+                            placeholder='Search in your courses... '
+                            autoComplete='off'
                         />
+                        <div className="course-type-dropdown">
+                            <input
+                                type="text"
+                                id='my-course-type'
+                                name='my-course-type'
+                                value={sortBy}
+                                onChange={handleSortBy}
+                                placeholder='Latest '
+                                autoComplete='off'
+                                disabled
+                            />
+                            <div className="dropdown-course-list-container">
+                                <ul className='dropdown-course-list-area'>
+                                    {courseType.map((item, index) => (
+                                        <li className='dropdown-course-list-items' key={index}>
+                                            <p onClick={() => handleSortBy(item.text)}>{item.text}</p>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="course-list-card-wrapper">
                     <div className="course-list-cards">
-                        {courses.map(course => (
+                        {filteredCourses.map(course => (
                             <Link href={`/course/${course.courseCode}`} key={course.courseCode}>
                                 <Card
                                     courseThumbnail={course.courseThumbnail}
