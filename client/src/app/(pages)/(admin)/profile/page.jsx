@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import './profile.css';
 import './responsive.css';
@@ -13,9 +13,15 @@ const UserProfile = dynamic(() => import('@/components/settings/UserProfile'), {
 
 function Profile() {
 
-    const renderProfile = () => {
+    const [userType, setUserType] = useState('');
+
+    useEffect(() => {
         const auth_token = sessionStorage.getItem('auth_token');
         const userType = auth_token && auth_token.slice(-1);
+        setUserType(userType)
+    },[]);
+
+    const renderProfile = () => {
         if (userType === '2' || userType === '4') {
             return <AdminProfile />
         }
