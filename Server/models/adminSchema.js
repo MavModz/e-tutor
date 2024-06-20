@@ -22,6 +22,10 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    profile: {
+        type: String,
+        default: 'https://mavmodz-etutor.s3.ap-south-1.amazonaws.com/course-thumbnails/1714024250507-music-lifestyle-leisure-entertainment-concept.jpg'
+    },
     birth: {
         type: String,
         unique: true,
@@ -46,7 +50,37 @@ const adminSchema = new mongoose.Schema({
     usedSpace: {
         type: Number,
         default:0
-    }
+    },
+
+    // INFORMATION
+
+    title: {
+        type: String,
+    },
+    biography: {
+        type: String,
+    },
+    personalWebsite: {
+       type: String, 
+    },
+    facebook: {
+        type: String,
+    },
+    instagram: {
+        type: String,
+    },
+    linkedin: {
+        type: String,
+    },
+    twitter: {
+        type: String,
+    },
+    whatsapp: {
+        type: String,
+    },
+    youtube: {
+        type: String,
+    },
 
 });
 

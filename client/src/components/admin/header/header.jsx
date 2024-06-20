@@ -8,23 +8,23 @@ import Link from 'next/link';
 import './header.css';
 import { toast, ToastContainer } from 'react-toastify';
 
-const navItems = [
-  { text: 'Dashboard', icon: <Image src='/Dashboard.svg' alt="Dashboard svg icon" width={100} height={24} className='image-state' />, path: '/dashboard' },
-  { text: 'Create Course', icon: <Image src="/Create-course.svg" alt="add course svg icon" width={100} height={24} className='image-state' />, path: '/add-course' },
-  { text: 'My Courses', icon: <Image src='/Course.svg' alt="Course svg icon" width={100} height={24} className='image-state' />, path: '/mycourses' },
-  { text: 'Message', icon: <Image src='/Message.svg' alt="Message svg icon" width={100} height={24} className='image-state' />, path: '/message' },
-  { text: 'Profile', icon: <Image src='/Profile.svg' alt="Profile svg icon" width={100} height={24} className='image-state' />, path: '/profile' }
-];
-
-const dropdownList = [
-  { text: 'Profile', icon: <Image src='/Profile.svg' alt="Profile svg icon" width={20} height={20} /> },
-  { text: 'Logout', icon: <Image src='/Logout.svg' alt='Logout svg icon' width={20} height={20} /> }
-]
-
 function Header() {
   const router = useRouter();
   const [activePath, setActivePath] = useState(router.pathname);
   const [settingOpen, setSettingOpen] = useState(false);
+
+  const navItems = [
+    { text: 'Dashboard', icon: <Image src='/Dashboard.svg' alt="Dashboard svg icon" width={100} height={24} className='image-state' />, path: '/dashboard' },
+    { text: 'Create Course', icon: <Image src="/Create-course.svg" alt="add course svg icon" width={100} height={24} className='image-state' />, path: '/add-course' },
+    { text: 'My Courses', icon: <Image src='/Course.svg' alt="Course svg icon" width={100} height={24} className='image-state' />, path: '/mycourses' },
+    { text: 'Message', icon: <Image src='/Message.svg' alt="Message svg icon" width={100} height={24} className='image-state' />, path: '/message' },
+    { text: 'Profile', icon: <Image src='/Profile.svg' alt="Profile svg icon" width={100} height={24} className='image-state' />, path: '/profile' }
+  ];
+  
+  const dropdownList = [
+    { text: 'Profile', icon: <Image src='/Profile.svg' alt="Profile svg icon" width={20} height={20} /> },
+    { text: 'Logout', icon: <Image src='/Logout.svg' alt='Logout svg icon' width={20} height={20} /> }
+  ]
 
   useEffect(() => {
     setActivePath(location.pathname);
@@ -49,7 +49,7 @@ function Header() {
   }
   const listclick = async (text) => {
     if (text === 'Profile') {
-      router.push('./profile');
+      router.push('/profile');
     }
     else if (text === 'Logout') {
       logout();
