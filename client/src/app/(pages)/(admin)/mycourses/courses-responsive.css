@@ -33,4 +33,12 @@
         grid-template-columns: repeat(1, 1fr);
         justify-items: center;
     }
+    
+    .course-filter-container {
+        flex-direction: column;
+    }
+
+    .search-container, .course-type-dropdown, .course-category-filter, .course-rating-filter {
+        width: 100%;
+    }
 }
