@@ -11,6 +11,7 @@ import './courses-responsive.css';
 import Auth from '../../(auth)/middleware/auth';
 import Loader from '@/components/loader/Loader';
 import Sidebar from '@/components/admin/sidebar/Sidebar';
+import { ChevronDown, ChevronUp, Search } from 'lucide-react';
 
 function MyCourses() {
     const { isLoading } = Auth();
@@ -19,12 +20,16 @@ function MyCourses() {
     const [courseName, setCourseName] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('All');
-    const [sortQuery, setSortQuery] = useState('');
+    const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
     const courseType = [
         { text: "All" },
         { text: "Popular" },
         { text: "Latest" }
     ]
+    const [category, setCategory] = useState('All Category');
+    const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+    const [rating, setRating] = useState('All Rating');
+    const [ratingDropdownOpen, setRatingDropdownOpen] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -88,9 +93,32 @@ function MyCourses() {
         return filteredCourses;
     };
 
+    const openTypeDrawer = () => {
+        setSortDropdownOpen(!sortDropdownOpen);
+    }
+
     const handleSortBy = (selectedType) => {
         setSortBy(selectedType);
+        setSortDropdownOpen(false);
     };
+
+    const openCategoryDrawer = () => {
+        setCategoryDropdownOpen(!categoryDropdownOpen);
+    }
+
+    const handleCategory = (selectedCategory) => {
+        setCategory(selectedCategory);
+        setCategoryDropdownOpen(false);
+    }
+
+    const openRatingDrawer = () => {
+        setRatingDropdownOpen(!ratingDropdownOpen);
+    }
+
+    const handleRating = (selectedRating) => {
+        setRating(selectedRating);
+        setRatingDropdownOpen(false);
+    }
 
     if (showLoader) {
         return <div><Loader /></div>;
@@ -112,8 +140,9 @@ function MyCourses() {
                         </button>
                     </Link>
                 </div>
-                <div className="course-filter-container">
+                <div className="course-filter-container flex gap-6">
                     <div className="search-container">
+                        <label htmlFor="my-course-search">Search:</label>
                         <input
                             type="text"
                             id='my-course-search'
@@ -123,26 +152,87 @@ function MyCourses() {
                             placeholder='Search in your courses... '
                             autoComplete='off'
                         />
-                        <div className="course-type-dropdown">
-                            <input
-                                type="text"
-                                id='my-course-type'
-                                name='my-course-type'
-                                value={sortBy}
-                                onChange={handleSortBy}
-                                placeholder='Latest '
-                                autoComplete='off'
-                                disabled
-                            />
-                            <div className="dropdown-course-list-container">
-                                <ul className='dropdown-course-list-area'>
-                                    {courseType.map((item, index) => (
-                                        <li className='dropdown-course-list-items' key={index}>
-                                            <p onClick={() => handleSortBy(item.text)}>{item.text}</p>
-                                        </li>
-                                    ))}
-                                </ul>
+                        <Search color="#737784" />
+                    </div>
+                    <div className="course-type-dropdown">
+                        <label htmlFor="my-course-type">Sort by:</label>
+                        <input
+                            type="text"
+                            id='my-course-type'
+                            name='my-course-type'
+                            value={sortBy}
+                            onChange={handleSortBy}
+                            placeholder='Latest '
+                            autoComplete='off'
+                            disabled
+                        />
+                        <div className='type-dropdown-btn-container' onClick={openTypeDrawer}>
+                            <div className="type-dropdown-btn">
+                                {sortDropdownOpen ? <ChevronUp color="#737784" onClick={openTypeDrawer} /> : <ChevronDown color="#737784" onClick={openTypeDrawer} />}
                             </div>
+                        </div>
+                        <div className={`course-type-dropdown-container ${sortDropdownOpen ? 'select-type' : ''}`}>
+                            <ul className='course-type-dropdown-area'>
+                                {courseType.map((item, index) => (
+                                    <li className='course-type-dropdown-items' key={index}>
+                                        <p onClick={() => handleSortBy(item.text)}>{item.text}</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="course-category-filter">
+                        <label htmlFor="course-category-filter">Category:</label>
+                        <input
+                            type="text"
+                            id='course-category-filter'
+                            name='course-category-filter'
+                            value={category}
+                            onChange={handleCategory}
+                            placeholder='Latest '
+                            autoComplete='off'
+                            disabled
+                        />
+                        <div className='category-dropdown-btn-container' onClick={openCategoryDrawer}>
+                            <div className="category-dropdown-btn">
+                                {categoryDropdownOpen ? <ChevronUp color="#737784" onClick={openCategoryDrawer} /> : <ChevronDown color="#737784" onClick={openCategoryDrawer} />}
+                            </div>
+                        </div>
+                        <div className={`course-category-dropdown-container ${categoryDropdownOpen ? 'select-category' : ''}`}>
+                            <ul className='course-category-dropdown-area'>
+                                {courseType.map((item, index) => (
+                                    <li className='course-category-dropdown-items' key={index}>
+                                        <p onClick={() => handleSortBy(item.text)}>{item.text}</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="course-rating-filter">
+                        <label htmlFor="course-rating-filter">Rating:</label>
+                        <input
+                            type="text"
+                            id='course-rating-filter'
+                            name='course-rating-filter'
+                            value={rating}
+                            onChange={handleRating}
+                            placeholder='Latest '
+                            autoComplete='off'
+                            disabled
+                        />
+                        <div className='rating-dropdown-btn-container' onClick={openRatingDrawer}>
+                            <div className="rating-dropdown-btn">
+                                {ratingDropdownOpen ? <ChevronUp color="#737784" onClick={openRatingDrawer} /> : <ChevronDown color="#737784" onClick={openRatingDrawer} />}
+                            </div>
+                        </div>
+                        <div className={`course-rating-dropdown-container ${ratingDropdownOpen ? 'select-rating' : ''}`}>
+                            <ul className='course-rating-dropdown-area'>
+                                {courseType.map((item, index) => (
+                                    <li className='course-rating-dropdown-items' key={index}>
+                                        <p onClick={() => handleSortBy(item.text)}>{item.text}</p>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
                 </div>
