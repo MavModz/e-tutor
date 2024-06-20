@@ -25,7 +25,7 @@ function Profile() {
         if (userType === '2' || userType === '4') {
             return <AdminProfile />
         }
-        else if (UserType === '3') {
+        else if (userType === '3') {
             return <UserProfile />
         }
     }
