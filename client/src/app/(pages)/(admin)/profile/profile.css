@@ -1,25 +1,33 @@
 .profile-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
     margin: 0 2rem;
     padding: 0.5rem 1rem;
     margin-top: 0.5rem;
     min-height: 100vh;
 }
 
-.profile-top-area {
+.profile-top-area,
+.profile-middle-area,
+.profile-bottom-area,
+.notification-container,
+.password-container {
     width: 100%;
-    min-height: 500px;
+    min-height: 450px;
     padding: 40px;
     background-color: var(--background-white);
 }
 
-.profile-container input, textarea {
+.profile-container input,
+textarea {
     color: var(--secondary-text);
     font-size: 17px;
     font-weight: 500;
     max-width: 100%;
     width: 100%;
     border: 1px solid var(--secondary-text);
-    height: 50px;
+    height: 45px;
     letter-spacing: .03rem;
     background-color: transparent;
     outline: none;
@@ -29,14 +37,15 @@
     margin-top: 8px;
 }
 
-.profile-container input:focus, textarea:focus {
+.profile-container input:focus,
+textarea:focus {
     border: 1px solid var(--primary-new);
 }
 
 textarea {
     resize: none;
     height: 110px;
-  }
+}
 
 .profile-container label {
     font-family: var(--secondary-font);
@@ -48,7 +57,10 @@ textarea {
     text-align: left;
 }
 
-.profile-basic-info-left>h4 {
+.profile-basic-info-left>h4,
+.social-links-area>h4,
+.notification-list-wrapper>h4,
+.change-password-container>h4 {
     font-family: var(--secondary-font);
     font-size: 24px;
     font-weight: 600;
@@ -96,4 +108,61 @@ textarea {
     line-height: 16px;
     text-align: center;
     width: 200px;
+}
+
+.basic-info-save-btn {
+    font-family: var(--secondary-font);
+    background-color: var(--btn-primary);
+    color: var(--background-white);
+    padding: 0 24px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 48px;
+    letter-spacing: -0.008em;
+    text-align: left;
+    overflow: hidden;
+}
+
+.social-link-icon-container {
+    position: relative;
+}
+
+.social-link-icon-container input {
+    text-indent: 55px;
+}
+
+.social-links-area {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.social-profile-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.social-link-icon {
+    position: absolute;
+    height: 45px;
+    width: 45px;
+    border-radius: 4px 0 0 4px;
+    border-right: 1px solid var(--secondary);
+    padding: 14px;
+    top: 42%;
+}
+
+.profile-bottom-area {
+    background-color: transparent;
+    padding: 0;
+    display: flex;
+    gap: 24px;
+}
+
+.notification-input-field, .password-input-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
 }

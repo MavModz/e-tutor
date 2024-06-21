@@ -97,6 +97,10 @@ function MyCourses() {
         setSortDropdownOpen(!sortDropdownOpen);
     }
 
+    const handleTypeBlur = () => {
+        setSortDropdownOpen(false);
+    }
+
     const handleSortBy = (selectedType) => {
         setSortBy(selectedType);
         setSortDropdownOpen(false);
@@ -111,12 +115,20 @@ function MyCourses() {
         setCategoryDropdownOpen(false);
     }
 
+    const handleCategoryBlur = () => {
+        setCategoryDropdownOpen(false);
+    }
+
     const openRatingDrawer = () => {
         setRatingDropdownOpen(!ratingDropdownOpen);
     }
 
     const handleRating = (selectedRating) => {
         setRating(selectedRating);
+        setRatingDropdownOpen(false);
+    }
+
+    const handleRatingBlur = () => {
         setRatingDropdownOpen(false);
     }
 
@@ -166,7 +178,7 @@ function MyCourses() {
                             autoComplete='off'
                             disabled
                         />
-                        <div className='type-dropdown-btn-container' onClick={openTypeDrawer}>
+                        <div className='type-dropdown-btn-container' onFocus={openTypeDrawer} tabindex="0" onBlur={handleTypeBlur}>
                             <div className="type-dropdown-btn">
                                 {sortDropdownOpen ? <ChevronUp color="#737784" onClick={openTypeDrawer} /> : <ChevronDown color="#737784" onClick={openTypeDrawer} />}
                             </div>
@@ -193,7 +205,7 @@ function MyCourses() {
                             autoComplete='off'
                             disabled
                         />
-                        <div className='category-dropdown-btn-container' onClick={openCategoryDrawer}>
+                        <div className='category-dropdown-btn-container' onClick={openCategoryDrawer} tabindex="0" onBlur={handleCategoryBlur}>
                             <div className="category-dropdown-btn">
                                 {categoryDropdownOpen ? <ChevronUp color="#737784" onClick={openCategoryDrawer} /> : <ChevronDown color="#737784" onClick={openCategoryDrawer} />}
                             </div>
@@ -220,7 +232,7 @@ function MyCourses() {
                             autoComplete='off'
                             disabled
                         />
-                        <div className='rating-dropdown-btn-container' onClick={openRatingDrawer}>
+                        <div className='rating-dropdown-btn-container' onClick={openRatingDrawer} tabindex="0" onBlur={handleRatingBlur}>
                             <div className="rating-dropdown-btn">
                                 {ratingDropdownOpen ? <ChevronUp color="#737784" onClick={openRatingDrawer} /> : <ChevronDown color="#737784" onClick={openRatingDrawer} />}
                             </div>
