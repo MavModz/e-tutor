@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Upload, Eye, EyeOff } from 'lucide-react';
+import { userupdatepasswordfunction, userprofiledetailfunction, updateuserprofile } from '@/app/lib/Services/api';
 
 function UserProfile() {
 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [userProfile, setUserProfile] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    profile: '',
+  });
 
   const toggleCurrentPassword = (e) => {
     e.preventDefault();
@@ -26,6 +36,76 @@ function UserProfile() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
+  const updatePassword = async () => {
+    const userId = sessionStorage.getItem('userId');
+    if (!userId) {
+      console.log('UserId not present');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      alert("Password doesn't match");
+      return;
+    }
+    try {
+      const response = await userupdatepasswordfunction(userId, newPassword);
+      console.log(response);
+      window.location.reload();
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  // FETCH PROFILE INFORMATION
+
+  const fetchUserProfile = async () => {
+    const userId = sessionStorage.getItem('userId');
+    if (!userId) {
+      alert('UserId not present');
+      return;
+    }
+    try {
+      const response = await userprofiledetailfunction(userId);
+      const profileInfo = response
+      setUserProfile({
+        name: profileInfo.name,
+        email: profileInfo.email,
+        phone: profileInfo.phone,
+        profile: profileInfo.profile,
+      })
+      console.log(profileInfo);
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+//  UPDATE PROFILE INFORMATION
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setUserProfile(prev => ({
+    ...prev,
+    [name]: value
+  }));
+};
+
+const updateProfile = async (e) => {
+  e.preventDefault();
+  const userId = sessionStorage.getItem('userId');
+  try {
+    const response = await updateuserprofile (userId, userProfile.name, userProfile.email, userProfile.phone);
+    console.log(response);
+  }
+  catch(error) {
+    console.log(error);
+  }
+}
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, [])
+
   return (
     <div className='profile-container'>
       <div className="profile-top-area">
@@ -40,8 +120,8 @@ function UserProfile() {
                     type="text"
                     id='name'
                     name='name'
-                    // value={rating}
-                    // onChange={handleRating}
+                    value={userProfile.name}
+                    onChange={handleChange}
                     placeholder='Full Name'
                     autoComplete='off'
                   />
@@ -52,20 +132,20 @@ function UserProfile() {
                     type="text"
                     id='email'
                     name='email'
-                    // value={rating}
-                    // onChange={handleRating}
+                    value={userProfile.email}
+                    onChange={handleChange}
                     placeholder='Your Email'
                     autoComplete='off'
                   />
                 </div>
                 <div className="profile-input-field">
-                  <label htmlFor="number">Phone Number</label>
+                  <label htmlFor="phone">Phone Number</label>
                   <input
                     type="text"
-                    id='number'
-                    name='number'
-                    // value={rating}
-                    // onChange={handleRating}
+                    id='phone'
+                    name='phone'
+                    value={userProfile.phone}
+                    onChange={handleChange}
                     placeholder='Your Phone Number'
                     maxLength={10}
                     autoComplete='off'
@@ -74,7 +154,7 @@ function UserProfile() {
               </div>
             </div>
             <div className="profile-basic-info-right w-1/4">
-              <Image src='/user-2.jpg' width={200} height={200} alt='default user image' />
+              <Image src={userProfile.profile} width={200} height={200} alt='default user image' />
               <button className='upload-profile-btn'><Upload color="#ffffff" />Upload Photo</button>
               <p>Image size should be under 1MB and image ratio needs to be 1:1</p>
             </div>
@@ -105,7 +185,7 @@ function UserProfile() {
             </div>
           </div>
           <div className="save-button-wrapper">
-            <button className='basic-info-save-btn hover-btn-effect'>Save Changes</button>
+            <button className='basic-info-save-btn hover-btn-effect' onClick={updateProfile}>Save Changes</button>
           </div>
         </div>
       </div>
@@ -165,7 +245,7 @@ function UserProfile() {
               </div>
             </div>
             <div className="save-button-wrapper">
-              <button className='basic-info-save-btn hover-btn-effect'>Save Changes</button>
+              <button className='basic-info-save-btn hover-btn-effect' onClick={updatePassword}>Save Changes</button>
             </div>
           </div>
         </div>

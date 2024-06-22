@@ -23,6 +23,54 @@ export const registerfunction = async (name, phone, email, password, birth, gend
     }
 }
 
+// UPDATE ADMIN PASSWORD
+
+export const adminupdatepasswordfunction = async (userId, newPassword) => {
+    try {
+        const response = await commonrequest("PUT", `${backend_url}/admin/update-password/${userId}`, {newPassword: newPassword});
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// UPDATE USER PASSWORD
+
+export const userupdatepasswordfunction = async (userId, newPassword) => {
+    try {
+        const response = await commonrequest("PUT", `${backend_url}/user/update-password/${userId}`, {newPassword: newPassword});
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// USER PROFILE DETAILS
+
+export const userprofiledetailfunction = async (userId) => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/user/profile-details/${userId}`);
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// UPDATE USER PROFILE
+
+export const updateuserprofile = async (userId, name, email, phone) => {
+    try {
+        const response = await commonrequest("PUT", `${backend_url}/user/update-profile/${userId}`, {name, email, phone});
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
 //ADMIN CHART DATA
 export const adminchartfunction = async () => {
     try {

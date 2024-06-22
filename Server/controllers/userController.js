@@ -41,22 +41,66 @@ exports.userregister = async (req, res) => {
 
 exports.updatepassword = async (req, res) => {
   const userId = req.params.userId;
-  const {newPassword} = req.body;
+  const { newPassword } = req.body;
   try {
-      const user = await users.findOne({ _id: userId });
-      if (!user) {
-          res.status(404).json({ message: "User not found" });
-          return;
-      }
-      else {
-          user.password = newPassword;
-          const storeData = await user.save();
-          res.status(200).json({storeData});
-      }
+    const user = await users.findOne({ _id: userId });
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    else {
+      user.password = newPassword;
+      const storeData = await user.save();
+      res.status(200).json({ storeData });
+    }
   }
   catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "Internal Server Error", error });
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error", error });
+  }
+}
+
+// PROFILE DETAILS
+
+exports.profiledetails = async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const user = await users.findOne({ _id: userId });
+    if (!user) {
+      res.status(400).json({ message: 'User not found ' });
+      return;
+    }
+    res.status(200).json(user);
+  }
+  catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Interal server Error', error })
+  }
+}
+
+// UPDATE USER PROFILE
+
+exports.updateprofile = async (req, res) => {
+  const userId = req.params.userId;
+  const { name, email, phone, profile } = req.body;
+  if (!name || !phone || !email) {
+    return res.status(401).json({ message: "Fill all fields" })
+  }
+  try {
+    const user = await users.findOne({ _id: userId });
+    if (!user) {
+      res.status(404).json({ message: 'User not found ' });
+      return;
+    }
+    user.name = name;
+    user.email = email;
+    user.phone = phone;
+    const storeData = await user.save();
+    res.status(200).json(storeData);
+  }
+  catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error', error });
   }
 }
 
