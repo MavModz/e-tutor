@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Upload, Eye, EyeOff } from 'lucide-react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { adminupdatepasswordfunction } from '@/app/lib/Services/api';
 
 function AdminProfile() {
 
@@ -37,6 +38,25 @@ function AdminProfile() {
             fontSize: 18, // Sets the size of the checkbox icon
         }
     };
+
+    const updatePassword = async () => {
+        const userId = sessionStorage.getItem('adminId');
+        if (!userId) {
+          console.log('UserId not present');
+          return;
+        }
+        if (newPassword !== confirmPassword) {
+          alert("Password doesn't match");
+          return;
+        }
+        try {
+          const response = await adminupdatepasswordfunction(userId, newPassword);
+          window.location.reload();
+        }
+        catch (error) {
+          console.log(error);
+        }
+      }
 
     return (
         <div className='profile-container'>
@@ -337,7 +357,7 @@ function AdminProfile() {
                             </div>
                         </div>
                         <div className="save-button-wrapper">
-                            <button className='basic-info-save-btn hover-btn-effect'>Save Changes</button>
+                            <button className='basic-info-save-btn hover-btn-effect' onClick={updatePassword}>Save Changes</button>
                         </div>
                     </div>
                 </div>

@@ -33,6 +33,8 @@ router.get("/admin/user-list", eitherAuth, adminControllers.userlist);
 
 router.post("/user/register", userControllers.userregister);
 router.put("/user/update-password/:userId", userAuth, userControllers.updatepassword);
+router.get("/user/profile-details/:userId", userAuth, userControllers.profiledetails);
+router.put("/user/update-profile/:userId", userAuth, userControllers.updateprofile);
 router.post("/user/checkout", userAuth, userControllers.checkout);
 router.post("/user/enroll", userAuth, userControllers.enrollCourse);
 router.get("/user/total-courses", userAuth, userControllers.totalenrolledcourses);
