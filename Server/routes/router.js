@@ -19,6 +19,7 @@ router.post("/institute/admin/register", instituteAdminAuth, instituteAdminContr
 
 router.post("/admin/register", adminControllers.adminregister);
 router.post("/admin/login", adminControllers.adminlogin);
+router.put("/admin/update-password/:userId", eitherAuth, adminControllers.updatepassword);
 router.post("/admin/add-course", eitherAuth, adminControllers.addCourse);
 router.get("/admin/my-courses/:userId", eitherAuth, adminControllers.mycourses);
 router.get("/admin/total-enrollments", adminControllers.totalenrollments);
@@ -28,9 +29,10 @@ router.post("/admin/update-usedspace", eitherAuth, adminControllers.usedSpace);
 router.get("/admin/profile-views/:userId", eitherAuth, adminControllers.profileViews);
 router.get("/admin/overall-course-rating/:userId", eitherAuth, adminControllers.getOverAllCourseRatings);
 router.get("/admin/weekly-overall-rating/:userId", eitherAuth, adminControllers.weeklyOverAllratings);
-router.get("/admin/user-list/", eitherAuth, adminControllers.userlist);
+router.get("/admin/user-list", eitherAuth, adminControllers.userlist);
 
 router.post("/user/register", userControllers.userregister);
+router.put("/user/update-password/:userId", userAuth, userControllers.updatepassword);
 router.post("/user/checkout", userAuth, userControllers.checkout);
 router.post("/user/enroll", userAuth, userControllers.enrollCourse);
 router.get("/user/total-courses", userAuth, userControllers.totalenrolledcourses);
