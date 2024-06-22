@@ -1,10 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Image from 'next/image';
-import { Upload } from 'lucide-react';
+import { Upload, Eye, EyeOff } from 'lucide-react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 function AdminProfile() {
+
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const toggleCurrentPassword = (e) => {
+        e.preventDefault();
+        setShowCurrentPassword(!showCurrentPassword);
+    };
+
+    const toggleNewPassword = (e) => {
+        e.preventDefault();
+        setShowNewPassword(!showNewPassword);
+    };
+
+    const toggleConfirmPassword = (e) => {
+        e.preventDefault();
+        setShowConfirmPassword(!showConfirmPassword);
+    };
 
     const customStyle = {
         color: '#FF6636', // Default color
@@ -261,47 +283,56 @@ function AdminProfile() {
                     </div>
                 </div>
                 <div className="password-container">
-                    <div className="change-password-wrapper  flex flex-col gap-4">
-                        <div className="change-password-area  flex flex-col gap-6">
+                    <div className="change-password-wrapper flex flex-col gap-4">
+                        <div className="change-password-area flex flex-col gap-6">
                             <div className="change-password-container">
                                 <h4>Change Password</h4>
                             </div>
                             <div className="password-input-fields">
-                                <div className="profile-input-field">
+                                <div className="profile-input-field relative">
                                     <label htmlFor="current-password">Current Password</label>
                                     <input
-                                        type="password"
+                                        type={showCurrentPassword ? "text" : "password"}
                                         id='current-password'
                                         name='current-password'
-                                        // value={rating}
-                                        // onChange={handleRating}
+                                        value={currentPassword}
+                                        onChange={(e) => setCurrentPassword(e.target.value)}
                                         placeholder='Password'
                                         autoComplete='off'
                                     />
+                                    <div className="password-toggle">
+                                        {showCurrentPassword ? <Eye color="#4E5566" strokeWidth={1.5} onClick={toggleCurrentPassword} /> : <EyeOff color="#4E5566" strokeWidth={1.5} onClick={toggleCurrentPassword} />}
+                                    </div>
                                 </div>
-                                <div className="profile-input-field">
+                                <div className="profile-input-field relative">
                                     <label htmlFor="new-password">New Password</label>
                                     <input
-                                        type="password"
+                                        type={showNewPassword ? "text" : "password"}
                                         id='new-password'
                                         name='new-password'
-                                        // value={rating}
-                                        // onChange={handleRating}
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
                                         placeholder='Password'
                                         autoComplete='off'
                                     />
+                                    <div className="password-toggle">
+                                        {showNewPassword ? <Eye color="#4E5566" strokeWidth={1.5} onClick={toggleNewPassword} /> : <EyeOff color="#4E5566" strokeWidth={1.5} onClick={toggleNewPassword} />}
+                                    </div>
                                 </div>
-                                <div className="profile-input-field">
+                                <div className="profile-input-field relative">
                                     <label htmlFor="confirm-password">Confirm Password</label>
                                     <input
-                                        type="password"
+                                        type={showConfirmPassword ? "text" : "password"}
                                         id='confirm-password'
                                         name='confirm-password'
-                                        // value={rating}
-                                        // onChange={handleRating}
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
                                         placeholder='Password'
                                         autoComplete='off'
                                     />
+                                    <div className="password-toggle">
+                                        {showConfirmPassword ? <Eye color="#4E5566" strokeWidth={1.5} onClick={toggleConfirmPassword} /> : <EyeOff color="#4E5566" strokeWidth={1.5} onClick={toggleConfirmPassword} />}
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -121,6 +121,29 @@ exports.adminlogin = async (req, res) => {
     }
 };
 
+// UPDATE PASSWORD
+
+exports.updatepassword = async (req, res) => {
+    const userId = req.params.userId;
+    const {newPassword} = req.body;
+    try {
+        const user = await admins.findOne({ _id: userId });
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+            return;
+        }
+        else {
+            user.password = newPassword;
+            const storeData = await user.save();
+            res.status(200).json({storeData});
+        }
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Internal Server Error", error });
+    }
+}
+
 exports.addCourse = async (req, res) => {
     const { courseName,
         courseSubtitle,
