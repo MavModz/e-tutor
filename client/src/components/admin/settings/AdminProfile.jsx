@@ -1,9 +1,31 @@
+require("dotenv").config();
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Upload, Eye, EyeOff } from 'lucide-react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import aws_s3 from '@/app/lib/Services/aws_s3';
 import { adminupdatepasswordfunction, adminprofiledetailfunction, updateadminprofile, adminsocialprofile, updatesocialprofile } from '@/app/lib/Services/api';
+
+async function uploadFileToS3(file, folderPath, key) {
+    const bucket_name = process.env.NEXT_PUBLIC_AWS_BUCKET_NAME;
+    const bucketName = bucket_name;
+    const params = {
+        Bucket: bucketName,
+        Key: `${folderPath}/${key}`,
+        Body: file,
+        ACL: 'public-read'
+    };
+
+    try {
+        const data = await aws_s3.upload(params).promise();
+        console.log("Upload Success", data);
+        return data.Location;
+    } catch (error) {
+        console.log("Error in file upload", error);
+        throw error;
+    }
+}
 
 function AdminProfile() {
 
@@ -103,7 +125,7 @@ function AdminProfile() {
     }
 
     //  UPDATE PROFILE INFORMATION
-
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserProfile(prev => ({
@@ -151,7 +173,7 @@ function AdminProfile() {
         }
     }
 
-        //  UPDATE PROFILE INFORMATION
+    //  UPDATE PROFILE INFORMATION
 
     const handleSocialChange = (e) => {
         const { name, value } = e.target;

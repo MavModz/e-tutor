@@ -6,6 +6,27 @@ const admins = require("../models/adminSchema");
 const instituteadmins = require("../models/instituteSchema");
 const profileView = require("../models/profileViewSchema");
 const courseRating = require("../models/courseRatingShema");
+const aws_s3 = require('../lib/Services/aws_s3');
+
+async function createFolderAtS3(key) {
+  const bucket_name = process.env.AWS_BUCKET_NAME;
+  const bucketName = bucket_name;
+  const params = {
+    Bucket: bucketName,
+    Key: key,
+    Body: '',
+    ACL: 'public-read'
+  };
+
+  try {
+    const data = await aws_s3.putObject(params).promise();
+    console.log("Folder Created Successfully", data);
+    return data.Location;
+  } catch (error) {
+    console.log("Error while creating Folder", error);
+    throw error;
+  }
+}
 
 exports.userregister = async (req, res) => {
   const { name, phone, email, password, birth, gender } = req.body;
@@ -30,6 +51,8 @@ exports.userregister = async (req, res) => {
         gender
       });
       const storeData = await newuser.save();
+      const folderKey = `${storeData._id}/`;
+      await createFolderAtS3(folderKey);
       res.status(200).json(storeData);
     }
   } catch (error) {
