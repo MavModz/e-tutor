@@ -5,9 +5,6 @@ import { userupdatepasswordfunction, userprofiledetailfunction, updateuserprofil
 
 function UserProfile() {
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -19,6 +16,8 @@ function UserProfile() {
     email: '',
     phone: '',
     profile: '',
+    title: '',
+    biography: ''
   });
 
   const toggleCurrentPassword = (e) => {
@@ -72,6 +71,8 @@ function UserProfile() {
         email: profileInfo.email,
         phone: profileInfo.phone,
         profile: profileInfo.profile,
+        title: profileInfo.title,
+        biography: profileInfo.biography 
       })
       console.log(profileInfo);
     }
@@ -94,8 +95,9 @@ const updateProfile = async (e) => {
   e.preventDefault();
   const userId = sessionStorage.getItem('userId');
   try {
-    const response = await updateuserprofile (userId, userProfile.name, userProfile.email, userProfile.phone);
+    const response = await updateuserprofile (userId, userProfile.name, userProfile.email, userProfile.phone, userProfile.title, userProfile.biography);
     console.log(response);
+    window.location.reload();
   }
   catch(error) {
     console.log(error);
@@ -166,8 +168,8 @@ const updateProfile = async (e) => {
                 type="text"
                 id='title'
                 name='title'
-                // value={rating}
-                // onChange={handleRating}
+                value={userProfile.title}
+                onChange={handleChange}
                 placeholder='Your title, profession'
                 autoComplete='off'
               />
@@ -177,8 +179,8 @@ const updateProfile = async (e) => {
               <textarea
                 id='biography'
                 name='biography'
-                // value={rating}
-                // onChange={handleRating}
+                value={userProfile.biography}
+                onChange={handleChange}
                 placeholder='Your small description'
                 autoComplete='off'
               />

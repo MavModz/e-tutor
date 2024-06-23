@@ -33,7 +33,13 @@ const superadminSchema = new mongoose.Schema({
     role: {
         type: String,
         default: 'super admin',
-    }
+    },
+    title: {
+        type: String,
+    },
+    biography: {
+        type: String,
+    },
 
 });
 

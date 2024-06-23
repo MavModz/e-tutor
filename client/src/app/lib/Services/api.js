@@ -27,7 +27,55 @@ export const registerfunction = async (name, phone, email, password, birth, gend
 
 export const adminupdatepasswordfunction = async (userId, newPassword) => {
     try {
-        const response = await commonrequest("PUT", `${backend_url}/admin/update-password/${userId}`, {newPassword: newPassword});
+        const response = await commonrequest("PUT", `${backend_url}/admin/update-password/${userId}`, { newPassword: newPassword });
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// ADMIN PROFILE DETAILS
+
+export const adminprofiledetailfunction = async (userId) => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/admin/profile-details/${userId}`);
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// UPDATE ADMIN PROFILE
+
+export const updateadminprofile = async (userId, name, email, phone, title, biography) => {
+    try {
+        const response = await commonrequest("PUT", `${backend_url}/admin/update-profile/${userId}`, { name, email, phone, title, biography });
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// ADMIN SOCIAL PROFILE 
+
+export const adminsocialprofile = async (userId) => {
+    try {
+        const response = await commonrequest("GET", `${backend_url}/admin/social-profile/${userId}`);
+        return response.data;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+// UPDATE ADMIN PROFILE
+
+export const updatesocialprofile = async (userId, website, facebook, instagram, linkedin, twitter, whatsapp, youtube) => {
+    try {
+        const response = await commonrequest("PUT", `${backend_url}/admin/update-social-profile/${userId}`, { website, facebook, instagram, linkedin, twitter, whatsapp, youtube });
         return response.data;
     }
     catch (error) {
@@ -39,7 +87,7 @@ export const adminupdatepasswordfunction = async (userId, newPassword) => {
 
 export const userupdatepasswordfunction = async (userId, newPassword) => {
     try {
-        const response = await commonrequest("PUT", `${backend_url}/user/update-password/${userId}`, {newPassword: newPassword});
+        const response = await commonrequest("PUT", `${backend_url}/user/update-password/${userId}`, { newPassword: newPassword });
         return response.data;
     }
     catch (error) {
@@ -61,9 +109,9 @@ export const userprofiledetailfunction = async (userId) => {
 
 // UPDATE USER PROFILE
 
-export const updateuserprofile = async (userId, name, email, phone) => {
+export const updateuserprofile = async (userId, name, email, phone, title, biography) => {
     try {
-        const response = await commonrequest("PUT", `${backend_url}/user/update-profile/${userId}`, {name, email, phone});
+        const response = await commonrequest("PUT", `${backend_url}/user/update-profile/${userId}`, { name, email, phone, title, biography });
         return response.data;
     }
     catch (error) {
@@ -299,7 +347,7 @@ export const enrolleduserlistfunction = async () => {
         const response = await commonrequest("GET", `${backend_url}/admin/user-list/`);
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }
@@ -309,10 +357,10 @@ export const enrolleduserlistfunction = async () => {
 
 export const sendmessagefunction = async (senderId, receiverId, senderModel, receiverModel, message) => {
     try {
-        const response = await commonrequest("POST", `${backend_url}/chat-message/send`, {senderId, receiverId, senderModel, receiverModel, message}, null, null, false);
+        const response = await commonrequest("POST", `${backend_url}/chat-message/send`, { senderId, receiverId, senderModel, receiverModel, message }, null, null, false);
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }
@@ -324,7 +372,7 @@ export const receivemessagefunction = async (senderId, receiverId) => {
         const response = await commonrequest("GET", `${backend_url}/chat-message/receive/${senderId}/${receiverId}`, null, null, false);
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         throw error;
     }
 }

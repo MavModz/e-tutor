@@ -20,6 +20,10 @@ router.post("/institute/admin/register", instituteAdminAuth, instituteAdminContr
 router.post("/admin/register", adminControllers.adminregister);
 router.post("/admin/login", adminControllers.adminlogin);
 router.put("/admin/update-password/:userId", eitherAuth, adminControllers.updatepassword);
+router.get("/admin/profile-details/:userId", eitherAuth, adminControllers.profiledetails);
+router.put("/admin/update-profile/:userId", eitherAuth, adminControllers.updateprofile);
+router.get("/admin/social-profile/:userId", eitherAuth, adminControllers.socialprofile);
+router.put("/admin/update-social-profile/:userId", eitherAuth, adminControllers.updatesocialprofile);
 router.post("/admin/add-course", eitherAuth, adminControllers.addCourse);
 router.get("/admin/my-courses/:userId", eitherAuth, adminControllers.mycourses);
 router.get("/admin/total-enrollments", adminControllers.totalenrollments);

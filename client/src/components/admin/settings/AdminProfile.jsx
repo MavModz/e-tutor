@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Upload, Eye, EyeOff } from 'lucide-react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { adminupdatepasswordfunction } from '@/app/lib/Services/api';
+import { adminupdatepasswordfunction, adminprofiledetailfunction, updateadminprofile, adminsocialprofile, updatesocialprofile } from '@/app/lib/Services/api';
 
 function AdminProfile() {
 
@@ -13,6 +13,23 @@ function AdminProfile() {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [userProfile, setUserProfile] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        profile: '',
+        title: '',
+        biography: ''
+    });
+    const [socialProfile, setSocialProfile] = useState({
+        website: '',
+        facebook: '',
+        instagram: '',
+        linkedin: '',
+        twitter: '',
+        whatsapp: '',
+        youtube: ''
+    });
 
     const toggleCurrentPassword = (e) => {
         e.preventDefault();
@@ -42,21 +59,125 @@ function AdminProfile() {
     const updatePassword = async () => {
         const userId = sessionStorage.getItem('adminId');
         if (!userId) {
-          console.log('UserId not present');
-          return;
+            console.log('UserId not present');
+            return;
         }
         if (newPassword !== confirmPassword) {
-          alert("Password doesn't match");
-          return;
+            alert("Password doesn't match");
+            return;
         }
         try {
-          const response = await adminupdatepasswordfunction(userId, newPassword);
-          window.location.reload();
+            const response = await adminupdatepasswordfunction(userId, newPassword);
+            console.log(response);
+            window.location.reload();
         }
         catch (error) {
-          console.log(error);
+            console.log(error);
         }
-      }
+    }
+
+    // FETCH PROFILE INFORMATION
+
+    const fetchUserProfile = async () => {
+        const userId = sessionStorage.getItem('adminId');
+        if (!userId) {
+            alert('UserId not present');
+            return;
+        }
+        try {
+            const response = await adminprofiledetailfunction(userId);
+            const profileInfo = response;
+            setUserProfile({
+                name: profileInfo.name,
+                email: profileInfo.email,
+                phone: profileInfo.phone,
+                profile: profileInfo.profile,
+                title: profileInfo.title,
+                biography: profileInfo.biography
+            })
+            console.log(profileInfo);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    //  UPDATE PROFILE INFORMATION
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUserProfile(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const updateProfile = async (e) => {
+        e.preventDefault();
+        const userId = sessionStorage.getItem('adminId');
+        try {
+            const response = await updateadminprofile(userId, userProfile.name, userProfile.email, userProfile.phone, userProfile.title, userProfile.biography);
+            console.log(response);
+            window.location.reload();
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    // FETCH SOCIAL PROFILE
+
+    const fetchsocialprofile = async () => {
+        const userId = sessionStorage.getItem('adminId');
+        if (!userId) {
+            alert('UserId not present');
+            return;
+        }
+        try {
+            const response = await adminsocialprofile(userId);
+            const socialInfo = response;
+            setSocialProfile({
+                website: socialInfo.website,
+                instagram: socialInfo.instagram,
+                linkedin: socialInfo.linkedin,
+                twitter: socialInfo.twitter,
+                whatsapp: socialInfo.whatsapp,
+                youtube: socialInfo.youtube
+            })
+            console.log(socialInfo);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+        //  UPDATE PROFILE INFORMATION
+
+    const handleSocialChange = (e) => {
+        const { name, value } = e.target;
+        setSocialProfile(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const updateSocialProfile = async (e) => {
+        e.preventDefault();
+        const userId = sessionStorage.getItem('adminId');
+        try {
+            const response = await updatesocialprofile(userId, socialProfile.website, socialProfile.instagram, socialProfile.linkedin, socialProfile.twitter, socialProfile.whatsapp, socialProfile.youtube);
+            console.log(response);
+            window.location.reload();
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchUserProfile();
+        fetchsocialprofile();
+    }, [])
 
     return (
         <div className='profile-container'>
@@ -72,8 +193,8 @@ function AdminProfile() {
                                         type="text"
                                         id='name'
                                         name='name'
-                                        // value={rating}
-                                        // onChange={handleRating}
+                                        value={userProfile.name}
+                                        onChange={handleChange}
                                         placeholder='Full Name'
                                         autoComplete='off'
                                     />
@@ -84,20 +205,20 @@ function AdminProfile() {
                                         type="text"
                                         id='email'
                                         name='email'
-                                        // value={rating}
-                                        // onChange={handleRating}
+                                        value={userProfile.email}
+                                        onChange={handleChange}
                                         placeholder='Your Email'
                                         autoComplete='off'
                                     />
                                 </div>
                                 <div className="profile-input-field">
-                                    <label htmlFor="number">Phone Number</label>
+                                    <label htmlFor="phone">Phone Number</label>
                                     <input
                                         type="text"
-                                        id='number'
-                                        name='number'
-                                        // value={rating}
-                                        // onChange={handleRating}
+                                        id='phone'
+                                        name='phone'
+                                        value={userProfile.phone}
+                                        onChange={handleChange}
                                         placeholder='Your Phone Number'
                                         maxLength={10}
                                         autoComplete='off'
@@ -106,7 +227,7 @@ function AdminProfile() {
                             </div>
                         </div>
                         <div className="profile-basic-info-right w-1/4">
-                            <Image src='/user-2.jpg' width={200} height={200} alt='default user image' />
+                            <Image src={userProfile.profile} width={200} height={200} alt='default user image' />
                             <button className='upload-profile-btn'><Upload color="#ffffff" />Upload Photo</button>
                             <p>Image size should be under 1MB and image ratio needs to be 1:1</p>
                         </div>
@@ -118,8 +239,8 @@ function AdminProfile() {
                                 type="text"
                                 id='title'
                                 name='title'
-                                // value={rating}
-                                // onChange={handleRating}
+                                value={userProfile.title}
+                                onChange={handleChange}
                                 placeholder='Your title, profession'
                                 autoComplete='off'
                             />
@@ -129,15 +250,15 @@ function AdminProfile() {
                             <textarea
                                 id='biography'
                                 name='biography'
-                                // value={rating}
-                                // onChange={handleRating}
+                                value={userProfile.biography}
+                                onChange={handleChange}
                                 placeholder='Your small description'
                                 autoComplete='off'
                             />
                         </div>
                     </div>
                     <div className="save-button-wrapper">
-                        <button className='basic-info-save-btn hover-btn-effect'>Save Changes</button>
+                        <button className='basic-info-save-btn hover-btn-effect' onClick={updateProfile}>Save Changes</button>
                     </div>
                 </div>
             </div>
@@ -154,11 +275,9 @@ function AdminProfile() {
                                             type="text"
                                             id='website'
                                             name='website'
-                                            // value={rating}
-                                            // onChange={handleRating}
+                                            value={socialProfile.website}
+                                            onChange={handleSocialChange}
                                             placeholder='Personal website or protfolio url...'
-                                            maxLength={10}
-                                            autoComplete='off'
                                         />
                                         <div className="social-link-icon">
                                             <Image src='/Globe.svg' width={20} height={20} alt='website icon' />
@@ -172,11 +291,9 @@ function AdminProfile() {
                                             type="text"
                                             id='facebook'
                                             name='facebook'
-                                            // value={rating}
-                                            // onChange={handleRating}
+                                            value={socialProfile.facebook}
+                                            onChange={handleSocialChange}
                                             placeholder='Username'
-                                            maxLength={10}
-                                            autoComplete='off'
                                         />
                                         <div className="social-link-icon">
                                             <Image src='/Facebook-dark.svg' width={20} height={20} alt='facebook icon' />
@@ -188,11 +305,9 @@ function AdminProfile() {
                                             type="text"
                                             id='instagram'
                                             name='instagram'
-                                            // value={rating}
-                                            // onChange={handleRating}
+                                            value={socialProfile.instagram}
+                                            onChange={handleSocialChange}
                                             placeholder='Username'
-                                            maxLength={10}
-                                            autoComplete='off'
                                         />
                                         <div className="social-link-icon">
                                             <Image src='/Instagram-dark.svg' width={20} height={20} alt='instagram icon' />
@@ -204,11 +319,9 @@ function AdminProfile() {
                                             type="text"
                                             id='linkedin'
                                             name='linkedin'
-                                            // value={rating}
-                                            // onChange={handleRating}
+                                            value={socialProfile.linkedin}
+                                            onChange={handleSocialChange}
                                             placeholder='Username'
-                                            maxLength={10}
-                                            autoComplete='off'
                                         />
                                         <div className="social-link-icon">
                                             <Image src='/LinkedIn-dark.svg' width={20} height={20} alt='linkedin icon' />
@@ -220,11 +333,9 @@ function AdminProfile() {
                                             type="text"
                                             id='twitter'
                                             name='twitter'
-                                            // value={rating}
-                                            // onChange={handleRating}
+                                            value={socialProfile.twitter}
+                                            onChange={handleSocialChange}
                                             placeholder='Username'
-                                            maxLength={10}
-                                            autoComplete='off'
                                         />
                                         <div className="social-link-icon">
                                             <Image src='/Twitter-dark.svg' width={20} height={20} alt='twitter icon' />
@@ -236,11 +347,9 @@ function AdminProfile() {
                                             type="text"
                                             id='whatsapp'
                                             name='whatsapp'
-                                            // value={rating}
-                                            // onChange={handleRating}
+                                            value={socialProfile.whatsapp}
+                                            onChange={handleSocialChange}
                                             placeholder='Whatsapp Number'
-                                            maxLength={10}
-                                            autoComplete='off'
                                         />
                                         <div className="social-link-icon">
                                             <Image src='/Whatsapp-dark.svg' width={20} height={20} alt='whatsapp icon' />
@@ -252,11 +361,9 @@ function AdminProfile() {
                                             type="text"
                                             id='youtube'
                                             name='youtube'
-                                            // value={rating}
-                                            // onChange={handleRating}
+                                            value={socialProfile.youtube}
+                                            onChange={handleSocialChange}
                                             placeholder='Username'
-                                            maxLength={10}
-                                            autoComplete='off'
                                         />
                                         <div className="social-link-icon">
                                             <Image src='/Youtube-dark.svg' width={20} height={20} alt='youtube icon' />
@@ -267,7 +374,7 @@ function AdminProfile() {
                         </div>
                     </div>
                     <div className="save-button-wrapper">
-                        <button className='basic-info-save-btn hover-btn-effect'>Save Changes</button>
+                        <button className='basic-info-save-btn hover-btn-effect' onClick={updateSocialProfile}>Save Changes</button>
                     </div>
                 </div>
             </div>
