@@ -37,6 +37,9 @@ const userSchema = new mongoose.Schema({
     title: {
         type: String,
     },
+    biography: {
+        type: String,
+    },
     enrolledCourses: {
         type: [{
             courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },

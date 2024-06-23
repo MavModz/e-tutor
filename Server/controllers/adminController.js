@@ -144,6 +144,98 @@ exports.updatepassword = async (req, res) => {
     }
 }
 
+// PROFILE DETAILS
+
+exports.profiledetails = async (req, res) => {
+    const userId = req.params.userId;
+    try {
+      const user = await admins.findOne({ _id: userId });
+      if (!user) {
+        res.status(400).json({ message: 'User not found ' });
+        return;
+      }
+      res.status(200).json(user);
+    }
+    catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Interal server Error', error })
+    }
+  }
+
+// UPDATE ADMIN PROFILE
+
+exports.updateprofile = async (req, res) => {
+    const userId = req.params.userId;
+    const { name, email, phone, profile, title, biography } = req.body;
+    if (!name || !phone || !email, profile) {
+      return res.status(401).json({ message: "Fill all fields" })
+    }
+    try {
+      const user = await admins.findOne({ _id: userId });
+      if (!user) {
+        res.status(404).json({ message: 'User not found ' });
+        return;
+      }
+      user.name = name;
+      user.email = email;
+      user.phone = phone;
+      user.profile = profile;
+      user.title = title;
+      user.biography = biography;
+      const storeData = await user.save();
+      res.status(200).json(storeData);
+    }
+    catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Internal Server Error', error });
+    }
+  }
+
+//   SOCIAL PROFILE
+
+exports.socialprofile = async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const user = await admins.findOne({ _id: userId });
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
+        res.status(200).json(user);
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error', error })
+    }
+}
+
+// UPDATE SOCIAL PROFILE
+
+exports.updatesocialprofile = async (req, res) => {
+    const userId = req.params.userId;
+    const { website, facebook, instagram, linkedin, twitter, whatsapp, youtube } = req.body;
+    try {
+      const user = await admins.findOne({ _id: userId });
+      if (!user) {
+        res.status(404).json({ message: 'User not found ' });
+        return;
+      }
+      user.website = website;
+      user.facebook = facebook;
+      user.instagram = instagram;
+      user.linkedin = linkedin;
+      user.twitter = twitter;
+      user.whatsapp = whatsapp;
+      user.youtube = youtube;
+      const storeData = await user.save();
+      res.status(200).json(storeData);
+    }
+    catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Internal Server Error', error });
+    }
+  }
+
 exports.addCourse = async (req, res) => {
     const { courseName,
         courseSubtitle,

@@ -60,7 +60,7 @@ const adminSchema = new mongoose.Schema({
     biography: {
         type: String,
     },
-    personalWebsite: {
+    website: {
        type: String, 
     },
     facebook: {

@@ -82,8 +82,8 @@ exports.profiledetails = async (req, res) => {
 
 exports.updateprofile = async (req, res) => {
   const userId = req.params.userId;
-  const { name, email, phone, profile } = req.body;
-  if (!name || !phone || !email) {
+  const { name, email, phone, profile, title, biography } = req.body;
+  if (!name || !phone || !email, profile) {
     return res.status(401).json({ message: "Fill all fields" })
   }
   try {
@@ -95,6 +95,9 @@ exports.updateprofile = async (req, res) => {
     user.name = name;
     user.email = email;
     user.phone = phone;
+    user.profile = profile;
+    user.title = title;
+    user.biography = biography;
     const storeData = await user.save();
     res.status(200).json(storeData);
   }
