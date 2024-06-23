@@ -5,7 +5,6 @@ import aws_s3 from '@/app/lib/Services/aws_s3';
 import { Trash2, Upload } from 'lucide-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import Header from '../../header/header';
 import { updateusedspacefunction } from '@/app/lib/Services/api';
 
 async function uploadFileToS3(file, folderPath, key) {
