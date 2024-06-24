@@ -74,7 +74,7 @@ textarea {
     background-color: #F5F7FA;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 12px;
     align-items: center;
     justify-content: center;
     position: relative;
@@ -85,10 +85,12 @@ textarea {
     align-items: center;
     justify-content: center;
     position: absolute;
+    overflow: hidden;
     background-color: #00000080;
     width: 200px;
     height: 48px;
     top: 57%;
+    right: 20%;
     padding: 14px 0;
     gap: 8px;
     font-family: var(--secondary-font);

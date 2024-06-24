@@ -49,9 +49,9 @@ export const adminprofiledetailfunction = async (userId) => {
 
 // UPDATE ADMIN PROFILE
 
-export const updateadminprofile = async (userId, name, email, phone, title, biography) => {
+export const updateadminprofile = async (userId, name, email, phone, profile, title, biography) => {
     try {
-        const response = await commonrequest("PUT", `${backend_url}/admin/update-profile/${userId}`, { name, email, phone, title, biography });
+        const response = await commonrequest("PUT", `${backend_url}/admin/update-profile/${userId}`, { name, email, phone, profile, title, biography });
         return response.data;
     }
     catch (error) {
@@ -109,9 +109,9 @@ export const userprofiledetailfunction = async (userId) => {
 
 // UPDATE USER PROFILE
 
-export const updateuserprofile = async (userId, name, email, phone, title, biography) => {
+export const updateuserprofile = async (userId, name, email, phone, profile, title, biography) => {
     try {
-        const response = await commonrequest("PUT", `${backend_url}/user/update-profile/${userId}`, { name, email, phone, title, biography });
+        const response = await commonrequest("PUT", `${backend_url}/user/update-profile/${userId}`, { name, email, phone, profile, title, biography });
         return response.data;
     }
     catch (error) {
