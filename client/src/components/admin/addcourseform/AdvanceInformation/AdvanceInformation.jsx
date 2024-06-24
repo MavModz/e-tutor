@@ -248,7 +248,7 @@ function AdvanceInformation({ onNext, onPrevious }) {
               <p>Course Thumbnail</p>
               <div className="thumbnail-img-container">
                 <div className="image-container w-56 h-40">
-                  <img src={thumbnailSrc} width={124} height={124} alt="course-thumbnail" />
+                  <Image src={thumbnailSrc} width={124} height={124} alt="course-thumbnail" />
                 </div>
                 <div className="thumbnail-image-info">
                   <p>

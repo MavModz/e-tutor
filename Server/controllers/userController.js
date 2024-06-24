@@ -106,7 +106,7 @@ exports.profiledetails = async (req, res) => {
 exports.updateprofile = async (req, res) => {
   const userId = req.params.userId;
   const { name, email, phone, profile, title, biography } = req.body;
-  if (!name || !phone || !email, profile) {
+  if (!name || !phone || !email) {
     return res.status(401).json({ message: "Fill all fields" })
   }
   try {

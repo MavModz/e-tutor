@@ -1,5 +1,4 @@
-require("dotenv").config();
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { Upload, Eye, EyeOff } from 'lucide-react';
 import Checkbox from '@mui/material/Checkbox';
@@ -125,7 +124,36 @@ function AdminProfile() {
     }
 
     //  UPDATE PROFILE INFORMATION
-    
+
+    const fileInputRef = useRef();
+
+    // PROFILE IMAGE UPLOAD TO S3 BUCKET
+
+    const handleFileSelect = async (event) => {
+        event.preventDefault();
+        const file = event.target.files[0];
+        const adminId = sessionStorage.getItem('adminId');
+        if (file) {
+            const folderPath = `${adminId}`
+            const key = `profile-images/${Date.now()}-${file.name}`;
+            try {
+                const uploadedFileURL = await uploadFileToS3(file, folderPath, key);
+                console.log(uploadedFileURL);
+                setUserProfile(prevProfile => ({
+                    ...prevProfile,
+                    profile: uploadedFileURL
+                }));
+            }
+            catch (error) {
+                console.log("error uploading the file to S3", error);
+            }
+        }
+    };
+
+    const handleImgButtonClick = () => {
+        fileInputRef.current.click(); // Trigger the file input when button is clicked
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserProfile(prev => ({
@@ -138,9 +166,9 @@ function AdminProfile() {
         e.preventDefault();
         const userId = sessionStorage.getItem('adminId');
         try {
-            const response = await updateadminprofile(userId, userProfile.name, userProfile.email, userProfile.phone, userProfile.title, userProfile.biography);
+            const response = await updateadminprofile(userId, userProfile.name, userProfile.email, userProfile.phone, userProfile.profile, userProfile.title, userProfile.biography);
             console.log(response);
-            window.location.reload();
+            // window.location.reload();
         }
         catch (error) {
             console.log(error);
@@ -249,8 +277,22 @@ function AdminProfile() {
                             </div>
                         </div>
                         <div className="profile-basic-info-right w-1/4">
-                            <Image src={userProfile.profile} width={200} height={200} alt='default user image' />
-                            <button className='upload-profile-btn'><Upload color="#ffffff" />Upload Photo</button>
+                            <div className="profile-pic-img">
+                                <Image src={userProfile.profile || '/Profile-Photo.jpg'} width={200} height={200} alt='default user image' />
+                            </div>
+                            <div className="profile-upload-btn">
+                                <label htmlFor="profile" style={{ display: 'none' }}>Phone Number</label>
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    id='profile'
+                                    name='profile'
+                                    style={{ display: 'none' }}
+                                    onChange={handleFileSelect}
+                                    accept=".jpg, .jpeg, .png"
+                                />
+                                <button className='upload-profile-btn hover-btn-effect' onClick={handleImgButtonClick}><Upload color="#ffffff" />Upload Photo</button>
+                            </div>
                             <p>Image size should be under 1MB and image ratio needs to be 1:1</p>
                         </div>
                     </div>
