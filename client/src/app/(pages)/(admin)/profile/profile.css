@@ -80,6 +80,12 @@ textarea {
     position: relative;
 }
 
+.profile-pic-img {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+}
+
 .upload-profile-btn {
     display: flex;
     align-items: center;
