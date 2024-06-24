@@ -207,7 +207,7 @@ function UserProfile() {
             </div>
             <div className="profile-basic-info-right w-1/4">
               <div className="profile-pic-img">
-                <Image src={userProfile.profile || '/Profile-Photo.jpg'} width={200} height={200} alt='default user image' />
+                <Image src={userProfile.profile} width={200} height={200} alt='default user image' />
               </div>
               <div className="profile-upload-btn">
                 <label htmlFor="profile" style={{ display: 'none' }}>Phone Number</label>
