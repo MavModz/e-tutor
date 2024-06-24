@@ -2,16 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import './header.css';
 import { toast, ToastContainer } from 'react-toastify';
+import { adminprofiledetailfunction, userprofiledetailfunction } from '@/app/lib/Services/api';
 
 function Header() {
   const router = useRouter();
   const [activePath, setActivePath] = useState(router.pathname);
   const [settingOpen, setSettingOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState('');
 
   const navItems = [
     { text: 'Dashboard', icon: <Image src='/Dashboard.svg' alt="Dashboard svg icon" width={100} height={24} className='image-state' />, path: '/dashboard' },
@@ -28,6 +29,7 @@ function Header() {
 
   useEffect(() => {
     setActivePath(location.pathname);
+    profilePic();
   }, []);
 
   const handleItemClick = (path) => {
@@ -53,6 +55,36 @@ function Header() {
     }
     else if (text === 'Logout') {
       logout();
+    }
+  }
+
+  const profilePic = async () => {
+    const auth_token = sessionStorage.getItem('auth_token');
+    const token = auth_token.slice(-1);
+    let userId;
+    let response;
+    try {
+      if (!auth_token) {
+        alert(' Auth token not present')
+        return;
+      }
+      if (token === '2' || token === '4') {
+        userId = sessionStorage.getItem('adminId');
+        response = await adminprofiledetailfunction(userId);
+        let image = response.profile;
+        console.log('this is Response image', image);
+        setProfileImage(image);
+      }
+  
+      else if (token === '3') {
+        userId = sessionStorage.getItem('userId');
+        response = await userprofiledetailfunction(userId);
+        let image = response.profile;
+        setProfileImage(image);
+      }
+    }
+    catch (error) {
+      console.log(error);
     }
   }
 
@@ -89,7 +121,7 @@ function Header() {
             <Image src='/Bell.svg' width={24} height={24} alt="bell svg icon" />
             <div className="action-dropdown flex">
               <button type="button" onClick={OpenSettingDrawer}>
-                <Image src='/user-2.jpg' width={48} height={48} alt='user-profile-image' className='header-user-profile' />
+                <Image src={profileImage || '/user-2.jpg'} width={48} height={48} alt='user-profile-image' className='header-user-profile' />
               </button>
               <div className={`dropdown-list-container ${settingOpen ? 'setting-drawer' : ''}`} >
                 <ul className='dropdown-list-area'>

@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { Upload, Eye, EyeOff } from 'lucide-react';
@@ -168,7 +170,7 @@ function AdminProfile() {
         try {
             const response = await updateadminprofile(userId, userProfile.name, userProfile.email, userProfile.phone, userProfile.profile, userProfile.title, userProfile.biography);
             console.log(response);
-            // window.location.reload();
+            window.location.reload();
         }
         catch (error) {
             console.log(error);
