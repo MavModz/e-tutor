@@ -1,0 +1,144 @@
+.lecture-header-container {
+    width: 100%;
+    height: 5rem;
+}
+
+.lecture-header-wrapper {
+    max-width: 1460px;
+    width: 100%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-btn-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.lecture-title-container {
+    height: 98px;
+    width: 100%;
+    background-color: #f4f7fe;
+    display: flex;
+    align-items: center;
+}
+
+.lecture-title {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem;
+    width: 100%;
+    max-width: 1460px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.lecture-title-info>h2 {
+font-family: var(--text-dark);
+font-size: 18px;
+font-weight: 500;
+line-height: 24px;
+text-align: left;
+
+}
+
+.section-count, .lecture-count, .lecture-duration {
+    display: flex;
+    align-items: center;
+    gap: 6px;  
+}
+
+.section-count>span, .lecture-count>span, .lecture-duration>span {
+font-family: var(--secondary-font);
+color: var(--secondary-text);
+font-size: 14px;
+font-weight: 400;
+line-height: 22px;
+letter-spacing: -0.01em;
+text-align: left;
+}
+
+.next-lecture-btn, .review-btn {
+    background-color: var(--btn-primary);
+    color: var(--background);
+    white-space: nowrap;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    padding: 0 24px;
+    outline: none;
+    font-size: 16px;
+    letter-spacing: .025em;
+    font-weight: 600;
+    min-height: 48px;
+    width: 146px;
+    position: relative;
+    overflow: hidden;
+}
+
+.review-btn {
+    width: 164px;
+    background-color: var(--background-white);
+    color: var(--btn-primary)
+}
+
+.lecture-area {
+    max-width: 1460px;
+    width: 100%;
+    min-height: 100vh;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem;
+    display: flex;
+    gap: 24px;
+}
+
+
+.course-video-thumb-container {
+    position: relative;
+    width: 100%;
+    /* Adjust as needed */
+    cursor: pointer;
+}
+
+.course-video-thumb-container .video-wrapper {
+    position: relative;
+    padding-top: 56.25%;
+    /* 16:9 Aspect Ratio */
+}
+
+.course-video-thumb-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.course-video-thumb-container .play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url('/Play.svg') no-repeat center center;
+    background-size: contain;
+    border: none;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+}
+
+.course-video-thumb-container video[controls] {
+    display: none;
+}

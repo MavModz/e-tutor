@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import '@/styles/course/courseDetails.css';
+import '@/styles/course/responsive.css';
 import Overview from '@/components/course/courseOverview/Overview';
 import Curriculum from '@/components/course/courseCurriculum/Curriculum';
 import Instructor from '@/components/course/courseInstructor/Instructor';
