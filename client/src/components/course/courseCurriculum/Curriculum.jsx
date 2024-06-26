@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 
 function Curriculum(course) {
 
@@ -44,8 +45,9 @@ function Curriculum(course) {
           const sectionLecturesCount = section.lectures ? section.lectures.length : 0;
           return (
             <div key={section.name} className='section'>
-              <div className='flex justify-between'>
+             <div className={`section-title-wrapper flex justify-between ${openSections[index] ? 'active' : ''}`} style={{ backgroundColor: openSections[index] ? '#F5F7FA' : 'transparent' }}>
                 <button onClick={() => toggleSection(index)} className={`section-title ${openSections[index] ? 'active' : ''}`}>
+                {openSections[index] ? <ChevronUp color="#FF6636" strokeWidth={1.5} /> : <ChevronDown color="#6E7485" strokeWidth={1.5} />}
                   {section.name}
                 </button>
                 <button className='unique-section-count flex gap-1.5'>
