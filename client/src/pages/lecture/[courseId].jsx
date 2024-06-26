@@ -7,6 +7,7 @@ import Curriculum from '@/components/course/courseCurriculum/Curriculum';
 import Instructor from '@/components/course/courseInstructor/Instructor';
 import Review from '@/components/course/courseReview/Review';
 import { allcoursesfunction, coursedetailsfunction } from '@/app/lib/Services/api';
+import ProgressBar from '@/components/courseProgress/ProgressBar';
 import Footer from '@/components/Static/footer/Footer';
 
 function CourseLecture({ course }) {
@@ -79,8 +80,13 @@ function CourseLecture({ course }) {
                             )}
                         </div>
                     </div>
-                    <div className="lecture-wrapper-right w-2/5">
-                        <span>Right side</span>
+                    <div className="lecture-wrapper-right w-2/5 flex flex-col gap-6">
+                        <div className="course-content-area-top">
+                            <ProgressBar courseId={'123'} />
+                        </div>
+                        <div className="course-content-area-bottom">
+                            <Curriculum sections={course.sections} />
+                        </div>
                     </div>
                 </div>
             </div>
