@@ -142,10 +142,11 @@
     width: 64px;
     height: 64px;
     cursor: pointer;
+    display: block;
 }
 
 .course-video-thumb-container video[controls] {
-    display: none;
+    display: block;
 }
 
 .lecture-title-info-wrapper>h4 {
@@ -239,4 +240,61 @@ span {
     line-height: 22px;
     letter-spacing: -0.01em;
     text-align: left;
+}
+
+.lecture-name>h3 {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.current-lecture-stats span {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.current-lecture-stats p {
+    font-family: var(--secondary-font);
+    color: var(--secondary-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+  
+  .student-image-group img {
+    margin-right: -16px;
+    border: 2px solid white;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .student-image-group img:last-child {
+    margin-right: 0;
+  }
+
+  .lecture-nav-btn {
+    max-width: 155px;
+    height: 100%;
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    flex: 1;
+    text-align: center;
+}
+
+.lecture-nav-btn.active {
+    border-bottom: 2px solid var(--btn-primary);
 }

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import '@/styles/lecture/courseLecture.css'
 import Overview from '@/components/course/courseOverview/Overview';
 import Curriculum from '@/components/course/courseCurriculum/Curriculum';
-import Instructor from '@/components/course/courseInstructor/Instructor';
 import Review from '@/components/course/courseReview/Review';
 import { allcoursesfunction, coursedetailsfunction } from '@/app/lib/Services/api';
 import ProgressBar from '@/components/courseProgress/ProgressBar';
@@ -12,23 +11,50 @@ import Footer from '@/components/Static/footer/Footer';
 
 function CourseLecture({ course }) {
 
+    const videoRef = useRef(null);
+    const [showPlayButton, setShowPlayButton] = useState(true);
     const [activeTab, setActiveTab] = useState('Overview');
     const navItems = [
         { text: 'Overview', component: <Overview courseDescription={course.courseDescription} courseTopics={course.courseTopics} targetAudience={course.targetAudience} courseRequirements={course.courseRequirements} /> },
         { text: 'Curriculum', component: <Curriculum sections={course.sections} /> },
-        { text: 'Instructor', component: <Instructor course={course} /> },
         { text: 'Review', component: <Review course={course} /> },
     ];
     const activeComponent = navItems.find(item => item.text === activeTab)?.component;
 
     const handlePlayVideo = () => {
-        const video = document.getElementById('courseVideo');
-        video.play();
-        video.setAttribute('controls', '');
-        video.style.display = 'block';
-        const playButton = document.querySelector('.course-video-thumb-container .play-button');
-        playButton.style.display = 'none';
+        if (videoRef.current) {
+            videoRef.current.play();
+            setShowPlayButton(false);
+        }
     };
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (video) {
+            const handlePause = () => {
+                setShowPlayButton(true);
+                video.controls = false;
+            };
+            const handlePlay = () => {
+                setShowPlayButton(false);
+                video.controls = true;
+            };
+
+            video.addEventListener('pause', handlePause);
+            video.addEventListener('play', handlePlay);
+
+            return () => {
+                video.removeEventListener('pause', handlePause);
+                video.removeEventListener('play', handlePlay);
+            };
+        }
+    }, []);
+
+    const sections = course.sections;
+    const sectionCount = sections.length;
+    const lecturesCount = sections.reduce((total, section) => {
+        return total + (section.lectures ? section.lectures.length : 0);
+    }, 0);
 
     return (
         <div className='w-full'>
@@ -52,11 +78,11 @@ function CourseLecture({ course }) {
             <div className="lecture-title-container">
                 <div className="lecture-title">
                     <div className="lecture-title-info flex flex-col gap-3">
-                        <h2>Complete Website Responsive Design: from Figma to Webflow to Website Design</h2>
+                        <h2>{course.courseTopic}</h2>
                         <div className="lecture-stats flex gap-4">
-                            <div className="section-count"> <Image src='/FolderNotchOpen.svg' width={20} height={10} alt='Folder svg' /> <span>6 Sections</span></div>
-                            <div className="lecture-count"> <Image src='/PlayCircle.svg' width={20} height={10} alt='Lecture svg' /> <span>202 Lectures</span></div>
-                            <div className="lecture-duration"> <Image src='/Clock-color.svg' width={20} height={10} alt='clock svg' /> <span>19h 37m</span></div>
+                            <div className="section-count"> <Image src='/FolderNotchOpen.svg' width={20} height={10} alt='Folder svg' /> <span>{sectionCount} Sections</span></div>
+                            <div className="lecture-count"> <Image src='/PlayCircle.svg' width={20} height={10} alt='Lecture svg' /> <span>{lecturesCount} Lectures</span></div>
+                            <div className="lecture-duration"> <Image src='/Clock-color.svg' width={20} height={10} alt='clock svg' /> <span>{course.courseDuration}</span></div>
                         </div>
                     </div>
                     <div className="lecture-nav-btn flex gap-3">
@@ -67,17 +93,62 @@ function CourseLecture({ course }) {
             </div>
             <div className="lecture-container w-full h-full mt-8">
                 <div className="lecture-area">
-                    <div className="lecture-wrapper-left w-full">
+                    <div className="lecture-wrapper-left w-full flex flex-col gap-6">
                         <div className="course-video-thumb-container">
                             {course.videoThumbnail && (
                                 <div className="video-wrapper">
-                                    <video id="courseVideo" width="100%" height="auto" preload="metadata">
+                                    <video ref={videoRef} width="100%" height="auto" preload="metadata">
                                         <source src={course.videoThumbnail} type="video/mp4" />
                                         Your browser does not support the video tag.
                                     </video>
-                                    <div className="play-button" onClick={handlePlayVideo}></div>
+                                    {showPlayButton && (
+                                        <button className="play-button" onClick={handlePlayVideo}></button>
+                                    )}
                                 </div>
                             )}
+                        </div>
+                        <div className="current-lecture-data flex flex-col gap-5">
+                            <div className="lecture-name">
+                                <h3>2. Sign Up in webflow</h3>
+                            </div>
+                            <div className="current-lecture-stats flex justify-between">
+                                <div className="current-lecture-stats-left flex gap-3 items-center">
+                                    <div className="student-image-group flex items-center relative">
+                                        <Image src='/user-2.jpg' width={32} height={32} alt='user-image' className='rounded-full' />
+                                        <Image src='/user-2.jpg' width={32} height={32} alt='user-image' className='rounded-full' />
+                                        <Image src='/user-2.jpg' width={32} height={32} alt='user-image' className='rounded-full' />
+                                        <Image src='/user-2.jpg' width={32} height={32} alt='user-image' className='rounded-full' />
+                                    </div>
+                                    <div className="students-watching-data">
+                                        <span>512</span>
+                                        <p>Students Watching</p>
+                                    </div>
+                                </div>
+                                <div className="current-lecture-stats-right flex gap-6">
+                                    <div className="lecture-update-time flex">
+                                        <p>Last Update: </p>
+                                        <span>Oct 26, 2023</span>
+                                    </div>
+                                    <div className="comments-count flex">
+                                        <p>Comments: </p>
+                                        <span>154</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="lecture-overview-nav h-14 flex border-y">
+                            {navItems.map((item, index) => (
+                                <button
+                                    key={index}
+                                    className={`lecture-nav-btn ${activeTab === item.text ? 'active' : ''}`}
+                                    onClick={() => setActiveTab(item.text)}
+                                >
+                                    {item.text}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="course-overview-container flex flex-col gap-10">
+                            {activeComponent}
                         </div>
                     </div>
                     <div className="lecture-wrapper-right w-2/5 flex flex-col gap-6">
