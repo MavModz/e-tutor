@@ -4,6 +4,7 @@ import Link from 'next/link';
 import '@/styles/lecture/courseLecture.css'
 import Overview from '@/components/course/courseOverview/Overview';
 import Curriculum from '@/components/course/courseCurriculum/Curriculum';
+import LectureCurriculum from '@/components/course/lecture/LectureCurriculum';
 import Review from '@/components/course/courseReview/Review';
 import { allcoursesfunction, coursedetailsfunction } from '@/app/lib/Services/api';
 import ProgressBar from '@/components/courseProgress/ProgressBar';
@@ -13,6 +14,7 @@ function CourseLecture({ course }) {
 
     const videoRef = useRef(null);
     const [showPlayButton, setShowPlayButton] = useState(true);
+    const [currentVideoUrl, setCurrentVideoUrl] = useState(course.videoThumbnail);
     const [activeTab, setActiveTab] = useState('Overview');
     const navItems = [
         { text: 'Overview', component: <Overview courseDescription={course.courseDescription} courseTopics={course.courseTopics} targetAudience={course.targetAudience} courseRequirements={course.courseRequirements} /> },
@@ -28,7 +30,21 @@ function CourseLecture({ course }) {
         }
     };
 
+    const handleLectureClick = (videoUrl) => {
+        setCurrentVideoUrl(videoUrl);
+        if (videoRef.current) {
+            videoRef.current.src = videoUrl;
+            videoRef.current.play();
+            setShowPlayButton(false);
+            console.log('inside if', videoUrl);
+        }
+        else {
+            console.log('outside if', videoUrl);
+        }
+    };
+
     useEffect(() => {
+        console.log('useEffect', currentVideoUrl);
         const video = videoRef.current;
         if (video) {
             const handlePause = () => {
@@ -98,7 +114,7 @@ function CourseLecture({ course }) {
                             {course.videoThumbnail && (
                                 <div className="video-wrapper">
                                     <video ref={videoRef} width="100%" height="auto" preload="metadata">
-                                        <source src={course.videoThumbnail} type="video/mp4" />
+                                        <source src={currentVideoUrl} type="video/mp4" />
                                         Your browser does not support the video tag.
                                     </video>
                                     {showPlayButton && (
@@ -156,7 +172,7 @@ function CourseLecture({ course }) {
                             <ProgressBar courseId={'123'} />
                         </div>
                         <div className="course-content-area-bottom">
-                            <Curriculum sections={course.sections} />
+                            <LectureCurriculum sections={course.sections} onLectureClick={handleLectureClick} />
                         </div>
                     </div>
                 </div>
