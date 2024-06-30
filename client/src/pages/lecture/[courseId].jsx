@@ -4,6 +4,7 @@ import Link from 'next/link';
 import '@/styles/lecture/courseLecture.css'
 import Overview from '@/components/course/courseOverview/Overview';
 import Curriculum from '@/components/course/courseCurriculum/Curriculum';
+import LectureCurriculum from '@/components/course/lecture/LectureCurriculum';
 import Review from '@/components/course/courseReview/Review';
 import { allcoursesfunction, coursedetailsfunction } from '@/app/lib/Services/api';
 import ProgressBar from '@/components/courseProgress/ProgressBar';
@@ -13,6 +14,10 @@ function CourseLecture({ course }) {
 
     const videoRef = useRef(null);
     const [showPlayButton, setShowPlayButton] = useState(true);
+    const [currentVideoUrl, setCurrentVideoUrl] = useState('');
+    const [currentLectureName, setCurrentLectureName] = useState('');
+    const [currentLectureIndex, setCurrentLectureIndex] = useState(null);
+    const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
     const [activeTab, setActiveTab] = useState('Overview');
     const navItems = [
         { text: 'Overview', component: <Overview courseDescription={course.courseDescription} courseTopics={course.courseTopics} targetAudience={course.targetAudience} courseRequirements={course.courseRequirements} /> },
@@ -27,6 +32,44 @@ function CourseLecture({ course }) {
             setShowPlayButton(false);
         }
     };
+
+    const handleLectureClick = (videoUrl, lectureName, lectureIndex, sectionIndex) => {
+        const encodedUrl = encodeURI(videoUrl);
+        setCurrentVideoUrl(encodedUrl);
+        setCurrentLectureName(lectureName);
+        setCurrentLectureIndex(lectureIndex);
+        setCurrentSectionIndex(sectionIndex);
+        if (videoRef.current) {
+            videoRef.current.src = encodedUrl;
+            videoRef.current.play();
+            setShowPlayButton(false);
+        }
+    };
+
+    const handleNextLecture = () => {
+        const sections = course.sections;
+        let nextLectureIndex = currentLectureIndex + 1;
+        let nextSectionIndex = currentSectionIndex;
+
+        // Move to the next section if the current section's lectures are over
+        if (nextLectureIndex >= sections[currentSectionIndex]?.lectures.length) {
+            nextLectureIndex = 0;
+            nextSectionIndex = (currentSectionIndex + 1) % sections.length;
+        }
+
+        const nextLecture = sections[nextSectionIndex]?.lectures[nextLectureIndex];
+        if (nextLecture) {
+            handleLectureClick(nextLecture.content.url, nextLecture.name, nextLectureIndex, nextSectionIndex);
+        }
+    };
+
+    useEffect(() => {
+        if (course.sections && course.sections.length > 0 && course.sections[0].lectures && course.sections[0].lectures.length > 0) {
+            const firstLecture = course.sections[0].lectures[0];
+            handleLectureClick(firstLecture.content.url, firstLecture.name, 0, 0);
+        }
+    }, [course]);
+
 
     useEffect(() => {
         const video = videoRef.current;
@@ -85,9 +128,9 @@ function CourseLecture({ course }) {
                             <div className="lecture-duration"> <Image src='/Clock-color.svg' width={20} height={10} alt='clock svg' /> <span>{course.courseDuration}</span></div>
                         </div>
                     </div>
-                    <div className="lecture-nav-btn flex gap-3">
+                    <div className="lecture-nav-btn-container flex gap-3">
                         <button className='review-btn hover-btn-effect'>Write A Review</button>
-                        <button className='next-lecture-btn hover-btn-effect'>Next Lecture</button>
+                        <button className='next-lecture-btn hover-btn-effect' onClick={handleNextLecture}>Next Lecture</button>
                     </div>
                 </div>
             </div>
@@ -98,7 +141,7 @@ function CourseLecture({ course }) {
                             {course.videoThumbnail && (
                                 <div className="video-wrapper">
                                     <video ref={videoRef} width="100%" height="auto" preload="metadata">
-                                        <source src={course.videoThumbnail} type="video/mp4" />
+                                        <source src={currentVideoUrl} type="video/mp4" />
                                         Your browser does not support the video tag.
                                     </video>
                                     {showPlayButton && (
@@ -109,7 +152,7 @@ function CourseLecture({ course }) {
                         </div>
                         <div className="current-lecture-data flex flex-col gap-5">
                             <div className="lecture-name">
-                                <h3>2. Sign Up in webflow</h3>
+                                <h3>{currentLectureIndex !== null ? `${currentLectureIndex + 1}. ${currentLectureName}` : 'Select a Lecture'}</h3>
                             </div>
                             <div className="current-lecture-stats flex justify-between">
                                 <div className="current-lecture-stats-left flex gap-3 items-center">
@@ -156,7 +199,7 @@ function CourseLecture({ course }) {
                             <ProgressBar courseId={'123'} />
                         </div>
                         <div className="course-content-area-bottom">
-                            <Curriculum sections={course.sections} />
+                            <LectureCurriculum sections={course.sections} onLectureClick={handleLectureClick} />
                         </div>
                     </div>
                 </div>
