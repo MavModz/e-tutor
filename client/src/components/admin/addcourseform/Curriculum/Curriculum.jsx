@@ -228,6 +228,7 @@ function Curriculum({ onNext, onPrevious }) {
       // const videoURL = URL.createObjectURL(file);
       const adminId = sessionStorage.getItem('adminId');
       const folderPath = `${adminId}`
+      console.log(folderPath);
       const videoName = `videos/${Date.now()}-${file.name}`;
       try {
         const uploadedVideoURL = await uploadFileToS3(file, folderPath, videoName);

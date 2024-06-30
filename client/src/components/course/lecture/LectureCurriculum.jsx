@@ -15,9 +15,9 @@ function LectureCurriculum({ sections, onLectureClick }) {
     }));
   };
 
-  const handleLectureClick = (lecture) => {
+  const handleLectureClick = (lecture, index) => {
     if (lecture.content && lecture.content.url) {
-      onLectureClick(lecture.content.url);
+      onLectureClick(lecture.content.url, lecture.name, index);
     }
   };
 
@@ -54,7 +54,7 @@ function LectureCurriculum({ sections, onLectureClick }) {
             {openSections[index] && (
               <ul className="lectures-list">
                 {section.lectures && section.lectures.map((lecture, lectureIndex) => (
-                  <li key={lectureIndex} className="lecture" onClick={() => handleLectureClick(lecture)}>
+                  <li key={lectureIndex} className="lecture" onClick={() => handleLectureClick(lecture, lectureIndex)}>
                     <span className="flex gap-2">
                       <Image src="/PlayBlack.svg" width={16} height={16} alt="Play svg" />
                       {lecture.name}
