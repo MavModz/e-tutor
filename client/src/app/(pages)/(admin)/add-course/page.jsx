@@ -123,7 +123,7 @@ function AddCourse() {
 
     const hasAllRequiredData = Object.values(formattedData).every(value => value !== undefined && value !== null && value !== "");
     console.log(hasAllRequiredData);
-    if (hasAllRequiredData) {
+    if (!hasAllRequiredData) {
       console.log("Some required fields are missing:", formattedData);
       setIsSubmissionUnSuccessful(true);
       return;
@@ -141,33 +141,47 @@ function AddCourse() {
     }
   };
 
-  // const renderStep = () => {
-  //   switch (currentStep) {
-  //     case 1:
-  //       return <BasicDetails onNext={nextStep} />;
-  //     case 2:
-  //       return <AdvanceInformation onNext={nextStep} onPrevious={previousStep} />;
-  //     case 3:
-  //       return <Curriculum onNext={nextStep} onPrevious={previousStep} formData={formData.Curriculum} />;
-  //     case 4:
-  //       return <PublishCourse onNext={nextStep} onPrevious={previousStep} onSubmit={handleSubmit} />;
-  //     default:
-  //       return <div>Unknow step</div>
-  //   }
-  // }
   const renderStep = () => {
     switch (currentStep) {
-      case 1: return <BasicDetails onNext={() => handleStepChange(2)} />;
-      case 2: return <AdvanceInformation onNext={() => handleStepChange(3)} onPrevious={() => handleStepChange(1)} />;
-      case 3: return <Curriculum onNext={() => handleStepChange(4)} onPrevious={() => handleStepChange(2)} />;
-      case 4: return <PublishCourse onSubmit={() => console.log('Submit Form')} onPrevious={() => handleStepChange(3)} />;
-      default: return <div>Unknown step</div>;
+      case 1:
+        return <BasicDetails onNext={nextStep} />;
+      case 2:
+        return <AdvanceInformation onNext={nextStep} onPrevious={previousStep} />;
+      case 3:
+        return <Curriculum onNext={nextStep} onPrevious={previousStep} formData={formData.Curriculum} />;
+      case 4:
+        return <PublishCourse onNext={nextStep} onPrevious={previousStep} onSubmit={handleSubmit} />;
+      default:
+        return <div>Unknow step</div>
     }
-  };
+  }
+  // const renderStep = () => {
+  //   switch (currentStep) {
+  //     case 1: return <BasicDetails onNext={() => handleStepChange(2)} />;
+  //     case 2: return <AdvanceInformation onNext={() => handleStepChange(3)} onPrevious={() => handleStepChange(1)} />;
+  //     case 3: return <Curriculum onNext={() => handleStepChange(4)} onPrevious={() => handleStepChange(2)} />;
+  //     case 4: return <PublishCourse onSubmit={handleSubmit} onPrevious={() => handleStepChange(3)} />;
+  //     default: return <div>Unknown step</div>;
+  //   }
+  // };
 
   const handleStepChange = (step) => {
     setCurrentStep(step);
   };
+
+  const handleSuccessModalClose = () => {
+    setIsSubmissionSuccessful(false);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
+
+  const handleErrorModalClose = () => {
+    setIsSubmissionUnSuccessful(false);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
 
   const navItems = [
     { text: 'Basic Details', icon: <Image src="/Stack.svg" width={24} height={24} alt="Stack svg icon" /> },
@@ -198,13 +212,13 @@ function AddCourse() {
       </div>
       <Success
         show={isSubmissionSuccessful}
-        onClose={() => setIsSubmissionSuccessful(false)}
+        onClose={handleSuccessModalClose}
         message="addCourse"
       />
       <Error
         show={isSubmissionUnSuccessful}
-        onClose={() => setIsSubmissionUnSuccessful(false)}
-        message="addCourse"
+        onClose={handleErrorModalClose}
+        message="addCourseError"
       />
     </div>
   )

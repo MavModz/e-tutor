@@ -10,11 +10,14 @@ const lectureContentSchema = new mongoose.Schema({
     },
     url: {
         type: String,
-        required: function () { return this.type !== 'Description'; }
+        // required: function () { return this.type !== 'Description'; }
+    },
+    attachments: {
+        type: [String],
     },
     description: {
         type: String,
-        required: function () { return this.type === 'Description'; }
+        // required: function () { return this.type === 'Description'; }
     }
 }, { _id: false });
 

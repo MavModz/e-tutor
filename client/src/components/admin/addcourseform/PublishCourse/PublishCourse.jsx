@@ -77,7 +77,7 @@ function PublishCourse({ onPrevious, onSubmit }) {
       congratulationsMessage,
       selectedInstructors: selectedInstructors.map(instructor => instructor.name)
     };
-
+    console.log('course publish buttom');
     onSubmit(publishCourseDetails);
   };
 
