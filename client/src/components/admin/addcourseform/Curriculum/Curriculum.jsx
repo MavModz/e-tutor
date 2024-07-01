@@ -3,9 +3,8 @@ import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { X } from 'lucide-react';
 import aws_s3 from '@/app/lib/Services/aws_s3';
-import Header from '../../header/header';
 
-async function uploadFileToS3(file, key) {
+async function uploadFileToS3(file, folderPath, key) {
   const bucket_name = process.env.NEXT_PUBLIC_AWS_BUCKET_NAME;
   const bucketName = bucket_name;
   const params = {
@@ -30,7 +29,6 @@ function Curriculum({ onNext, onPrevious }) {
     name: 'Section 1: Section Name',
     lectures: [{
       name: 'Lecture Name', content: {
-        type: '',
         url: '',
         description: '',
       },
@@ -126,52 +124,18 @@ function Curriculum({ onNext, onPrevious }) {
 
   // const addVideoToLecture = (sectionIndex, lectureIndex, video) => {
   //   setSections(prevSections => {
-  //     return prevSections.map((section, idx) => {
-  //       if (idx === sectionIndex) {
+  //     return prevSections.map((section, sIndex) => {
+  //       if (sIndex === sectionIndex) {
   //         return {
   //           ...section,
-  //           lectures: section.lectures.map((lecture, lIdx) => {
-  //             if (lIdx === lectureIndex) {
-  //               // Check if the content object exists, if not create it
-  //               let updatedContent = lecture.content || {};
-  //               // Check if the videos array exists, if not create it
-  //               let updatedVideos = updatedContent.videos || [];
-  //               // Add the new video
-  //               updatedVideos.push(video);
-  //               // Return the updated lecture with the new video
-  //               return {
-  //                 ...lecture,
-  //                 content: {
-  //                   ...updatedContent,
-  //                   videos: updatedVideos
-  //                 }
-  //               };
-  //             }
-  //             return lecture;
-  //           })
-  //         };
-  //       }
-  //       return section;
-  //     });
-  //   });
-  // };
+  //           lectures: section.lectures.map((lecture, lIndex) => {
+  //             if (lIndex === lectureIndex) {
+  //               // Ensuring that the content object is initialized correctly
+  //               const updatedContent = lecture.content || {};
+  //               updatedContent.type = 'Video';
+  //               updatedContent.url = video.url;
+  //               updatedContent.description = updatedContent.description || '';
 
-  // const addVideoToLecture = (sectionIndex, lectureIndex, video) => {
-  //   setSections(prevSections => {
-  //     return prevSections.map((section, idx) => {
-  //       if (idx === sectionIndex) {
-  //         return {
-  //           ...section,
-  //           lectures: section.lectures.map((lecture, lIdx) => {
-  //             if (lIdx === lectureIndex) {
-  //               // Update the content object to reflect the video type, url, and an empty description
-  //               const updatedContent = {
-  //                 type: 'Video', // Set the type to Video
-  //                 url: video.url, // Set the URL from the video object passed to the function
-  //                 description: '' // Description is empty
-  //               };
-
-  //               // Return the updated lecture with the new content
   //               return {
   //                 ...lecture,
   //                 content: updatedContent
@@ -186,6 +150,7 @@ function Curriculum({ onNext, onPrevious }) {
   //   });
   // };
 
+
   const addVideoToLecture = (sectionIndex, lectureIndex, video) => {
     setSections(prevSections => {
       return prevSections.map((section, sIndex) => {
@@ -194,9 +159,8 @@ function Curriculum({ onNext, onPrevious }) {
             ...section,
             lectures: section.lectures.map((lecture, lIndex) => {
               if (lIndex === lectureIndex) {
-                // Ensuring that the content object is initialized correctly
+                // Ensure the content object is initialized correctly
                 const updatedContent = lecture.content || {};
-                updatedContent.type = 'Video';
                 updatedContent.url = video.url;
                 updatedContent.description = updatedContent.description || '';
 
@@ -237,6 +201,7 @@ function Curriculum({ onNext, onPrevious }) {
           name: file.name,
         };
         addVideoToLecture(currentSectionIndex, currentLectureIndex, video);
+        console.log('upload completed');
       }
       catch (error) {
         console.log('error uploading recorded lecture', error);
@@ -246,80 +211,165 @@ function Curriculum({ onNext, onPrevious }) {
 
 
   // ATTATCH FILE HANDLE
-  const handleAttachFileChange = (event) => {
+  const handleAttachFileChange = async (event) => {
     const files = event.target.files;
     if (files && files[0]) {
       const file = files[0];
       setAttachedFileName(file.name);
-      const fileObject = {
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        // You may not create an object URL for non-media files unless you need to display them
-      };
 
-      // Call a function to add this file to the lecture
-      addFileToLecture(currentSectionIndex, currentLectureIndex, fileObject);
+      // Upload file to S3
+      const adminId = sessionStorage.getItem('adminId');
+      const folderPath = `${adminId}`;
+      const fileName = `attachments/${Date.now()}-${file.name}`;
+
+      try {
+        const uploadedFileURL = await uploadFileToS3(file, folderPath, fileName);
+        addFileToLecture(currentSectionIndex, currentLectureIndex, uploadedFileURL);
+        console.log('attach file uploaded');
+      } catch (error) {
+        console.log('Error uploading the file to S3', error);
+      }
     }
   };
 
-  //
-  const addFileToLecture = (sectionIndex, lectureIndex, fileObject) => {
-    setSections(prevSections => {
-      const updatedSections = [...prevSections];
-      const targetSection = updatedSections[sectionIndex];
-      if (!targetSection) {
-        console.error(`Section not found at index: ${sectionIndex}`);
-        return;
-      }
-      const targetLecture = targetSection.lectures[lectureIndex];
-      if (!targetLecture) {
-        console.error(`Lecture not found at index: ${lectureIndex} in section: ${sectionIndex}`);
-        return;
-      }
-      if (!targetLecture.content) {
-        targetLecture.content = { videos: [], attachedFiles: [], description: '' };
-      }
-      if (!Array.isArray(targetLecture.content.attachedFiles)) {
-        targetLecture.content.attachedFiles = [];
-      }
-      targetLecture.content.attachedFiles.push(fileObject);
-      console.log(`File added to lecture at index ${lectureIndex} in section ${sectionIndex}`, fileObject);
+  // const addFileToLecture = (sectionIndex, lectureIndex, fileObject) => {
+  //   setSections(prevSections => {
+  //     const updatedSections = [...prevSections];
+  //     const targetSection = updatedSections[sectionIndex];
+  //     if (!targetSection) {
+  //       console.error(`Section not found at index: ${sectionIndex}`);
+  //       return;
+  //     }
+  //     const targetLecture = targetSection.lectures[lectureIndex];
+  //     if (!targetLecture) {
+  //       console.error(`Lecture not found at index: ${lectureIndex} in section: ${sectionIndex}`);
+  //       return;
+  //     }
+  //     if (!targetLecture.content) {
+  //       targetLecture.content = { videos: [], attachedFiles: [], description: '' };
+  //     }
+  //     if (!Array.isArray(targetLecture.content.attachedFiles)) {
+  //       targetLecture.content.attachedFiles = [];
+  //     }
+  //     targetLecture.content.attachedFiles.push(fileObject);
+  //     console.log(`File added to lecture at index ${lectureIndex} in section ${sectionIndex}`, fileObject);
 
-      return updatedSections;
-    });
-  };
+  //     return updatedSections;
+  //   });
+  // };
 
 
 
   // DESCRIPTION HANDLE
+
+  const addFileToLecture = (sectionIndex, lectureIndex, fileUrl) => {
+    setSections(prevSections => {
+        return prevSections.map((section, sIndex) => {
+            if (sIndex === sectionIndex) {
+                return {
+                    ...section,
+                    lectures: section.lectures.map((lecture, lIndex) => {
+                        if (lIndex === lectureIndex) {
+                            return {
+                                ...lecture,
+                                content: {
+                                    ...lecture.content,
+                                    attachments: [...(lecture.content.attachments || []), fileUrl] // Add the new file URL to the array
+                                }
+                            };
+                        }
+                        return lecture;
+                    })
+                };
+            }
+            return section;
+        });
+    });
+};
+
+
   const handleDescriptionChange = (event) => {
     setLectureDescription(event.target.value);
   };
 
+  // const addDescriptionToLecture = (sectionIndex, lectureIndex, descriptionText) => {
+  //   setSections(prevSections => {
+  //     const updatedSections = [...prevSections];
+  //     const targetSection = updatedSections[sectionIndex];
+  //     const targetLecture = targetSection.lectures[lectureIndex];
+
+  //     // Ensure the content object and descriptions array exist
+  //     if (!targetLecture.content) {
+  //       targetLecture.content = { descriptions: [] };
+  //     }
+  //     if (!Array.isArray(targetLecture.content.descriptions)) {
+  //       targetLecture.content.descriptions = [];
+  //     }
+
+  //     // Add the description text to the descriptions array
+  //     targetLecture.content.descriptions.push(descriptionText);
+
+  //     console.log(`Description added to section ${sectionIndex} lecture ${lectureIndex}:`, descriptionText);
+
+  //     return updatedSections;
+  //   });
+  // };
+
+
+  // const saveDescription = () => {
+  //   addDescriptionToLecture(currentSectionIndex, currentLectureIndex, lectureDescription);
+  //   console.log(`Description for section ${currentSectionIndex} lecture ${currentLectureIndex}:`, lectureDescription);
+
+  //   // Clear the input after saving
+  //   setLectureDescription('');
+
+  //   // Close the modal
+  //   closeModal();
+  // };
+
+  // const addDescriptionToLecture = (sectionIndex, lectureIndex, descriptionText) => {
+  //   setSections(prevSections => {
+  //     const updatedSections = [...prevSections];
+  //     const targetSection = updatedSections[sectionIndex];
+  //     const targetLecture = targetSection.lectures[lectureIndex];
+
+  //     // Ensure the content object exists
+  //     if (!targetLecture.content) {
+  //       targetLecture.content = { type: 'Description', url: '', description: descriptionText };
+  //     } else {
+  //       targetLecture.content.description = descriptionText;
+  //     }
+
+  //     console.log(`Description added/updated in section ${sectionIndex} lecture ${lectureIndex}:`, descriptionText);
+
+  //     return updatedSections;
+  //   });
+  // };
+
   const addDescriptionToLecture = (sectionIndex, lectureIndex, descriptionText) => {
     setSections(prevSections => {
-      const updatedSections = [...prevSections];
-      const targetSection = updatedSections[sectionIndex];
-      const targetLecture = targetSection.lectures[lectureIndex];
-
-      // Ensure the content object and descriptions array exist
-      if (!targetLecture.content) {
-        targetLecture.content = { descriptions: [] };
-      }
-      if (!Array.isArray(targetLecture.content.descriptions)) {
-        targetLecture.content.descriptions = [];
-      }
-
-      // Add the description text to the descriptions array
-      targetLecture.content.descriptions.push(descriptionText);
-
-      console.log(`Description added to section ${sectionIndex} lecture ${lectureIndex}:`, descriptionText);
-
-      return updatedSections;
+        return prevSections.map((section, sIndex) => {
+            if (sIndex === sectionIndex) {
+                return {
+                    ...section,
+                    lectures: section.lectures.map((lecture, lIndex) => {
+                        if (lIndex === lectureIndex) {
+                            return {
+                                ...lecture,
+                                content: {
+                                    ...lecture.content,
+                                    description: descriptionText
+                                }
+                            };
+                        }
+                        return lecture;
+                    })
+                };
+            }
+            return section;
+        });
     });
-  };
-
+};
 
   const saveDescription = () => {
     addDescriptionToLecture(currentSectionIndex, currentLectureIndex, lectureDescription);
@@ -452,7 +502,7 @@ function Curriculum({ onNext, onPrevious }) {
       const newSectionNumber = prevSections.length + 1;
       const newSection = {
         name: `Section ${newSectionNumber}: Section Name`,
-        lectures: [{ name: 'Lecture 1', content: { type: '', url: '', description: '' } }]
+        lectures: [{ name: 'Lecture 1', content: { url: '', attachments: '', description: '' } }]
       };
       return [...prevSections, newSection];
     });
@@ -475,26 +525,6 @@ function Curriculum({ onNext, onPrevious }) {
     }
   };
 
-  // const addLecture = (sectionIndex) => {
-  //   const newSections = [...sections];
-  //   newSections[sectionIndex].lectures.push({
-  //     name: `Lecture ${newSections[sectionIndex].lectures.length + 1}`,
-  //     content: { type: '', url: '', description: '' }
-  //   });
-  //   setSections(newSections);
-  // };
-
-  // const addLecture = (sectionIndex) => {
-  //   setSections(prevSections => {
-  //     const newSections = [...prevSections];
-  //     newSections[sectionIndex].lectures.push({
-  //       name: `Lecture ${newSections[sectionIndex].lectures.length + 1}`,
-  //       content: { type: '', url: '', description: '' },
-  //     });
-  //     return newSections;
-  //   });
-  // };
-
   const addLecture = (sectionIndex) => {
     setSections(prevSections => {
       // Create a deep copy to prevent direct mutations
@@ -510,7 +540,7 @@ function Curriculum({ onNext, onPrevious }) {
         // Push the new lecture only if it doesn't exist
         newSections[sectionIndex].lectures.push({
           name: newLectureName,
-          content: { type: '', url: '', description: '' },
+          content: { url: '', attachments: '',  description: '' },
         });
       }
 
