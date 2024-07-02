@@ -34,13 +34,12 @@ function CourseLecture({ course }) {
     };
 
     const handleLectureClick = (videoUrl, lectureName, lectureIndex, sectionIndex) => {
-        const encodedUrl = encodeURI(videoUrl);
-        setCurrentVideoUrl(encodedUrl);
+        setCurrentVideoUrl(videoUrl);
         setCurrentLectureName(lectureName);
         setCurrentLectureIndex(lectureIndex);
         setCurrentSectionIndex(sectionIndex);
         if (videoRef.current) {
-            videoRef.current.src = encodedUrl;
+            videoRef.current.src = videoUrl;;
             videoRef.current.play();
             setShowPlayButton(false);
         }
